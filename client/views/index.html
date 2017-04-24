@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+    <head>
+        <title>Team Sleuth</title>
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/styles/style.css">
+
+        <!-- DATA -->
+        <!-- constants / things that could be changed/removed once and the whole app would flex accordingly -->
+        <!-- SEE MARKET PROJECT FOR EXAMPLES -->
+        <!-- <script type="text/javascript" src="scripts/data/settings.js"></script> -->
+        <!-- <script type="text/javascript" src="scripts/data/items.js"></script> -->
+
+        <!-- CLASSES -->
+        <!-- any classes needed for the project can be created in separate files -->
+        <!-- SEE MARKET PROJECT FOR EXAMPLES -->
+        <!-- <script type="text/javascript" src="scripts/classes/Utilities.js"></script> -->
+        <!-- <script type="text/javascript" src="scripts/classes/MarketItem.js"></script> -->
+        <!-- <script type="text/javascript" src="scripts/classes/Player.js"></script> -->
+        <!-- <script type="text/javascript" src="scripts/classes/Game.js"></script> -->
+
+        <!-- ANGULAR -->
+        <script type="text/javascript" src="/vendors/angular/angular.min.js"></script>
+        <script type="text/javascript" src="/vendors/angular-route/angular-route.min.js"></script>
+        <!-- APP CONFIG -->
+        <script type="text/javascript" src="/scripts/client.js"></script>
+        <!-- FACTORIES -->
+        <script type="text/javascript" src="/scripts/factories/TeamService.js"></script>
+        <!-- CONTROLLERS -->
+        <script type="text/javascript" src="/scripts/controllers/PlayerController.js"></script>
+        <script type="text/javascript" src="/scripts/controllers/loginController.js"></script>
+        <script type="text/javascript" src="/scripts/controllers/userController.js"></script>
+    </head>
+    <body>
+
+      <header ng-include="'/views/templates/header.html'"></header>
+
+      <main ng-view></main>
+
+    </body>
+</html>
