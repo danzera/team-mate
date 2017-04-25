@@ -1,25 +1,27 @@
-myApp.controller('LoginController', ['$scope', '$http', '$location', 'TeamService', function($scope, $http, $location, TeamService) {
-  console.log('I Say - LoginController loaded');
+myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
   let login = this; // reference to the controller
+  login.message = '';
   login.user = {
     username: '',
     password: ''
   };
-  login.message = '';
+  login.userObject = UserService.userObject
 
   login.login = function() {
     if(login.user.username === '' || login.user.password === '') {
       login.message = "Enter your username and password!";
     } else {
-      console.log('Har-Har - Sending credentials to the server...', login.user);
+      console.log('sending credentials to the server from LoginController.login()...', login.user);
       $http.post('/', login.user).then(function(response) {
         if(response.data.username) {
-          console.log('Huzzah - Successful login: ', response.data);
+          console.log('successful login from LoginController.login(): ', response.data);
+          // IS THIS WHEN THE FACTORY OBJECT SHOULD BE ALTERED???
+          login.userObject.setEmail(response.data.username);
           // location works with SPA (ng-route)
-          console.log('Hold Please - Redirecting to user page');
+          console.log('redirecting to user page from LoginController.login()');
           $location.path('/user');
         } else {
-          console.log('Nope - Failure: ', response);
+          console.log('failed to login from LoginController.login(): ', response);
           login.message = "Wrong!!";
         }
       });

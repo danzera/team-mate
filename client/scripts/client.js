@@ -18,8 +18,9 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
       controller: 'UserController',
       controllerAs: 'user',
       resolve: {
-        getuser : ['TeamService', function(TeamService){
-          return TeamService.getUser();
+        getuser : ['UserService', function(UserService){
+          // get user from factory
+          return UserService.getUser();
         }]
       }
     })
