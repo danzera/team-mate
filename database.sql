@@ -3,7 +3,7 @@
 -- create "users" table
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "username" VARCHAR(80) NOT NULL,
+  "username" VARCHAR(80) NOT NULL UNIQUE,
   "password" VARCHAR(120) NOT NULL,
   "name" VARCHAR(120),
   "phone" VARCHAR(12)
