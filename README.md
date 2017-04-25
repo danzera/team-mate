@@ -1,3 +1,8 @@
+# Team Tracker
+1. Run npm install
+2. Run Grunt
+3. Create database and tables in database.sql file
+
 # SQL Strategy Branch
 Branched from `angular-ctrl-with-routes`. The main difference is it now uses `/strategies/user_sql.js`. See `/modules/connection.js` to set your PostGRES DB connection string. You will find a basic `CREATE TABLE` query commented out in the strategy file.
 

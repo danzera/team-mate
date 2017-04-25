@@ -1,24 +1,25 @@
 var myApp = angular.module('myApp', ['ngRoute']);
-/// Routes ///
-
+// -----ROUTES-----
 myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-
   $locationProvider.hashPrefix('');
   $routeProvider
     .when('/home', {
-      templateUrl: '/views/home.html',
-      controller: "LoginController"
+      templateUrl: '/views/templates/home.html',
+      controller: 'LoginController',
+      controllerAs: 'login'
     })
     .when('/register', {
-      templateUrl: '/views/register.html',
-      controller: "LoginController"
+      templateUrl: '/views/templates/register.html',
+      controller: 'LoginController',
+      controllerAs: 'login'
     })
     .when('/user', {
-      templateUrl: '/views/user.html',
+      templateUrl: '/views/templates/user.html',
       controller: 'UserController',
+      controllerAs: 'user',
       resolve: {
         getuser : ['TeamService', function(TeamService){
-          return TeamService.getuser();
+          return TeamService.getUser();
         }]
       }
     })
