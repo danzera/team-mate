@@ -1,8 +1,18 @@
 class User {
-  constructor(email, name = '', phone = '') {
+  constructor(id = -1, email = '', password = '', name = '', phone = '') {
+    this.id = id;
     this.email = email;
+    this.password = password;
     this.name = name;
     this.phone = phone;
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  setId(id) {
+    this.id = id;
   }
 
   getEmail() {
@@ -11,6 +21,14 @@ class User {
 
   setEmail(email) {
     this.email = email;
+  }
+
+  getPassword() {
+    return this.password;
+  }
+
+  setPassword(password) {
+    this.password = password;
   }
 
   getName() {
