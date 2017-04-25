@@ -1,10 +1,10 @@
 <div class="container">
-  <h1 class="lead">Login</h1>
+  <h1 class="lead">Login with TeamTracker</h1>
     <h1 class="lead alert alert-danger" role="alert" ng-if="login.message !== ''">{{login.message}}</h2>
     <form ng-submit="login.login()">
       <div>
           <!-- does for="username" need to be for="login.username" - don't THINK so, but need to research -->
-          <label for="username">Username:</label>
+          <label for="username">E-mail:</label>
           <input type="text" ng-model="login.user.username" />
       </div>
       <div>
@@ -14,7 +14,7 @@
       </div>
       <div>
           <input class="btn btn-default" type="submit" name="submit" value="Log In" />
-          <a href="#register">Register</a>
+          <a href="#register">Create a TeamTracker Login</a>
       </div>
     </form>
 </div>

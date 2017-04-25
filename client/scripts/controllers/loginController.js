@@ -5,7 +5,7 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
     username: '',
     password: ''
   };
-  login.userObject = UserService.userObject
+  login.userObject = UserService.userObject;
 
   login.login = function() {
     if(login.user.username === '' || login.user.password === '') {
@@ -34,12 +34,13 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
     } else {
       console.log('One Moment - Sending credentials to the server...', login.user);
       $http.post('/register', login.user).then(function(response) {
-        console.log('Happy Day - Success');
+        console.log('great success');
+        alert('TeamTracker Login successfully created. You may now login.');
         $location.path('/home');
       },
       function(response) {
-        console.log('Bad Luck - Error');
-        login.message = "Please try again.";
+        console.log('server error - user already exists most likely (maybe there are additional things that would cause this)');
+        login.message = "Oops! Something went wrong. Please try again.";
       });
     }
   };
