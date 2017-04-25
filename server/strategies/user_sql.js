@@ -8,7 +8,7 @@ var pg = require('pg');
 
 var config = {
   user: 'danzera', //env var: PGUSER
-  database: 'team-sleuth', //env var: PGDATABASE
+  database: 'team-tracker', //env var: PGDATABASE
   password: '', //env var: PGPASSWORD
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
