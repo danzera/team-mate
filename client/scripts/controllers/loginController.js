@@ -1,4 +1,4 @@
-myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
+myApp.controller('LoginController', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   let login = this; // reference to the controller
   login.message = '';
   login.user = {
@@ -36,7 +36,7 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
       $http.post('/register', login.user).then(function(response) {
         console.log('great success');
         alert('TeamTracker Login successfully created. You may now login.');
-        $location.path('/home');
+        $location.path('/login');
       },
       function(response) {
         console.log('server error - user already exists most likely (maybe there are additional things that would cause this)');

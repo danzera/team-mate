@@ -22,7 +22,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
             console.log('retrieved user info in factory: ', userObject);
         } else { // user has no session on the server
             // bounce them back to the login page
-            $location.path("/home");
+            $location.path("/home"); // WILL WANT TO CHANGE THIS TO TEAMS VIEW
         }
     });
   }
@@ -34,9 +34,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   }
 
+  function redirectToLogin() {
+    $location.path("/login");
+  }
+
   return {
     userObject,
     getUser,
-    logout
+    logout,
+    redirectToLogin
   };
 }]);
