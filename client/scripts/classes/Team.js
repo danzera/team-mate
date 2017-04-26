@@ -4,19 +4,20 @@ class Team {
     this.id = id;
     this.name = name;
   }
-  // get the team's id
+  // get team id
   getId() {
     return this.id;
   }
-  // set the team's id
+  // set team id
+  // assigns 'id' that is returned from the database
   setId(id) {
     this.id = id;
   }
-  // get the team's name
+  // get team name - matches 'name' in the 'teams' table of the database
   getName() {
     return this.name;
   }
-  // set the team's name
+  // set team name
   setName(name) {
     this.name = name;
   }

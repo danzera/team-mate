@@ -1,4 +1,13 @@
 <div class="container">
   <h1 class="lead">Create a New Team</h1>
-  <p>{{createTeam.name}}</p>
+  <form ng-submit="createTeam.postNewTeam()">
+    <div class="form-group">
+      <label for="teamName">Team Name</label>
+      <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="teamName" placeholder="What is your team's name?" />
+    </div>
+    <div>
+      <input class="btn btn-success" type="submit" name="submit" value="Create Team" />
+      <a href="#all-teams"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
+    </div>
+  </form>
 </div>
