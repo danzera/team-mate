@@ -35,6 +35,16 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end logout()
 
+  // add new team to the database
+  // posts a new team to the teams table
+  // adds user to the users_teams table as a manager
+  function postNewTeam(teamName) {
+    console.log('adding new team in the factory:', teamName);
+    $http.post('/teams', teamName).then(function(response) {
+
+    });
+  } // end postNewTeam
+
   // IF A REDIRECT IS NEEDED -- USE $location
   // NOT SURE IF A FUNCTION SPECIFICALLY FOR THE ACTION IS A GOOD THOUGHT
   // BUT DOES SEEM TO MAKE CODE MORE READABLE
@@ -46,6 +56,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   return {
     userObject,
     getUser,
-    logout
+    logout,
+    postNewTeam
   };
 }]);
