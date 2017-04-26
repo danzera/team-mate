@@ -22,9 +22,18 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
       templateUrl: '/views/templates/user.html',
       controller: 'UserController',
       controllerAs: 'user',
-      resolve: {
+      resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
-          // get user from factory
+          return UserService.getUser();
+        }]
+      }
+    })
+    .when('/all-teams', { // lists all of a user's teams when they are logged in
+      templateUrl: '/views/templates/all-teams.html',
+      controller: 'AllTeamsController',
+      controllerAs: 'allTeams',
+      resolve: { // get user from factory
+        getuser : ['UserService', function(UserService){
           return UserService.getUser();
         }]
       }

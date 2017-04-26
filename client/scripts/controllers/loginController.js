@@ -23,7 +23,7 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
           login.userObject.setEmail(response.data.username);
           // location works with SPA (ng-route)
           console.log('redirecting to user page from LoginController.login()');
-          $location.path('/user');
+          $location.path('/all-teams'); // take user to a their all-teams view
         } else {
           console.log('failed to login from LoginController.login(): ', response);
           login.message = "Wrong!!";

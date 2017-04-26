@@ -49,10 +49,16 @@ module.exports = function(grunt){
       },
     },
     watch: {
-      files: [
-        'client/**/*.*'
-      ],
-      tasks: ['copy']
+      save: {
+        files: ['client/**/*.*'],
+        tasks: ['copy']
+      },
+      refresh: {
+        files: ['server/public/scripts/*.js', 'server/public/stylesheets/*.css', 'server/public/views/*.html', 'server/public/vendors/*.*'],
+        options: {
+          livereload: true
+        }
+      }
     }
   });
 
