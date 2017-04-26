@@ -1,10 +1,11 @@
 // user class
 class User {
-  constructor(id, email = '', password = '', name = '', phone = '') {
-    this.id = id;
-    this.email = email;
-    this.password = password;
-    this.name = name;
+  constructor(id, email = '', password = '', firstName = '', lastName = '', phone = '') {
+    this.id = id; // user id from the database
+    this.email = email; // email === username in the database
+    this.password = password; // MAY BE NEEDED LATER TO UPDATE USER PASSWORD
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.phone = phone;
   }
   // get the user's ID - matches 'id' in the 'users' table of the database

@@ -1,7 +1,7 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // instantiate a new userObject on factory load
   let userObject = new User();
-  console.log('initial userObject in the factory:', userObject);
+
   // get user from the database
   function getUser() {
     $http.get('/user').then(function(response) {
@@ -11,7 +11,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
             userObject.setId(response.data.id);
             // set the userObject's email === username from the server response
             userObject.setEmail(response.data.username);
-            // set userObject's name (if one exists in the DB)
+            // set userObject's human name (if one exists in the DB)
             if (response.data.name) {
               userObject.setName(response.data.name);
             }
@@ -30,8 +30,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      console.log('you logged out - see you next time');
-      $location.path("/home");
+      console.log('user logged out - redirecting to /#/home');
+      $location.path('/home');
     });
   } // end logout()
 
@@ -41,7 +41,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   function postNewTeam(teamName) {
     console.log('adding new team in the factory:', teamName);
     $http.post('/teams', teamName).then(function(response) {
-
+      console.log('back from the database with response:', response);
     });
   } // end postNewTeam
 
