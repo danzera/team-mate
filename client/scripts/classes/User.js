@@ -1,4 +1,6 @@
 class User {
+  // SHOULD THE ID DEFAULT TO -1 (OR ANTYHING AT ALL)?
+  // IS UPDATED WHEN authenticated WITH ACTUAL USER'S ID FROM THE database
   constructor(id = -1, email = '', password = '', name = '', phone = '') {
     this.id = id;
     this.email = email;

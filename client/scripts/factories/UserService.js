@@ -34,14 +34,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   }
 
-  function redirectToLogin() {
-    $location.path("/login");
-  }
+  // function redirectToLogin() {
+  //   $location.path("/login");
+  // }
 
   return {
     userObject,
     getUser,
-    logout,
-    redirectToLogin
+    logout
+    // redirectToLogin
   };
 }]);
