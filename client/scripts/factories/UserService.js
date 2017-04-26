@@ -40,7 +40,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // adds user to the users_teams table as a manager
   function postNewTeam(teamName) {
     console.log('adding new team in the factory:', teamName);
-    $http.post('/teams', teamName).then(function(response) {
+    $http.post('/teams', {teamName: teamName}).then(function(response) {
       console.log('back from the database with response:', response);
     });
   } // end postNewTeam
