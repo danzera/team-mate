@@ -1,6 +1,9 @@
-myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
+myApp.controller('LoginController', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   let login = this; // reference to the controller
   login.message = '';
+  // this appears to be a temporary object used only for authentication purposes
+  // should it be a 'new User()' that gets trashed once authenticted?
+  // or should it tie to the factory object?
   login.user = {
     username: '',
     password: ''
@@ -12,10 +15,11 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
       login.message = "Enter your username and password!";
     } else {
       console.log('sending credentials to the server from LoginController.login()...', login.user);
+      // WHY IS THIS A POST CALL? SEE MONGO CODE
       $http.post('/', login.user).then(function(response) {
-        if(response.data.username) {
+        if(response.data.username) { // user authenticated
           console.log('successful login from LoginController.login(): ', response.data);
-          // IS THIS WHEN THE FACTORY OBJECT SHOULD BE ALTERED???
+          // update factory userObject information
           login.userObject.setEmail(response.data.username);
           // location works with SPA (ng-route)
           console.log('redirecting to user page from LoginController.login()');
@@ -35,8 +39,8 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
       console.log('One Moment - Sending credentials to the server...', login.user);
       $http.post('/register', login.user).then(function(response) {
         console.log('great success');
-        alert('TeamTracker Login successfully created. You may now login.');
-        $location.path('/home');
+        alert('Success! You may now login.'); // MAY WANT TO REMOVE?
+        $location.path('/login');
       },
       function(response) {
         console.log('server error - user already exists most likely (maybe there are additional things that would cause this)');
