@@ -35,7 +35,7 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       console.log('One Moment - Sending credentials to the server...', login.user);
       $http.post('/register', login.user).then(function(response) {
         console.log('great success');
-        alert('TeamTracker Login successfully created. You may now login.');
+        alert('TeamMate Login successfully created. You may now login.');
         $location.path('/login');
       },
       function(response) {

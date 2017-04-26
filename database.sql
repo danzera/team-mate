@@ -1,4 +1,5 @@
--- create DB named team-tracker
+-- create "team-mate" database
+CREATE DATABASE "team-mate";
 
 -- create "users" table
 CREATE TABLE "users" (
@@ -10,6 +11,11 @@ CREATE TABLE "users" (
 );
 
 -- create "teams" table
+CREATE TABLE "teams" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(120) NOT NULL,
+  "creator_id" INTEGER NOT NULL REFERENCES "users"
+);
 
 -- create "games" table
 

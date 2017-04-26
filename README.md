@@ -1,4 +1,4 @@
-# Team Tracker
+# TeamMate
 1. Run npm install
 2. Run Grunt
 3. Create database and tables in database.sql file
