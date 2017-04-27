@@ -1,6 +1,6 @@
 <div class="container">
-  <h1 ng-if="!allTeams.userObject.getName()" id="welcome">Welcome, {{allTeams.userObject.getEmail()}}!</h1>
-  <h1 ng-if="allTeams.userObject.getName()" id="welcome">Welcome, {{allTeams.userObject.getName()}}!</h1>
+  <h1 ng-if="!allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getEmail()}}!</h1>
+  <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
   <h2 class="lead">Your Teams</h2>
   <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>
 </div>

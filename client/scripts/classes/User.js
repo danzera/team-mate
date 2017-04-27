@@ -32,13 +32,21 @@ class User {
   setPassword(password) {
     this.password = password;
   }
-  // get the user's human name - matches name in the 'users' table of the database
-  getName() {
-    return this.name;
+  // get the user's first name - matches first_name in the 'users' table of the database
+  getFirstName() {
+    return this.firstName;
   }
-  // TO BE USED - set a user's name for contact info addition
-  setName(name) {
-    this.name = name;
+  // TO BE USED - set a user's first name for contact info addition
+  setFirstName(first) {
+    this.firstName = first;
+  }
+  // get the user's last name - matches last_name in the 'users' table of the database
+  getLastName() {
+    return this.lastName;
+  }
+  // TO BE USED - set a user's first name for contact info addition
+  setLastName(last) {
+    this.lastName = last;
   }
   // get the user's phone number - matches 'phone' in the 'users' table of the database
   getPhone() {

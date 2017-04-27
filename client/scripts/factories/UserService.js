@@ -1,7 +1,7 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // instantiate a new userObject on factory load
   let userObject = new User();
-
+  console.log('user instantiated in the factory:', userObject);
   // get user from the database
   function getUser() {
     $http.get('/user').then(function(response) {
@@ -12,8 +12,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
             // set the userObject's email === username from the server response
             userObject.setEmail(response.data.username);
             // set userObject's human name (if one exists in the DB)
-            if (response.data.name) {
-              userObject.setName(response.data.name);
+            if (response.data.first_name) {
+              userObject.setFirstName(response.data.first_name);
             }
             // set userObject's phone (if one exists in the DB)
             if (response.data.phone) {

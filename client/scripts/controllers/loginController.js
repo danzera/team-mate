@@ -1,17 +1,18 @@
 myApp.controller('LoginController', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   let login = this; // reference to the controller
+  console.log('login controller instantiated:', login);
   login.message = '';
   // this appears to be a temporary object used only for authentication purposes
   // should it be a 'new User()' that gets trashed once authenticted?
   // or should it tie to the factory object?
-  login.user = {
-    username: '',
-    password: ''
-  };
+  // login.user = {
+  //   username: '',
+  //   password: ''
+  // };
   login.userObject = UserService.userObject;
-
+  // ng-click for login.html form
   login.login = function() {
-    if(login.user.username === '' || login.user.password === '') {
+    if(login.userObject.email === '' || login.userObject.password === '') {
       login.message = "Enter your username and password!";
     } else {
       console.log('sending credentials to the server from LoginController.login()...', login.user);

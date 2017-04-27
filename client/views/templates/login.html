@@ -1,20 +1,18 @@
-<div class="container">
+<div class="container"><!--TEAMMATE LOGIN SCREEN-->
   <h1 class="lead">Login with TeamMate</h1>
     <h2 class="lead alert alert-danger" role="alert" ng-if="login.message !== ''">{{login.message}}</h2>
-    <form ng-submit="login.login()">
-      <div>
-          <!-- does for="username" need to be for="login.username" - don't THINK so, but need to research -->
-          <label for="username">E-mail:</label>
-          <input type="text" ng-model="login.user.username" />
+    <form ng-submit="login.login()"><!--login form-->
+      <div class="form-group"><!--user email-->
+        <label for="user-email">E-mail</label>
+        <input type="text" ng-model="login.userObject.email" class="form-control" id="user-email"/>
       </div>
-      <div>
-          <!-- does for="password" need to be for="login.password" - don't THINK so, but need to research -->
-          <label for="password">Password:</label>
-          <input type="password" ng-model="login.user.password" />
+      <div class="form-group"><!--user password-->
+        <label for="user-password">Password</label>
+        <input type="password" ng-model="login.userObject.password" class="form-control" id="user-password" />
       </div>
-      <div>
-          <input class="btn btn-default" type="submit" name="submit" value="Log In" />
-          <a href="#register">Create a TeamMate Login</a>
+      <div class="form-group"><!--submittal / links-->
+        <input class="btn btn-default" type="submit" name="submit" value="Log In" />
+        <a href="#register">Create a TeamMate Login</a>
       </div>
-    </form>
+    </form><!--end login form-->
 </div>
