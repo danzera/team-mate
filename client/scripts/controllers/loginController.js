@@ -2,26 +2,23 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
   let login = this; // reference to the controller
   console.log('login controller instantiated:', login);
   login.message = '';
-  // this appears to be a temporary object used only for authentication purposes
-  // should it be a 'new User()' that gets trashed once authenticted?
-  // or should it tie to the factory object?
-  // login.user = {
-  //   username: '',
-  //   password: ''
-  // };
-  login.userObject = UserService.userObject;
+  // "whenever you would use and object, use a class"
+  // does that apply here - this seems to be a temporary object
+  // used only for authentication so I renamed it tempUser
+  login.tempUser = {
+    username: '',
+    password: ''
+  };
   // ng-click for login.html form
   login.login = function() {
-    if(login.userObject.email === '' || login.userObject.password === '') {
+    if(login.tempUser.username === '' || login.tempUser.password === '') {
       login.message = "Enter your username and password!";
     } else {
       console.log('sending credentials to the server from LoginController.login()...', login.user);
       // WHY IS THIS A POST CALL? SEE MONGO CODE
-      $http.post('/', login.user).then(function(response) {
+      $http.post('/', login.tempUser).then(function(response) {
         if(response.data.username) { // user authenticated
           console.log('successful login from LoginController.login(): ', response.data);
-          // update factory userObject information
-          login.userObject.setEmail(response.data.username);
           // location works with SPA (ng-route)
           console.log('redirecting to user page from LoginController.login()');
           $location.path('/all-teams'); // take user to a their all-teams view

@@ -1,12 +1,20 @@
 // user class
 class User {
-  constructor(id, email = '', password = '', firstName = '', lastName = '', phone = '') {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '') {
     this.id = id; // user id from the database
-    this.email = email; // email === username in the database
-    this.password = password; // MAY BE NEEDED LATER TO UPDATE USER PASSWORD
+    this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
+  }
+  // clear all User properties
+  clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
+    this.id = '';
+    this.username = '';
+    this.password = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.phone = '';
   }
   // get the user's ID - matches 'id' in the 'users' table of the database
   getId() {
@@ -16,21 +24,13 @@ class User {
   setId(id) {
     this.id = id;
   }
-  // get the user's email - matches 'username' in the 'users' table of the database
-  getEmail() {
-    return this.email;
+  // get the user's username - matches 'username' in the 'users' table of the database
+  getUsername() {
+    return this.username;
   }
-  // set the user's email - used to assign the user email (username) that is returned from the database after user is authenticated
-  setEmail(email) {
-    this.email = email;
-  }
-  // REMOVE? MAY BE NEEDED IN A PASSWORD RESET SITUATION
-  getPassword() {
-    return this.password;
-  }
-  // REMOVE? MAY BE NEEDED IN A PASSWORD RESET SITUATION
-  setPassword(password) {
-    this.password = password;
+  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  setUsername(username) {
+    this.username = username;
   }
   // get the user's first name - matches first_name in the 'users' table of the database
   getFirstName() {

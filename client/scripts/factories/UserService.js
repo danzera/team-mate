@@ -5,35 +5,37 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // get user from the database
   function getUser() {
     $http.get('/user').then(function(response) {
-        if (response.data.username) { // user has a curret session on the server
-            // response.data === entire row from the users table in the DB
-            // set the userObject's id === id from the server response
-            userObject.setId(response.data.id);
-            // set the userObject's email === username from the server response
-            userObject.setEmail(response.data.username);
-            // set userObject's human name (if one exists in the DB)
-            if (response.data.first_name) {
-              userObject.setFirstName(response.data.first_name);
-            }
-            // set userObject's phone (if one exists in the DB)
-            if (response.data.phone) {
-              userObject.setPhone(response.data.phone);
-            }
-            console.log('retrieved user info in factory: ', userObject);
-        } else { // user has no session on the server
-            // bounce them back to the login page
-            $location.path("/home"); // WILL WANT TO CHANGE THIS TO TEAMS VIEW
+      if (response.data.username) { // user has a curret session on the server
+        // response.data === entire row from the users table in the DB
+        // users table "id"
+        userObject.setId(response.data.id);
+        // users table "username"
+        userObject.setUsername(response.data.username);
+        if (response.data.first_name) { // user has first_name stored in database
+          userObject.setFirstName(response.data.first_name);
         }
-    });
+        if (response.data.phone) { // user has phone number stored in database
+          userObject.setPhone(response.data.phone);
+        }
+        console.log('retrieved user info in factory: ', userObject);
+      } else { // user has no session on the server
+        // bounce them back to the login page
+        $location.path("/home");
+      }
+    }); // end $http.get()
   } // end getUser()
 
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      console.log('user logged out - redirecting to /#/home');
+      console.log('user logged out, clearing userObject:', userObject);
+      userObject.clear();
+      console.log('userObject cleared:', userObject);
+      console.log('redirecting to /#/home');
       $location.path('/home');
-    });
+    }); // end $http.get()
   } // end logout()
+
 
   // add new team to the database
   // posts a new team to the teams table
