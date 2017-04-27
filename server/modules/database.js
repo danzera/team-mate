@@ -16,7 +16,6 @@ function getPool() {
   if (!pool) { // create a pool if one hasn't already been created
     console.log('creating pool');
     pool = new pg.Pool(config);
-    console.log('pool created:', pool.pool);
   }
   return pool;
   // if (pool) { // if a pool already exists, return it
