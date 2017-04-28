@@ -15,7 +15,7 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       login.message = "Enter your username and password!";
     } else {
       console.log('sending credentials to the server from LoginController.login()...', login.user);
-      // WHY IS THIS A POST CALL? SEE MONGO CODE
+      // WHY IS THIS A POST CALL? because you can't send data with a GET?
       $http.post('/', login.tempUser).then(function(response) {
         if(response.data.username) { // user authenticated
           console.log('successful login from LoginController.login(): ', response.data);

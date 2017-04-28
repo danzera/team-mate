@@ -17,7 +17,7 @@ var session = require('express-session');
 var index = require('./routes/index.js');
 var user = require('./routes/user.js');
 var register = require('./routes/register.js');
-var teams = require('./routes/teams.js');
+var teams = require('./routes/teams.js'); // get a user's teams, post a new team, edit/delete a team
 
 
 app.use(bodyParser.json());

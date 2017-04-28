@@ -2,6 +2,11 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // instantiate a new userObject on factory load
   let userObject = new User();
   console.log('user instantiated in the factory:', userObject);
+  // instantiate a new currentTeamObject on factory load
+  let currentTeamObject = new Team();
+  console.log('team instantiated in the factory:', currentTeamObject);
+
+  // --------AUTHENTICATION--------
   // get user from the database
   function getUser() {
     $http.get('/user').then(function(response) {
@@ -35,17 +40,52 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       $location.path('/home');
     }); // end $http.get()
   } // end logout()
+  // --------END AUTHENTICATION--------
 
+  // --------'/teams' ROUTES--------
+  // get all of the teams a user is associated with from the database
+  // user may be associated with only one team, or multiple
+  function getUsersTeams(userId) {
+    console.log('getting all teams in the factory for userId', userId);
+    $http.get('/teams/' + userId).then(function(response) {
+      console.log('back from DB in getUsersTeams with response:', response);
+    });
+  } // end getUsersTeams()
 
   // add new team to the database
   // posts a new team to the teams table
   // adds user to the users_teams table as a manager
   function postNewTeam(teamName) {
-    console.log('adding new team in the factory:', teamName);
-    $http.post('/teams', {teamName: teamName}).then(function(response) {
-      console.log('back from the database with response:', response);
+    currentTeamObject.setName(teamName)
+    console.log('adding new team in the factory:', currentTeamObject);
+    $http.post('/teams', currentTeamObject).then(function(response) {
+      console.log('back from DB in postNewTeam with response:', response);
     });
-  } // end postNewTeam
+  } // end postNewTeam()
+
+  // edit a team's information in the database
+  function editTeamInfo(teamId) {
+    console.log('editing team info in the factory for teamId', teamId);
+    $http.put('/teams/' + teamId).then(function(response) {
+      console.log('back from DB in editTeamInfo with response:', response);
+    });
+  } // end editTeamInfo()
+
+  // delete a team from the database
+  function deleteTeam(teamId) {
+    console.log('deleting team in the factory, adios teamId', teamId);
+    $http.delete('/teams/' + teamId).then(function(response) {
+      console.log('back from DB in deleteTeam with response:', response);
+    });
+  } // end deleteTeam()
+  // --------END '/teams' ROUTES--------
+
+  // ---\/\/\/---ROUTE TESTING---\/\/\/---
+  getUsersTeams(123);
+  postNewTeam('cheese team');
+  editTeamInfo(456);
+  deleteTeam(789);
+  // ==========END ROUTE TESTING=========
 
   // IF A REDIRECT IS NEEDED -- USE $location
   // NOT SURE IF A FUNCTION SPECIFICALLY FOR THE ACTION IS A GOOD THOUGHT
@@ -57,8 +97,12 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
+    currentTeamObject,
     getUser,
     logout,
-    postNewTeam
+    getUsersTeams,
+    postNewTeam,
+    editTeamInfo,
+    deleteTeam
   };
 }]);
