@@ -3,8 +3,15 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
+
+// CREATE DB CONNECTION pool
+var database = require('./modules/database.js');
+
+// LOAD AUTHENTICATION FILES
 var passport = require('./strategies/user_sql.js');
 var session = require('express-session');
+
+
 
 // ROUTES
 var index = require('./routes/index.js');
@@ -18,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve back static files
 app.use(express.static(path.join(__dirname, './public')));
+// SAME AS LINE 20 -- app.use(express.static(path.resolve('server/public')));
 
 // PASSPORT SESSION CONFIGURATION
 app.use(session({
@@ -43,5 +51,5 @@ app.set('port', (process.env.PORT || 5000));
 
 // LISTEN
 app.listen(app.get("port"), function(){
-   console.log("Listening on port:", app.get("port"));
+   console.log("listening on port:", app.get("port"));
 });

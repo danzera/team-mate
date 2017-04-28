@@ -1,36 +1,21 @@
+console.log('user_sql.js loaded');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var encryptLib = require('../modules/encryption');
 var connection = require('../modules/connection');
-var pg = require('pg');
-
+var pool = require('../modules/database.js');
 //@TODO update pool config for Heroku deployment
-
-var config = {
-  user: 'danzera', //env var: PGUSER
-  database: 'team-mate', //env var: PGDATABASE
-  password: '', //env var: PGPASSWORD
-  port: 5432, //env var: PGPORT
-  max: 10, // max number of clients in the pool
-  idleTimeoutMillis: 1500, // 1.5s // how long a client is allowed to remain idle before being closed
-};
-
-//this initializes a connection pool
-//it will keep idle connections open for a 30 seconds
-//and set a limit of maximum 10 idle clients
-var pool = new pg.Pool(config);
-//---console.log('clients connected: ', connectCount);
 
 var acquireCount = 0;
 pool.on('acquire', function (client) {
   acquireCount++;
-  //---console.log('client acquired: ', acquireCount);
+  console.log('client acquired - acquireCount: ', acquireCount);
 });
 
 var connectCount = 0;
 pool.on('connect', function () {
   connectCount++;
-  //---console.log('client connected: ', connectCount);
+  console.log('client connected - connectCount: ', connectCount);
 });
 
 passport.serializeUser(function(user, done) {
