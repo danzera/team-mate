@@ -1,5 +1,8 @@
-<div class="instructions">
+<div ng-controller="UserController as user">
+  <div class="instructions">
     <div class="container">
-        <h1 class="lead">TeamMate</h1>
+        <span class="lead">TeamMate</span>
+        <button id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
     </div>
+  </div>
 </div>

@@ -2,6 +2,7 @@
 <html ng-app="myApp">
     <head>
         <title>TeamMate</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- STYLESHEETS -->
         <link rel="stylesheet" href="/vendors/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/styles/style.css">
@@ -14,11 +15,7 @@
 
         <!-- CLASSES -->
         <script type="text/javascript" src="scripts/classes/User.js"></script>
-        <!-- SEE MARKET PROJECT FOR EXAMPLES -->
-        <!-- <script type="text/javascript" src="scripts/classes/Utilities.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/classes/Player.js"></script> -->
-        <!-- <script type="text/javascript" src="scripts/classes/Game.js"></script> -->
-
+        <script type="text/javascript" src="scripts/classes/Team.js"></script>
         <!-- ANGULAR -->
         <script type="text/javascript" src="/vendors/angular/angular.min.js"></script>
         <script type="text/javascript" src="/vendors/angular-route/angular-route.min.js"></script>
@@ -27,9 +24,10 @@
         <!-- FACTORIES -->
         <script type="text/javascript" src="/scripts/factories/UserService.js"></script>
         <!-- CONTROLLERS -->
-        <!-- <script type="text/javascript" src="/scripts/controllers/HomeController.js"></script> -->
         <script type="text/javascript" src="/scripts/controllers/LoginController.js"></script>
         <script type="text/javascript" src="/scripts/controllers/UserController.js"></script>
+        <script type="text/javascript" src="/scripts/controllers/AllTeamsController.js"></script>
+        <script type="text/javascript" src="/scripts/controllers/CreateTeamController.js"></script>
     </head>
     <body>
 
@@ -37,5 +35,7 @@
 
       <main ng-view></main>
 
+      <!--REMOVE BEFORE PUSHING TO HEROKU-->
+      <script src="//localhost:35729/livereload.js"></script>
     </body>
 </html>
