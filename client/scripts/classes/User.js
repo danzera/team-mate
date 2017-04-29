@@ -1,11 +1,13 @@
 // user class
 class User {
-  constructor(id, username = '', firstName = '', lastName = '', phone = '') {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '', currentTeam = '', isManager = false) {
     this.id = id; // user id from the database
     this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
+    this.currentTeam = currentTeam;
+    this.isManager = isManager;
   }
   // clear all User properties
   clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
@@ -15,6 +17,8 @@ class User {
     this.firstName = '';
     this.lastName = '';
     this.phone = '';
+    this.currentTeam = '';
+    this.isManager = false;
   }
   // get the user's ID - matches 'id' in the 'users' table of the database
   getId() {
@@ -55,5 +59,21 @@ class User {
   // TO BE USED - set a user's phone number for contact info addition
   setPhone(phone) {
     this.phone = phone;
+  }
+  // get the user's username - matches 'username' in the 'users' table of the database
+  getCurrentTeam() {
+    return this.currentTeam;
+  }
+  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  setCurrentTeam(teamId) {
+    this.currentTeam = teamId;
+  }
+  // get the user's username - matches 'username' in the 'users' table of the database
+  getIsManager() {
+    return this.isManager;
+  }
+  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  setIsManager(isManager) {
+    this.isManager = isManager;
   }
 }
