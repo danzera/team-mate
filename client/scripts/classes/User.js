@@ -1,23 +1,24 @@
 // user class
 class User {
-  constructor(id, username = '', firstName = '', lastName = '', phone = '', currentTeam = '', isManager = false) {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '', currentTeam = '', hasJoined = false, isManager = false) {
     this.id = id; // user id from the database
     this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
     this.currentTeam = currentTeam;
+    this.hasJoined = hasJoined;
     this.isManager = isManager;
   }
   // clear all User properties
   clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
     this.id = '';
     this.username = '';
-    this.password = '';
     this.firstName = '';
     this.lastName = '';
     this.phone = '';
     this.currentTeam = '';
+    this.hasJoined = false;
     this.isManager = false;
   }
   // get the user's ID - matches 'id' in the 'users' table of the database
@@ -60,19 +61,27 @@ class User {
   setPhone(phone) {
     this.phone = phone;
   }
-  // get the user's username - matches 'username' in the 'users' table of the database
+  // get the user's currentTeam ID
   getCurrentTeam() {
     return this.currentTeam;
   }
-  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  // set the user's currentTeam ID
   setCurrentTeam(teamId) {
     this.currentTeam = teamId;
   }
   // get the user's username - matches 'username' in the 'users' table of the database
+  getHasJoined() {
+    return this.hasJoined;
+  }
+  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  setHasJoined(hasJoined) {
+    this.hasJoined = hasJoined;
+  }
+  // get the user's manager status for their currentTeam
   getIsManager() {
     return this.isManager;
   }
-  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
+  // set the user's manager status for their currentTeam
   setIsManager(isManager) {
     this.isManager = isManager;
   }
