@@ -1,14 +1,23 @@
+console.log('app.js loaded');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
+
+// CREATE DB CONNECTION pool
+var database = require('./modules/database.js');
+
+// LOAD AUTHENTICATION FILES
 var passport = require('./strategies/user_sql.js');
 var session = require('express-session');
 
-// Route includes
-var index = require('./routes/index');
-var user = require('./routes/user');
-var register = require('./routes/register');
+
+
+// ROUTES
+var index = require('./routes/index.js');
+var user = require('./routes/user.js');
+var register = require('./routes/register.js');
+var teams = require('./routes/teams.js'); // get a user's teams, post a new team, edit/delete a team
 
 
 app.use(bodyParser.json());
@@ -16,8 +25,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve back static files
 app.use(express.static(path.join(__dirname, './public')));
+// SAME AS LINE 20 -- app.use(express.static(path.resolve('server/public')));
 
-// Passport Session Configuration //
+// PASSPORT SESSION CONFIGURATION
 app.use(session({
    secret: 'secret',
    key: 'user',
@@ -26,19 +36,20 @@ app.use(session({
    cookie: {maxage: 60000, secure: false}
 }));
 
-// start up passport sessions
+// START UP PASSPORT SESSIONS
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
+// ROUTES
 app.use('/register', register);
 app.use('/user', user);
+app.use('/teams', teams);
 app.use('/*', index);
 
-// App Set //
+// SET PORT
 app.set('port', (process.env.PORT || 5000));
 
-// Listen //
+// LISTEN
 app.listen(app.get("port"), function(){
-   console.log("Listening on port: " + app.get("port"));
+   console.log("listening on port:", app.get("port"));
 });

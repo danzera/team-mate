@@ -5,8 +5,6 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
   $routeProvider
     .when('/home', {
       templateUrl: '/views/templates/home.html',
-      //controller: 'HomeController',
-      //controllerAs: 'home'
     })
     .when('/login', {
       templateUrl: '/views/templates/login.html',
@@ -32,6 +30,16 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
       templateUrl: '/views/templates/all-teams.html',
       controller: 'AllTeamsController',
       controllerAs: 'allTeams',
+      resolve: { // get user from factory
+        getuser : ['UserService', function(UserService){
+          return UserService.getUser();
+        }]
+      }
+    })
+    .when('/create-team', { // lets a user create a new team
+      templateUrl: '/views/templates/create-team.html',
+      controller: 'CreateTeamController',
+      controllerAs: 'createTeam',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
