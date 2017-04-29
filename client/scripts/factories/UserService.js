@@ -56,7 +56,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // posts a new team to the teams table
   // adds user to the users_teams table as a manager
   function postNewTeam(teamName) {
-    currentTeamObject.setName(teamName)
+    currentTeamObject.setName(teamName);
+    currentTeamObject.setCreatorId(userObject.getId());
     console.log('adding new team in the factory:', currentTeamObject);
     $http.post('/teams', currentTeamObject).then(function(response) {
       console.log('back from DB in postNewTeam with response:', response);
@@ -81,10 +82,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END '/teams' ROUTES--------
 
   // ---\/\/\/---ROUTE TESTING---\/\/\/---
-  getUsersTeams(123);
-  postNewTeam('cheese team');
-  editTeamInfo(456);
-  deleteTeam(789);
+  // getUsersTeams(123);
+  // postNewTeam('cheese team');
+  // editTeamInfo(456);
+  // deleteTeam(789);
   // ==========END ROUTE TESTING=========
 
   // IF A REDIRECT IS NEEDED -- USE $location

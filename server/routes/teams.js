@@ -22,16 +22,28 @@ router.get('/', function(req, res) {
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
   console.log('posting new team in teams.js, team:', req.body);
+  var name = req.body.name;
+  var creator_id = req.body.creatorId;
   pool.connect(function(err, database, done) {
     if (err) { // connection error
       console.log('error connecting to the database:', err);
       res.sendStatus(500);
     } else { // we connected
-      done();
-      res.sendStatus(201);
-    }
-  });
-});
+      // INSERT INTO "teams" ("name", "creator_id") VALUES ('Dukes', 6);
+      database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2);',[name, creator_id],
+        function(queryErr, result) { // query callback
+          done(); // release connection to the pool
+          if (queryErr) {
+            console.log('error making query', queryErr);
+            res.sendStatus(500);
+          } else {
+            console.log('successful insert into "teams"', result);
+            res.send(201);
+          }
+        }); // end query callback
+    } // end if-else
+  }); // end pool.connect
+}); // end '/teams' POST
 
 // --UNUSED AS OF YET--
 // '/teams/:team_id' PUT - update team info in the database
