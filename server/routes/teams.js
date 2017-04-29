@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
             res.sendStatus(500);
           } else {
             console.log('successful insert into "teams"', result);
-            res.send(201);
+            res.sendStatus(201);
           }
         }); // end query callback
     } // end if-else
