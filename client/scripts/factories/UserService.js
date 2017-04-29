@@ -60,9 +60,25 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     currentTeamObject.setCreatorId(userObject.getId());
     console.log('adding new team in the factory:', currentTeamObject);
     $http.post('/teams', currentTeamObject).then(function(response) {
-      console.log('back from DB in postNewTeam with response:', response);
+      let newTeamId = response.data.rows[0].id;
+      currentTeamObject.setId(newTeamId);
+      userObject.setCurrentTeam(newTeamId);
+      userObject.setHasJoined(true);
+      userObject.setIsManager(true);
+      console.log('team added to the database', currentTeamObject);
+      console.log('manager status set', userObject);
+      // add the team creator as a manager to the users_teams table
+      addPlayer(userObject);
     });
   } // end postNewTeam()
+
+  // add a player to the users_teams table
+  function addPlayer(userObject) {
+    console.log('adding player', userObject, 'to team', userObject.getCurrentTeam(), 'in the factory');
+    $http.post('/teams/add-player', userObject).then(function(response) {
+      console.log('back from DB in addPlayer with response:', response);
+    });
+  } // end addPlayer()
 
   // edit a team's information in the database
   function editTeamInfo(teamId) {
