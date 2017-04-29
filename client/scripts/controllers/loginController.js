@@ -31,11 +31,11 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
   };
 
   login.registerUser = function() {
-    if(login.user.username === '' || login.user.password === '') {
+    if(login.tempUser.username === '' || login.tempUser.password === '') {
       login.message = "Choose a username and password!";
     } else {
-      console.log('One Moment - Sending credentials to the server...', login.user);
-      $http.post('/register', login.user).then(function(response) {
+      console.log('One Moment - Sending credentials to the server...', login.tempUser);
+      $http.post('/register', login.tempUser).then(function(response) {
         console.log('great success');
         alert('Success! You may now login.'); // MAY WANT TO REMOVE?
         $location.path('/login');
