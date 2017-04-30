@@ -2,9 +2,9 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // instantiate a new userObject on factory load
   let userObject = new User();
   console.log('user instantiated in the factory:', userObject);
-  // instantiate a new currentTeamObject on factory load
-  let currentTeamObject = new Team();
-  console.log('team instantiated in the factory:', currentTeamObject);
+  // instantiate a new teamObject on factory load
+  let teamObject = new Team();
+  console.log('team instantiated in the factory:', teamObject);
 
   // --------AUTHENTICATION--------
   // get user from the database
@@ -56,16 +56,16 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // posts a new team to the teams table
   // adds user to the users_teams table as a manager
   function postNewTeam(teamName) {
-    currentTeamObject.setName(teamName);
-    currentTeamObject.setCreatorId(userObject.getId());
-    console.log('adding new team in the factory:', currentTeamObject);
-    $http.post('/teams', currentTeamObject).then(function(response) {
+    teamObject.setName(teamName);
+    teamObject.setCreatorId(userObject.getId());
+    console.log('adding new team in the factory:', teamObject);
+    $http.post('/teams', teamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id;
-      currentTeamObject.setId(newTeamId);
+      teamObject.setId(newTeamId);
       userObject.setCurrentTeam(newTeamId);
       userObject.setHasJoined(true);
       userObject.setIsManager(true);
-      console.log('team added to the database', currentTeamObject);
+      console.log('team added to the database', teamObject);
       console.log('manager status set', userObject);
       // add the team creator as a manager to the users_teams table
       addPlayerToTeam(userObject);
@@ -78,6 +78,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.post('/teams/add-player', userObject).then(function(response) {
       console.log('back from DB in addPlayerToTeam with response:', response);
       alert('Team created successfully! You may now add games to your team\'s schedule.');
+      // redirect user to the newly created team's schedule screen
+      $location.path("/team-schedule");
     });
   } // end addPlayerToTeam()
 
@@ -115,7 +117,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
-    currentTeamObject,
+    teamObject,
     getUser,
     logout,
     getUsersTeams,

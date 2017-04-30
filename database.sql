@@ -28,5 +28,13 @@ CREATE TABLE "users_teams" (
 );
 
 -- create "games" table
+CREATE TABLE "games" (
+"id" SERIAL PRIMARY KEY,
+"team_id" INTEGER NOT NULL REFERENCES "teams",
+"date" DATE NOT NULL,
+"time" TIME NOT NULL,
+"location" VARCHAR(200) NOT NULL,
+"opponent" VARCHAR(120)
+);
 
 -- create "users_games" table
