@@ -1,7 +1,7 @@
 <div class="container">
   <h1 class="lead">Create a New Team</h1>
   <h2 class="lead alert alert-danger" role="alert" ng-if="createTeam.errorMessage !== ''">{{createTeam.errorMessage}}</h2>
-  <form ng-submit="createTeam.postNewTeam(createTeam.teamName)">
+  <form ng-submit="createTeam.addNewTeam(createTeam.teamName)">
     <div class="form-group">
       <label for="in-team-name">Team Name</label>
       <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />

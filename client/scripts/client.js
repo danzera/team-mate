@@ -56,6 +56,16 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         }]
       }
     })
+    .when('/add-game', { // displays current team schedule
+      templateUrl: '/views/templates/add-game.html',
+      controller: 'AddGameController',
+      controllerAs: 'addGame',
+      resolve: { // get user from factory
+        getuser : ['UserService', function(UserService){
+          return UserService.getUser();
+        }]
+      }
+    })
     .otherwise({
       redirectTo: 'home'
     });

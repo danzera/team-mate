@@ -7,7 +7,7 @@ class Team {
     this.gamesArray = gamesArray;
   }
   // clear all Team properties
-  clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
+  clear() {
     this.id = '';
     this.name = '';
     this.creatorId = '';

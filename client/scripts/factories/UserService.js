@@ -53,7 +53,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // --------'/teams' ROUTES--------
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function postNewTeam(teamName) {
+  function addNewTeam(teamName) {
     teamObject.setName(teamName); // set team name
     teamObject.setCreatorId(userObject.getId()); // set team creator ID
     $http.post('/teams', teamObject).then(function(response) {
@@ -66,7 +66,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       console.log('manager status set', userObject);
       addPlayerToTeam(userObject); // add the team creator as a manager to the users_teams table
     });
-  } // end postNewTeam()
+  } // end addNewTeam()
 
   // add a player to the users_teams table
   function addPlayerToTeam(userObject) {
@@ -140,6 +140,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     loginUser, // function for LoginController
     getUser,
     logout,
-    postNewTeam,
+    addNewTeam,
   };
 }]);

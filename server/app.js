@@ -32,7 +32,7 @@ app.use(session({
    key: 'user',
    resave: 'true',
    saveUninitialized: false,
-   cookie: {maxage: 60000, secure: false}
+   cookie: {maxage: 60000, secure: false, cheese: 'cheddar'}
 }));
 
 // START PASSPORT SESSIONS
