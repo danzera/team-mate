@@ -1,6 +1,6 @@
 class Game {
   // base constructor for creating a new Team object
-  constructor(id, teamId, date, time, location, opponent = 'TBD') {
+  constructor(id, teamId, date, time, location, opponent) {
     this.id = id;
     this.teamId= teamId;
     this.date = date;
