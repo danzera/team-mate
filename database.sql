@@ -18,8 +18,15 @@ CREATE TABLE "teams" (
   "creator_id" INTEGER NOT NULL REFERENCES "users"
 );
 
--- create "games" table
-
 -- create "users_teams" table
+CREATE TABLE "users_teams" (
+"id" SERIAL PRIMARY KEY,
+"user_id" INTEGER NOT NULL REFERENCES "users",
+"team_id" INTEGER NOT NULL REFERENCES "teams",
+"joined" BOOLEAN DEFAULT FALSE,
+"manager" BOOLEAN DEFAULT FALSE
+);
+
+-- create "games" table
 
 -- create "users_games" table
