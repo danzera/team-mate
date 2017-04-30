@@ -18,7 +18,8 @@ var index = require('./routes/index.js');
 var user = require('./routes/user.js');
 var register = require('./routes/register.js');
 var teams = require('./routes/teams.js'); // get a user's teams, post a new team, edit/delete a team
-
+var teams = require('./routes/teams.js');
+var games = require('./routes/games.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -44,6 +45,7 @@ app.use(passport.session());
 app.use('/register', register);
 app.use('/user', user);
 app.use('/teams', teams);
+app.use('/games', games);
 app.use('/*', index);
 
 // SET PORT

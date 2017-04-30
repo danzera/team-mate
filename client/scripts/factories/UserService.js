@@ -43,6 +43,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END AUTHENTICATION--------
 
   // --------'/teams' ROUTES--------
+  // NOT YET USED?
   // get all of the teams a user is associated with from the database
   // user may be associated with only one team, or multiple
   function getUsersTeams(userId) {
@@ -83,6 +84,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end addPlayerToTeam()
 
+  // NOT YET USED?
   // edit a team's information in the database
   function editTeamInfo(teamId) {
     console.log('editing team info in the factory for teamId', teamId);
@@ -91,6 +93,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end editTeamInfo()
 
+  // NOT YET USED?
   // delete a team from the database
   function deleteTeam(teamId) {
     console.log('deleting team in the factory, adios teamId', teamId);
@@ -100,6 +103,18 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   } // end deleteTeam()
   // --------END '/teams' ROUTES--------
 
+  // --------'/games' ROUTES--------
+  // get all of the teams a user is associated with from the database
+  // user may be associated with only one team, or multiple
+  function getTeamsGames(teamId) {
+    console.log('getTeamsGames in the factory for teamId', teamId);
+    $http.get('/games/' + teamId).then(function(response) {
+      let gamesArray = response.data.rows;
+      console.log('back from DB in getTeamsGames with games:', gamesArray);
+    });
+  } // end getUsersTeams()
+  // --------END '/games' ROUTES--------
+  getTeamsGames(12);
   // ---\/\/\/---ROUTE TESTING---\/\/\/---
   // getUsersTeams(123);
   // postNewTeam('cheese team');
@@ -120,9 +135,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     teamObject,
     getUser,
     logout,
-    getUsersTeams,
+    getUsersTeams, // NOT YET USED?
     postNewTeam,
-    editTeamInfo,
-    deleteTeam
+    editTeamInfo, // NOT YET USED?
+    deleteTeam, // NOT YET USED?
+    getTeamsGames
   };
 }]);

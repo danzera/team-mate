@@ -1,15 +1,17 @@
 class Team {
   // base constructor for creating a new Team object
-  constructor(id, name, creatorId) {
+  constructor(id, name, creatorId, gamesArray = []) {
     this.id = id;
     this.name = name;
     this.creatorId = creatorId;
+    this.gamesArray = gamesArray;
   }
   // clear all Team properties
   clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
     this.id = '';
     this.name = '';
     this.creatorId = '';
+    this.gamesArray = [];
   }
   // get team id
   getId() {
@@ -36,5 +38,13 @@ class Team {
   // set creatorId (user id of the user that created the team)
   setCreatorId(creatorId) {
     this.creatorId = creatorId;
+  }
+  // get the array of gameObjects currently stored
+  getGames() {
+    return this.gamesArray;
+  }
+  // add a gameObject to the gamesArray
+  addGame(gameObject) {
+    this.gamesArray.push(gameObject);
   }
 }

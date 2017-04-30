@@ -38,3 +38,13 @@ CREATE TABLE "games" (
 );
 
 -- create "users_games" table
+CREATE TABLE "users_games" (
+  "id" SERIAL PRIMARY KEY,
+  "game_id" INTEGER NOT NULL REFERENCES "games",
+  "user_id" INTEGER NOT NULL REFERENCES "users",
+  "user_status" VARCHAR(20)
+);
+
+-- get all of a team's games from the "games" table
+-- used in the '/games/:teamId' route
+SELECT * FROM "games" WHERE "team_id" = 12 ORDER BY "date";
