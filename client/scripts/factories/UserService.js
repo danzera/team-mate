@@ -3,6 +3,19 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   let teamObject = new Team(); // instantiate a new teamObject on factory load
 
   // --------AUTHENTICATION--------
+  // login function for the LoginController
+  function loginUser(tempUser) {
+    return $http.post('/', tempUser).then(function(response) {
+      if (response.data.username) { // user authenticated
+        console.log('successful login from loginUser() in the factory, response =', response.data);
+        return true;
+      } else { // bad login attempt
+        console.log('failed to login from LoginController.login(): ', response);
+        return false;
+      }
+    }); // end $http.post()
+  } // end login()
+
   // get user from the database
   function getUser() {
     $http.get('/user').then(function(response) {
@@ -124,6 +137,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   return {
     userObject,
     teamObject,
+    loginUser, // function for LoginController
     getUser,
     logout,
     postNewTeam,

@@ -1,11 +1,9 @@
-console.log('teams.js loaded');
 var express = require('express');
 var router = express.Router();
 var pool = require('../modules/database.js');
 
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
-  console.log('posting new team in teams.js, team:', req.body);
   var name = req.body.name;
   var creator_id = req.body.creatorId;
   pool.connect(function(err, database, done) {
@@ -36,7 +34,6 @@ router.post('/add-player', function(req, res) {
   var team_id = req.body.currentTeam;
   var joined = req.body.hasJoined;
   var manager = req.body.isManager;
-  console.log('/add-player to users_teams table', user_id, 'to team', team_id);
   pool.connect(function(err, database, done) {
     if (err) { // connection error
       console.log('error connecting to the database:', err);
@@ -50,7 +47,7 @@ router.post('/add-player', function(req, res) {
             console.log('error making query', queryErr);
             res.sendStatus(500);
           } else {
-            console.log('successful insert into "users_teams"', result);
+            console.log('successful insert into "users_teams" on the /teams/add-player route');
             res.sendStatus(201);
           }
         }); // end query callback

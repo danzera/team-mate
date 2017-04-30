@@ -13,5 +13,5 @@ myApp.controller('CreateTeamController', ['UserService', function(UserService) {
       createTeam.errorMessage = ''; // set error message back to empty string
       UserService.postNewTeam(teamName); // send team name to the factory
     }
-  };
+  }; // end createTeam.postNewTeam
 }]);

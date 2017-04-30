@@ -1,34 +1,24 @@
 myApp.controller('LoginController', ['$http', '$location', 'UserService', function($http, $location, UserService) {
   let login = this; // reference to the controller
-  console.log('login controller instantiated:', login);
   login.message = '';
-  // "whenever you would use and object, use a class"
-  // does that apply here - this seems to be a temporary object
-  // used only for authentication so I renamed it tempUser
-  login.tempUser = {
+  login.tempUser = { // temp object used for login purposes
     username: '',
     password: ''
   };
-  // ng-click for login.html form
-  login.login = function() {
-    if(login.tempUser.username === '' || login.tempUser.password === '') {
-      login.message = "Enter your username and password!";
-    } else {
-      console.log('sending credentials to the server from LoginController.login()...', login.user);
-      // WHY IS THIS A POST CALL? because you can't send data with a GET?
-      $http.post('/', login.tempUser).then(function(response) {
-        if(response.data.username) { // user authenticated
-          console.log('successful login from LoginController.login(): ', response.data);
-          // location works with SPA (ng-route)
-          console.log('redirecting to user page from LoginController.login()');
-          $location.path('/all-teams'); // take user to a their all-teams view
+  login.loginUser = function(tempUser) {
+    if (tempUser.username === '' || tempUser.password === '') {
+      login.message = 'Please enter your username and password!';
+    } else { // username & password not blank - attempt to login with the provided credentials
+      login.message = '';
+      UserService.loginUser(tempUser).then(function(loginSuccess) {
+        if (!loginSuccess) {
+          login.message = 'Incorrect e-mail or password. Please try again.';
         } else {
-          console.log('failed to login from LoginController.login(): ', response);
-          login.message = "Wrong!!";
+          $location.path('/all-teams');
         }
       });
-    }
-  };
+    } // end if-else login attemp
+  }; // end login.loginUser
 
   login.registerUser = function() {
     if(login.tempUser.username === '' || login.tempUser.password === '') {
