@@ -24,6 +24,12 @@ module.exports = function(grunt){
               'js/bootstrap.js'],
         dest: 'server/public/vendors/bootstrap/'
       },
+      moment: {
+        expand: true,
+        cwd: 'node_modules/moment/',
+        src: ['moment.js'],
+        dest: 'server/public/vendors/moment/'
+      },
       angular: {
         expand: true,
         cwd: 'node_modules/angular/',
