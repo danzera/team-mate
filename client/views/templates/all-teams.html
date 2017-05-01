@@ -3,8 +3,12 @@
   <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
   <h2 class="lead">Your Teams</h2>
   <h2 class="lead alert alert-danger" role="alert" ng-if="!allTeams.userObject.getTeamsArray().length">"NO TEAMS!"</h2>
-  <div ng-if="allTeams.userObject.getTeamsArray().length" ng-repeat="team in allTeams.userObject.getTeamsArray()">
-    {{team}}
+  <div ng-if="allTeams.userObject.getTeamsArray().length">
+    <div ng-repeat="team in allTeams.userObject.getTeamsArray()">
+      <div class="team">
+        <p>{{team.name}}</p>
+      </div>
+    </div>
   </div>
   <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>
 </div>

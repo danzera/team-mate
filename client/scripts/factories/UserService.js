@@ -9,7 +9,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       console.log('loginUser() response:', response.data);
       if (response.data.username) { // login successful
         userObject.setId(response.data.id);
-        getUsersTeams(); // get the user's teams from the database
+        getUsersTeams(); // get the users teams from the database
         userObject.setUsername(response.data.username);
         if (response.data.first_name) { // user has "first_name" stored in database
           userObject.setFirstName(response.data.first_name);
@@ -21,7 +21,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
           userObject.setPhone(response.data.phone);
         }
       }
-      return userObject; // username will be '' if login attempt ussuccessful
+      return userObject; // username will be '' if login ussuccessful
     });
   } // end login()
 
