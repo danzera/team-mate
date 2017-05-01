@@ -4,19 +4,19 @@
   <form ng-submit="addGame.addNewGame()">
     <div class="form-group"><!--GAME DATE-->
       <label for="in-game-date">Date*</label>
-      <input ng-model="addGame.newGame.gameDate" class="form-control" type="date" name="gameDate" id="in-game-date" />
+      <input ng-model="addGame.gameDate" class="form-control" type="date" name="gameDate" id="in-game-date" />
     </div>
     <div class="form-group"><!--GAME TIME-->
       <label for="in-game-time">Time*</label>
-      <input ng-model="addGame.newGame.gameTime" class="form-control" type="time" name="gameTime" id="in-game-time" />
+      <input ng-model="addGame.gameTime" class="form-control" type="time" name="gameTime" id="in-game-time" />
     </div>
     <div class="form-group"><!--GAME LOCATION-->
       <label for="in-game-location">Location*</label>
-      <input ng-model="addGame.newGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
+      <input ng-model="addGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
     </div>
     <div class="form-group"><!--GAME OPPONENT-->
       <label for="in-game-opponent">Opponent</label>
-      <input ng-model="addGame.newGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
+      <input ng-model="addGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
     </div>
     <div><!--SUBMIT GAME-->
       <input class="btn btn-success" type="submit" name="submit" value="Add Game to Schedule" />

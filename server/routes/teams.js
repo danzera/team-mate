@@ -22,13 +22,12 @@ router.post('/', function(req, res) {
             console.log('successful insert into "teams"', result);
             res.send(result);
           }
-        }); // end query callback
+        }); // end query
     } // end if-else
   }); // end pool.connect
 }); // end '/teams' POST
 
-// --UNUSED AS OF YET--
-// '/teams/add-player/:playerId/:teamId' POST - post new team to the database
+// '/teams/add-player' POST - post new team to the database
 router.post('/add-player', function(req, res) {
   var user_id = req.body.id;
   var team_id = req.body.currentTeam;
@@ -50,10 +49,10 @@ router.post('/add-player', function(req, res) {
             console.log('successful insert into "users_teams" on the /teams/add-player route');
             res.sendStatus(201);
           }
-        }); // end query callback
+        }); // end query
     } // end if-else
   }); // end pool.connect
-}); // end '/teams' POST
+}); // end '/teams/add-player' POST
 
 
 
