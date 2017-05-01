@@ -67,7 +67,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.post('/teams/add-player', userObject).then(function(response) {
       console.log('back from DB in addPlayerToTeam with response:', response);
       alert('Team created successfully! You may now add games to your team\'s schedule.');
-      $location.path("/team-schedule"); // redirect user to the newly created team's schedule screen
+      $location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
     });
   } // end addPlayerToTeam()
   // --------END '/teams' ROUTES--------
@@ -82,6 +82,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       // @TODO add the new game and all of the team's players to the users_games table
       // @TODO retreive all the team's games from the DB
       // @TODO route the user back to the team schedule view
+      $location.path('/team-schedule');
       // @TODO display all of the team's games on the team schedule view with the newly added game
       // addPlayersToGame(____?____); // add the team creator as a manager to the users_teams table
     });
