@@ -11,7 +11,7 @@ class User {
     this.isManager = isManager;
   }
   // clear all User properties
-  clear() { // appropriate to use this.setProperty('') here instead of directly accessing?
+  clear() {
     this.id = '';
     this.username = '';
     this.firstName = '';

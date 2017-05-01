@@ -1,4 +1,3 @@
-console.log('user_sql.js loaded');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var encryptLib = require('../modules/encryption');
@@ -9,13 +8,13 @@ var pool = require('../modules/database.js');
 var acquireCount = 0;
 pool.on('acquire', function (client) {
   acquireCount++;
-  console.log('client acquired - acquireCount: ', acquireCount);
+  //---console.log('client acquired - acquireCount: ', acquireCount);
 });
 
 var connectCount = 0;
 pool.on('connect', function () {
   connectCount++;
-  console.log('client connected - connectCount: ', connectCount);
+  //---console.log('client connected - connectCount: ', connectCount);
 });
 
 passport.serializeUser(function(user, done) {

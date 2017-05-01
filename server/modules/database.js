@@ -1,4 +1,3 @@
-console.log('database.js loaded');
 var pg = require('pg');
 var pool;
 var config = {
@@ -11,7 +10,6 @@ var config = {
 };
 
 if(!pool) { // is there a connection pool? if not, initialize one
-  console.log('creating new pool in database.js');
   pool = new pg.Pool(config);
 }
 
