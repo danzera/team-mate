@@ -14,19 +14,6 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
         if (!userObject.getUsername()) {
           login.message = 'Incorrect e-mail or password. Please try again.';
         } else {
-          // console.log('LoginController success - loginResult:', loginResult);
-          // UserService.userObject.setId(loginResult.id);
-          // UserService.userObject.setUsername(loginResult.username);
-          // if (loginResult.first_name) { // user has "first_name" stored in database
-          // userObject.setFirstName(loginResult.first_name);
-          // }
-          // if (loginResult.last_name) { // user has "last_name" stored in database
-          //   userObject.setLastName(loginResult.last_name);
-          // }
-          // if (loginResult.phone) { // user has "phone" stored in database
-          //   userObject.setPhone(loginResult.phone);
-          // }
-          // UserService.getUsersTeams();
           $location.path('/all-teams');
         }
       });
@@ -40,7 +27,7 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       console.log('One Moment - Sending credentials to the server...', login.tempUser);
       $http.post('/register', login.tempUser).then(function(response) {
         console.log('great success');
-        alert('Success! You may now login.'); // MAY WANT TO REMOVE?
+        alert('Success! You may now login.');
         $location.path('/login');
       },
       function(response) {
