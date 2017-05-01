@@ -76,13 +76,17 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // post new game to the "games" table & add the team's players to the "users_games" table
   function addNewGame(gameObject) {
     $http.post('/games', gameObject).then(function(response) {
-      //let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
-      //gameObject.setId(newGameId); // set the team's ID that was returned from the DB
+      let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
+      gameObject.setId(newGameId); // set the team's ID that was returned from the DB
       console.log('game added to the database', gameObject);
-      // @TODO add players to the users_games table
+      // @TODO add the new game and all of the team's players to the users_games table
+      // @TODO retreive all the team's games from the DB
+      // @TODO route the user back to the team schedule view
+      // @TODO display all of the team's games on the team schedule view with the newly added game
       // addPlayersToGame(____?____); // add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
+  
   // @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
   // get all of the teams a user is associated with from the database
   // user may be associated with only one team, or multiple

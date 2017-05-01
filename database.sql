@@ -66,7 +66,8 @@ INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1
 -- called by addNewGame() in UserService
 -- receives gameObject
 -- returns ID of the newly created game
-INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES (12, '2017-05-08', '09:30:00', 'Taft 2', 'The Roys') RETURNING "id"; -- [team_id, date, time, location, opponent]
+INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES ($1, $2, $3, $4, $5) RETURNING "id"; -- [team_id, date, time, location, opponent]
+
 -- @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
 -- '/games/:teamId' route
 -- get all of a team's games from the "games" table
