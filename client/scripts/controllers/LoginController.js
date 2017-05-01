@@ -10,10 +10,23 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       login.message = 'Please enter your username and password!';
     } else { // username & password not blank - attempt to login with the provided credentials
       login.message = '';
-      UserService.loginUser(tempUser).then(function(loginSuccess) {
-        if (!loginSuccess) {
+      UserService.loginUser(tempUser).then(function(userObject) {
+        if (!userObject.getUsername()) {
           login.message = 'Incorrect e-mail or password. Please try again.';
         } else {
+          // console.log('LoginController success - loginResult:', loginResult);
+          // UserService.userObject.setId(loginResult.id);
+          // UserService.userObject.setUsername(loginResult.username);
+          // if (loginResult.first_name) { // user has "first_name" stored in database
+          // userObject.setFirstName(loginResult.first_name);
+          // }
+          // if (loginResult.last_name) { // user has "last_name" stored in database
+          //   userObject.setLastName(loginResult.last_name);
+          // }
+          // if (loginResult.phone) { // user has "phone" stored in database
+          //   userObject.setPhone(loginResult.phone);
+          // }
+          // UserService.getUsersTeams();
           $location.path('/all-teams');
         }
       });

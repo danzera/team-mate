@@ -6,18 +6,11 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // login function for the LoginController
   function loginUser(tempUser) {
     return $http.post('/', tempUser).then(function(response) {
-      return response.data.username; // will be undefined if login ussuccessful
-    });
-  } // end login()
-
-  // get user from the database
-  function getUser() {
-    $http.get('/user').then(function(response) {
-      if (response.data.username) { // user has a curret session on the server
-        // response.data === row from the "users" table in the database
-        userObject.setId(response.data.id); // "users" table "id"
-        userObject.setUsername(response.data.username); // "users" table "username"
-        getUsersTeams(); // get the user's teams from the database
+      console.log('login response:', response.data);
+      //--------------------CLEAN FACTORING ATTEMPT--------
+      if (response.data.username) { // login successful
+        userObject.setId(response.data.id);
+        userObject.setUsername(response.data.username);
         if (response.data.first_name) { // user has "first_name" stored in database
           userObject.setFirstName(response.data.first_name);
         }
@@ -27,6 +20,30 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
         if (response.data.phone) { // user has "phone" stored in database
           userObject.setPhone(response.data.phone);
         }
+        getUsersTeams();
+      }
+      //---------------------------------------------------
+      return userObject; // username will be undefined if login ussuccessful
+    });
+  } // end login()
+
+  // get user from the database
+  function getUser() {
+    $http.get('/user').then(function(response) {
+      if (response.data.username) { // user has a curret session on the server
+        // response.data === row from the "users" table in the database
+        // userObject.setId(response.data.id); // "users" table "id"
+        // userObject.setUsername(response.data.username); // "users" table "username"
+        //getUsersTeams(); // get the user's teams from the database
+        // if (response.data.first_name) { // user has "first_name" stored in database
+        //   userObject.setFirstName(response.data.first_name);
+        // }
+        // if (response.data.last_name) { // user has "last_name" stored in database
+        //   userObject.setLastName(response.data.last_name);
+        // }
+        // if (response.data.phone) { // user has "phone" stored in database
+        //   userObject.setPhone(response.data.phone);
+        // }
         console.log('retrieved user info in factory: ', userObject);
       } else { // user has no session on the server
         $location.path("/home"); // redirect them to the homepage
@@ -156,6 +173,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getUser,
     logout,
     addNewTeam,
-    addNewGame
+    addNewGame,
+    getUsersTeams
   };
 }]);
