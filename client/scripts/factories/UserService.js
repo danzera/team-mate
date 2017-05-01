@@ -6,14 +6,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // login function for the LoginController
   function loginUser(tempUser) {
     return $http.post('/', tempUser).then(function(response) {
-      if (response.data.username) { // user authenticated
-        console.log('successful login from loginUser() in the factory, response =', response.data);
-        return true;
-      } else { // bad login attempt
-        console.log('failed to login from LoginController.login(): ', response);
-        return false;
-      }
-    }); // end $http.post()
+      return response.data.username; // will be undefined if login ussuccessful
+    });
   } // end login()
 
   // get user from the database
@@ -53,8 +47,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // --------'/teams' ROUTES--------
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function addNewTeam(teamName) {
-    teamObject.setName(teamName); // set team name
+  function addNewTeam(teamObject) {
     teamObject.setCreatorId(userObject.getId()); // set team creator ID
     $http.post('/teams', teamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created

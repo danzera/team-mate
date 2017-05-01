@@ -3,15 +3,15 @@
   <h2 class="lead alert alert-danger" role="alert" ng-if="addGame.errorMessage !== ''">{{addGame.errorMessage}}</h2>
   <form ng-submit="addGame.addNewGame()">
     <div class="form-group"><!--GAME DATE-->
-      <label for="in-game-date">Date</label>
-      <input ng-model="addGame.newGame.date" class="form-control" type="date" name="gameDate" id="in-game-date" />
+      <label for="in-game-date">Date*</label>
+      <input ng-model="addGame.newGame.gameDate" class="form-control" type="date" name="gameDate" id="in-game-date" />
     </div>
     <div class="form-group"><!--GAME TIME-->
-      <label for="in-game-time">Time</label>
-      <input ng-model="addGame.newGame.time" class="form-control" type="time" name="gameTime" id="in-game-time" />
+      <label for="in-game-time">Time*</label>
+      <input ng-model="addGame.newGame.gameTime" class="form-control" type="time" name="gameTime" id="in-game-time" />
     </div>
     <div class="form-group"><!--GAME LOCATION-->
-      <label for="in-game-location">Location</label>
+      <label for="in-game-location">Location*</label>
       <input ng-model="addGame.newGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
     </div>
     <div class="form-group"><!--GAME OPPONENT-->

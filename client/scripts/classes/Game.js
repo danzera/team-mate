@@ -1,10 +1,10 @@
 class Game {
   // base constructor for creating a new Team object
-  constructor(id, teamId, date, time, location, opponent) {
+  constructor(id, teamId, gameDate = '', gameTime = '', location = '', opponent) {
     this.id = id;
     this.teamId= teamId;
-    this.date = date;
-    this.time = time;
+    this.gameDate = gameDate;
+    this.gameTime = gameTime;
     this.location = location;
     this.opponent = opponent;
   }
@@ -12,8 +12,8 @@ class Game {
   clear() {
     this.id = '';
     this.teamId= '';
-    this.date = '';
-    this.time = '';
+    this.gameDate = '';
+    this.gameTime = '';
     this.location = '';
     this.opponent = '';
   }
@@ -29,17 +29,17 @@ class Game {
   setTeamId(teamId) {
     this.teamId = teamId;
   }
-  getDate() {
-    return this.date;
+  getGameDate() {
+    return this.gameDate;
   }
-  setDate(date) {
-    this.date = date;
+  setGameDate(gameDate) {
+    this.gameDate = gameDate;
   }
-  getTime() {
-    return this.time;
+  getGameTime() {
+    return this.gameTime;
   }
-  setTime(time) {
-    this.time = time;
+  setGameTime(gameTime) {
+    this.gameTime = gameTime;
   }
   getLocation() {
     return this.location;
