@@ -14,21 +14,22 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   function getUser() {
     $http.get('/user').then(function(response) {
       if (response.data.username) { // user has a curret session on the server
-        // response.data === entire row from the users table in the DB
-        // users table "id"
-        userObject.setId(response.data.id);
-        // users table "username"
-        userObject.setUsername(response.data.username);
-        if (response.data.first_name) { // user has first_name stored in database
+        // response.data === row from the "users" table in the database
+        userObject.setId(response.data.id); // "users" table "id"
+        userObject.setUsername(response.data.username); // "users" table "username"
+        getUsersTeams(); // get the user's teams from the database
+        if (response.data.first_name) { // user has "first_name" stored in database
           userObject.setFirstName(response.data.first_name);
         }
-        if (response.data.phone) { // user has phone number stored in database
+        if (response.data.last_name) { // user has "last_name" stored in database
+          userObject.setLastName(response.data.last_name);
+        }
+        if (response.data.phone) { // user has "phone" stored in database
           userObject.setPhone(response.data.phone);
         }
         console.log('retrieved user info in factory: ', userObject);
       } else { // user has no session on the server
-        // bounce them back to the login page
-        $location.path("/home");
+        $location.path("/home"); // redirect them to the homepage
       }
     }); // end $http.get()
   } // end getUser()
@@ -36,23 +37,29 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      console.log('user logged out, clearing userObject:', userObject);
-      userObject.clear();
-      console.log('userObject cleared:', userObject);
-      console.log('redirecting to /#/home');
-      $location.path('/home');
+      userObject.clear(); // wipe the userObject
+      $location.path('/home'); // redirect them to the homepage
     }); // end $http.get()
   } // end logout()
   // --------END AUTHENTICATION--------
 
   // --------'/teams' ROUTES--------
+  // get users teams from the "teams" table in the database
+  function getUsersTeams() {
+    let userId = userObject.getId();
+    console.log('getting teams for userId', userId);
+    $http.get('/teams/' + userId).then(function(response) {
+      userObject.setTeamsArray(response.data.rows);
+    });
+  }
+
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
   function addNewTeam(teamObject) {
     teamObject.setCreatorId(userObject.getId()); // set team creator ID
     $http.post('/teams', teamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
       teamObject.setId(newTeamId); // set the team's ID that was returned from the DB
-      userObject.setCurrentTeam(newTeamId); // set ID of the current team the user is viewing
+      userObject.setcurrentTeamId(newTeamId); // set ID of the current team the user is viewing
       userObject.setHasJoined(true); // user joins the current team by default (since they created the team)
       userObject.setIsManager(true); // user is a manager by default (since they created the team) -- can be changed later
       console.log('team added to the database', teamObject);
@@ -63,7 +70,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // add a player to the users_teams table
   function addPlayerToTeam(userObject) {
-    console.log('adding player', userObject, 'to team', userObject.getCurrentTeam(), 'in the factory');
+    console.log('adding player', userObject, 'to team', userObject.getcurrentTeamId(), 'in the factory');
     $http.post('/teams/add-player', userObject).then(function(response) {
       console.log('back from DB in addPlayerToTeam with response:', response);
       alert('Team created successfully! You may now add games to your team\'s schedule.');
