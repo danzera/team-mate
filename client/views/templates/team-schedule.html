@@ -1,0 +1,7 @@
+<div class="container">
+  <h1>{{teamSchedule.teamObject.getName()}}</h1>
+  <h2 class="lead">Team Schedule</h2>
+  <div class="manager-only" ng-if="teamSchedule.userObject.getIsManager()">
+    <a href="#add-game"><input class="btn btn-success" type="button" value="Add New Game" /></a>
+  </div>
+</div>

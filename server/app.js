@@ -1,31 +1,30 @@
-console.log('app.js loaded');
+// BASE MODULES
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
 var path = require('path');
+var bodyParser = require('body-parser');
 
-// CREATE DB CONNECTION pool
+// DATABASE MODULE
 var database = require('./modules/database.js');
 
-// LOAD AUTHENTICATION FILES
+// AUTHENTICATION MODULES
 var passport = require('./strategies/user_sql.js');
 var session = require('express-session');
 
-
-
-// ROUTES
+// ROUTE MODULES
 var index = require('./routes/index.js');
 var user = require('./routes/user.js');
 var register = require('./routes/register.js');
-var teams = require('./routes/teams.js'); // get a user's teams, post a new team, edit/delete a team
+var teams = require('./routes/teams.js'); // add new team, add player to a team
+var games = require('./routes/games.js'); // add new game
 
+// APP CONFIGURATION
+app.set('port', (process.env.PORT || 5000));
 
+// MIDDLEWARE CONFIGURATION
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-// Serve back static files
-app.use(express.static(path.join(__dirname, './public')));
-// SAME AS LINE 20 -- app.use(express.static(path.resolve('server/public')));
+app.use(express.static(path.resolve('server/public')));
 
 // PASSPORT SESSION CONFIGURATION
 app.use(session({
@@ -33,10 +32,10 @@ app.use(session({
    key: 'user',
    resave: 'true',
    saveUninitialized: false,
-   cookie: {maxage: 60000, secure: false}
+   cookie: {maxage: 60000, secure: false, cheese: 'cheddar'}
 }));
 
-// START UP PASSPORT SESSIONS
+// START PASSPORT SESSIONS
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -44,10 +43,8 @@ app.use(passport.session());
 app.use('/register', register);
 app.use('/user', user);
 app.use('/teams', teams);
+app.use('/games', games);
 app.use('/*', index);
-
-// SET PORT
-app.set('port', (process.env.PORT || 5000));
 
 // LISTEN
 app.listen(app.get("port"), function(){

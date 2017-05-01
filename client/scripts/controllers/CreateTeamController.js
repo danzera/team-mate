@@ -1,17 +1,13 @@
 myApp.controller('CreateTeamController', ['UserService', function(UserService) {
-  // create a reference to the controller
-  let createTeam = this;
-  // error message if user tries to create a team without inputting name
+  let createTeam = this; // create a reference to the controller
   createTeam.errorMessage = '';
-  // bind new team name to DOM input
-  createTeam.teamName = '';
-  // postNewTeam function used on form submittal to send teamName to the factory
-  createTeam.postNewTeam = function(teamName) {
-    if (!teamName) { // teamName name is blank - alert user
+  createTeam.teamObject = UserService.teamObject;
+  createTeam.addNewTeam = function() {
+    if (!createTeam.teamObject.getName()) { // team name name is blank - alert user
       createTeam.errorMessage = 'Please enter a name for your team.';
-    } else { // teamName not blank - send teamName to factory
+    } else { // team name not blank - send teamName to factory
       createTeam.errorMessage = ''; // set error message back to empty string
-      UserService.postNewTeam(teamName); // send team name to the factory
+      UserService.addNewTeam(createTeam.teamObject); // send team name to the factory
     }
-  };
+  }; // end createTeam.addNewTeam
 }]);
