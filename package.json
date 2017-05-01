@@ -21,12 +21,12 @@
     "grunt": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "moment": "^2.18.1",
     "nodemailer": "^4.0.1",
     "pag": "^1.0.1",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "path": "^0.11.14",
-    "pg": "^6.1.0",
-    "sendgrid": "^5.0.0"
+    "pg": "^6.1.0"
   }
 }

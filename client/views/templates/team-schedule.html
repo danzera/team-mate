@@ -1,17 +1,7 @@
 <div class="container">
   <h1>{{teamSchedule.teamObject.getName()}}</h1>
   <h2 class="lead">Team Schedule</h2>
-
-
-  <!-- <h2 class="lead alert alert-danger" role="alert" ng-if="createTeam.errorMessage !== ''">{{createTeam.errorMessage}}</h2>
-  <form ng-submit="createTeam.postNewTeam(createTeam.teamName)">
-    <div class="form-group">
-      <label for="in-team-name">Team Name</label>
-      <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
-    </div>
-    <div>
-      <input class="btn btn-success" type="submit" name="submit" value="Create Team" />
-      <a href="#all-teams"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
-    </div>
-  </form> -->
+  <div class="manager-only" ng-if="teamSchedule.userObject.getIsManager()">
+    <a href="#add-game"><input class="btn btn-success" type="button" value="Add New Game" /></a>
+  </div>
 </div>

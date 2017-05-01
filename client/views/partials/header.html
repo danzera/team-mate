@@ -2,7 +2,7 @@
   <div class="instructions">
     <div class="container">
         <span class="lead">TeamMate</span>
-        <button id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
+        <button ng-if="user.userObject.username" id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
     </div>
   </div>
 </div>

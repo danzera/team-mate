@@ -1,3 +1,4 @@
+--------CREATE DB & TABLES-------------
 -- create "team-mate" database
 CREATE DATABASE "team-mate";
 
@@ -44,7 +45,31 @@ CREATE TABLE "users_games" (
   "user_id" INTEGER NOT NULL REFERENCES "users",
   "user_status" VARCHAR(20)
 );
+--------END CREATE DB & TABLES-------------
 
+---------- '/teams' ROUTE ---------------
+-- '/teams' POST --
+-- called by addNewTeam() in UserService
+-- receives teamObject
+-- returns ID of the newly created team
+INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id"; -- [name, creator_id]
+
+-- '/teams/add-player' POST --
+-- called by addPlayerToTeam() in UserService
+-- receives userObject
+-- nothing returned
+INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4); -- [user_id, team_id, joined, manager]
+---------- END '/teams' ROUTE ---------------
+
+---------- '/games' ROUTE ---------------
+-- '/games' POST --
+-- called by addNewGame() in UserService
+-- receives gameObject
+-- returns ID of the newly created game
+INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES ($1, $2, $3, $4, $5) RETURNING "id"; -- [team_id, date, time, location, opponent]
+
+-- @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
+-- '/games/:teamId' route
 -- get all of a team's games from the "games" table
--- used in the '/games/:teamId' route
-SELECT * FROM "games" WHERE "team_id" = 12 ORDER BY "date";
+-- SELECT * FROM "games" WHERE "team_id" = 12 ORDER BY "date";
+---------- END '/games' ROUTE ---------------
