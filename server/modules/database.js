@@ -13,20 +13,4 @@ if(!pool) { // is there a connection pool? if not, initialize one
   pool = new pg.Pool(config);
 }
 
-//---ALTERNATE WAY TO DO THE ABOVE---
-// function getPool() {
-//   console.log('inside getPool function of database.js');
-//   if (!pool) { // create a pool if one hasn't already been created
-//     console.log('creating pool in database.js');
-//     pool = new pg.Pool(config);
-//   }
-//   console.log('returning pool from database.js');
-//   return pool;
-// }
-// module.exports = getPool;
-// import module to others
-// then declare a pool variable
-// var pool = getPool();
-//--------END ALTERNATE WAY--------
-
 module.exports = pool;

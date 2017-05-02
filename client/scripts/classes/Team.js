@@ -43,6 +43,9 @@ class Team {
   getGames() {
     return this.gamesArray;
   }
+  setGames(gamesArray) {
+    this.gamesArray = gamesArray;
+  }
   // add a gameObject to the gamesArray
   addGame(gameObject) {
     this.gamesArray.push(gameObject);
