@@ -4,9 +4,8 @@
   <h2 class="lead">Your Teams</h2>
   <h2 class="lead alert alert-warning" role="alert" ng-if="!allTeams.userObject.getTeamsArray().length">You're not currently a member of any teams. Please create a new team.</h2>
   <div ng-if="allTeams.userObject.getTeamsArray().length">
-    <div ng-repeat="team in allTeams.userObject.getTeamsArray()">
-      <p>{{$index}}</p>
-      <button class="team btn btn-success" ng-click="allTeams.viewTeam(team)">{{team.name}}</button>
+    <div ng-repeat="teamObject in allTeams.userObject.getTeamsArray()">
+      <button class="btn btn-success" ng-click="allTeams.getTeamsGames(teamObject)">{{teamObject.name}}</button>
     </div>
   </div>
   <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>

@@ -1,12 +1,11 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
   let userObject = new User(); // instantiate a new userObject on factory load
-  let teamObject = new Team(); // instantiate a new teamObject on factory load
+  let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
 
   // --------AUTHENTICATION--------
   // login function for the LoginController
   function loginUser(tempUser) {
     return $http.post('/', tempUser).then(function(response) {
-      console.log('loginUser() response:', response.data);
       if (response.data.username) { // login successful
         userObject.setId(response.data.id);
         getUsersTeams(); // get the users teams from the database
@@ -27,18 +26,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // get user from the database
   function getUser() {
-    console.log('getUser start', userObject);
     $http.get('/user').then(function(response) {
-      console.log('getting user...', response.data);
-      console.log('userObject in callback:', userObject);
       if (response.data.username) {
         userObject.setUsername(response.data.username);
-        console.log('verified user info in the factory: ', userObject);
       } else { // user has no session on the server
         $location.path('/home'); // redirect them to the homepage
       }
     }); // end $http.get()
-    console.log('getUser done', userObject);
   } // end getUser()
 
   // logout the user
@@ -56,7 +50,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     let userId = userObject.getId();
     console.log('getting teams for userId', userId);
     $http.get('/teams/' + userId).then(function(response) {
-      console.log('get-got-gat user\'s teams:', response.data.rows);
       let allTeams = response.data.rows;
       for (i = 0; i < allTeams.length; i++) {
         let teamId = allTeams[i].team_id;
@@ -71,17 +64,20 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   }
 
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function addNewTeam(teamObject) {
-    teamObject.setCreatorId(userObject.getId()); // set team creator ID
-    console.log('adding new team in the factory...', teamObject);
-    $http.post('/teams', teamObject).then(function(response) {
+  function addNewTeam(teamName) {
+    // could use a tempTeam object in the controller and send that to this function, then set currentTeam in the callback
+    // BUT this works for now
+    currentTeamObject.setName(teamName);
+    currentTeamObject.setCreatorId(userObject.getId()); // set team creator ID
+    console.log('adding new team in the factory...', currentTeamObject);
+    $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
-      teamObject.setId(newTeamId); // set the team's ID that was returned from the DB
-      userObject.addTeam(teamObject);
+      currentTeamObject.setId(newTeamId); // set the team's ID that was returned from the DB
+      userObject.addTeam(currentTeamObject);
       userObject.setCurrentTeamId(newTeamId); // set ID of the current team the user is viewing
       userObject.setHasJoined(true); // user joins the current team by default (since they created the team)
       userObject.setIsManager(true); // user is a manager by default (since they created the team) -- can be changed later
-      console.log('team added to the database', teamObject);
+      console.log('team added to the database', currentTeamObject);
       console.log('manager status set', userObject);
       addPlayerToTeam(userObject); // add the team creator as a manager to the users_teams table
     });
@@ -114,16 +110,25 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end addNewTeam()
   
-  // @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
   // get all of the teams a user is associated with from the database
   // user may be associated with only one team, or multiple
-  // function getTeamsGames(teamId) {
-  //   console.log('getTeamsGames in the factory for teamId', teamId);
-  //   $http.get('/games/' + teamId).then(function(response) {
-  //     let gamesArray = response.data.rows;
-  //     console.log('back from DB in getTeamsGames with games:', gamesArray);
-  //   });
-  // } // end getUsersTeams()
+  function getTeamsGames(teamObject) {
+    let teamId = teamObject.getId();
+    currentTeamObject.setId(teamId);
+    currentTeamObject.setName(teamObject.getName());
+    currentTeamObject.setCreatorId(teamObject.getCreatorId());
+  
+    console.log('currentTeam ID =', teamId);
+    $http.get('/games/' + teamId).then(function(response) {
+      let gamesArray = response.data.rows;
+      console.log('back from DB in getTeamsGames with games:', gamesArray);
+      currentTeamObject.setGames(gamesArray);
+      console.log('currentTeamObject in the getTeamsGames function of the factory:', currentTeamObject);
+      
+    }).then(function(){
+      console.log('in the factoreee');
+      $location.path('/team-schedule');});
+  } // end getUsersTeams()
   // --------END '/games' ROUTES--------
 
   // @TODO EDIT A TEAM
@@ -149,12 +154,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
-    teamObject,
+    currentTeamObject,
     loginUser, // function for LoginController
     getUser,
     logout,
     addNewTeam,
     addNewGame,
-    getUsersTeams
+    getUsersTeams,
+    getTeamsGames
   };
 }]);
