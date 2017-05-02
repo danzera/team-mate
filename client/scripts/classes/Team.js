@@ -40,10 +40,10 @@ class Team {
     this.creatorId = creatorId;
   }
   // get the array of gameObjects currently stored
-  getGames() {
+  getGamesArray() {
     return this.gamesArray;
   }
-  setGames(gamesArray) {
+  setGamesArray(gamesArray) {
     this.gamesArray = gamesArray;
   }
   // add a gameObject to the gamesArray

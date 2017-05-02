@@ -1,8 +1,5 @@
 myApp.controller('AddGameController', ['UserService', function(UserService) {
   let addGame = this;
-  //addGame.newGame = new Game();
-  addGame.teamId = UserService.teamObject.getId();
-  //addGame.userObject = UserService.userObject;
   addGame.errorMessage = '';
   addGame.gameDate = '';
   addGame.gameTime = '';
@@ -12,15 +9,14 @@ myApp.controller('AddGameController', ['UserService', function(UserService) {
 
   addGame.addNewGame = function() {
     console.log('creating game with time', addGame.gameTime);
-    if (!addGame.gameDate ||
-        !addGame.gameTime ||
-        addGame.location === '') {  // game date, time and/or location is blank - alert user (OK for opponent to be blank)
+    if (!addGame.gameDate || !addGame.gameTime || addGame.location === '') {  // game date, time and/or location is blank - alert user (OK for opponent to be blank)
           addGame.errorMessage = 'Date, Time and Location must be complete.';
         } else { // necessary input fields are complete
           addGame.errorMessage = ''; // reset error message to the empty string
+          let teamId = UserService.currentTeamObject.getId();
           let adjustedDate = moment(addGame.gameDate).format('YYYY-MM-DD');
           let adjustedTime = moment(addGame.gameTime).format('HH:mm');
-          let newGame = new Game(undefined, addGame.teamId, adjustedDate, adjustedTime, addGame.location, addGame.opponent);
+          let newGame = new Game(undefined, teamId, adjustedDate, adjustedTime, addGame.location, addGame.opponent);
           console.log('new game in AddGameController:', newGame);
           UserService.addNewGame(newGame); // send new game to the factory
         }

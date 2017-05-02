@@ -100,13 +100,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.post('/games', gameObject).then(function(response) {
       let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
       gameObject.setId(newGameId); // set the team's ID that was returned from the DB
+      // @TODO retreive all the team's games from the DB -- maybe the push is enough?
+      currentTeamObject.addGame(gameObject); // add the new game to the current team's games
       console.log('game added to the database', gameObject);
-      // @TODO add the new game and all of the team's players to the users_games table
-      // @TODO retreive all the team's games from the DB
-      // @TODO route the user back to the team schedule view
-      $location.path('/team-schedule');
+      $location.path('/team-schedule'); // route the user back to the team schedule view
       // @TODO display all of the team's games on the team schedule view with the newly added game
-      // addPlayersToGame(____?____); // add the team creator as a manager to the users_teams table
+      // @TODO add the new game and all of the team's players to the users_games table
+      // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
+      
     });
   } // end addNewTeam()
   
@@ -122,7 +123,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.get('/games/' + teamId).then(function(response) {
       let gamesArray = response.data.rows;
       console.log('back from DB in getTeamsGames with games:', gamesArray);
-      currentTeamObject.setGames(gamesArray);
+      currentTeamObject.setGamesArray(gamesArray);
       console.log('currentTeamObject in the getTeamsGames function of the factory:', currentTeamObject);
       
     }).then(function(){
