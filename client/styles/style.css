@@ -3,6 +3,10 @@
   float: right;
 }
 
+.btn {
+  margin-bottom: 20px;
+  height: 40px;
+}
 
 /*---CSS THAT CAME WITH PASSPORT INFO---*/
 .instructions .container h1 {

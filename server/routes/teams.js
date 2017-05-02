@@ -2,6 +2,29 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../modules/database.js');
 
+// '/teams/:userId' GET - get all of a users teams from the database
+router.get('/:userId', function(req, res) {
+  var user_id = req.params.userId;
+  console.log(user_id, 'is requesting all their teams');
+  pool.connect(function(err, database, done) {
+    if (err) { // connection error
+      console.log('error connecting to the database:', err);
+    } else { // we connected
+      database.query('SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1;', [user_id],
+        function(queryErr, result) { // query callback
+          done();
+          if (queryErr) {
+            console.log('error making query:', queryErr);
+            res.sendStatus(500);
+          } else {
+            console.log('got users_teams/teams', result);
+            res.send(result);
+          }
+      }); // end query
+    } // end if-else
+  }); // end pool.connect
+}); // end '/teams/:userId' GET
+
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
   var name = req.body.name;
@@ -11,7 +34,6 @@ router.post('/', function(req, res) {
       console.log('error connecting to the database:', err);
       res.sendStatus(500);
     } else { // we connected
-      // INSERT INTO "teams" ("name", "creator_id") VALUES ('Dukes', 6) RETURNING "id";
       database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id";', [name, creator_id],
         function(queryErr, result) { // query callback
           done(); // release connection to the pool
@@ -22,7 +44,7 @@ router.post('/', function(req, res) {
             console.log('successful insert into "teams"', result);
             res.send(result);
           }
-        }); // end query
+      }); // end query
     } // end if-else
   }); // end pool.connect
 }); // end '/teams' POST
@@ -30,7 +52,7 @@ router.post('/', function(req, res) {
 // '/teams/add-player' POST - post new team to the database
 router.post('/add-player', function(req, res) {
   var user_id = req.body.id;
-  var team_id = req.body.currentTeam;
+  var team_id = req.body.currentTeamId;
   var joined = req.body.hasJoined;
   var manager = req.body.isManager;
   pool.connect(function(err, database, done) {
@@ -38,7 +60,6 @@ router.post('/add-player', function(req, res) {
       console.log('error connecting to the database:', err);
       res.sendStatus(500);
     } else { // we connected
-      // INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES (1, 6, TRUE, TRUE);
       database.query('INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4);', [user_id, team_id, joined, manager],
         function(queryErr, result) { // query callback
           done(); // release connection to the pool
@@ -55,24 +76,6 @@ router.post('/add-player', function(req, res) {
 }); // end '/teams/add-player' POST
 
 
-
-// @TODO COME BACK WHEN WE GET BACK TO THE ALL-TEAMS SCREEN -- FOR USERS ON MULTIPLE TEAMS
-// // --UNUSED AS OF YET--
-// // '/teams' GET - get team info from the database
-// router.get('/', function(req, res) {
-//   console.log('posting new team in teams.js');
-//   pool.connect(function(err, database, done) {
-//     if (err) { // connection error
-//       console.log('error connecting to the database:', err);
-//       res.sendStatus(500);
-//     } else { // we connected
-//       done();
-//       res.sendStatus(200);
-//     }
-//   });
-// });
-// --UNUSED AS OF YET--
-//
 // @TODO EDIT A TEAM
 // '/teams/:team_id' PUT - update team info in the database
 // router.put('/:team_id', function(req, res) {

@@ -1,12 +1,13 @@
 // user class
 class User {
-  constructor(id, username = '', firstName = '', lastName = '', phone = '', currentTeam = '', hasJoined = false, isManager = false) {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '', teamsArray = [], currentTeamId = '', hasJoined = false, isManager = false) {
     this.id = id; // user id from the database
     this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
-    this.currentTeam = currentTeam;
+    this.teamsArray = teamsArray;
+    this.currentTeamId = currentTeamId;
     this.hasJoined = hasJoined;
     this.isManager = isManager;
   }
@@ -17,7 +18,8 @@ class User {
     this.firstName = '';
     this.lastName = '';
     this.phone = '';
-    this.currentTeam = '';
+    this.teamsArray = [];
+    this.currentTeamId = '';
     this.hasJoined = false;
     this.isManager = false;
   }
@@ -41,7 +43,7 @@ class User {
   getFirstName() {
     return this.firstName;
   }
-  // TO BE USED - set a user's first name for contact info addition
+  // set a user's first name for contact info addition
   setFirstName(first) {
     this.firstName = first;
   }
@@ -49,7 +51,7 @@ class User {
   getLastName() {
     return this.lastName;
   }
-  // TO BE USED - set a user's first name for contact info addition
+  // set a user's first name for contact info addition
   setLastName(last) {
     this.lastName = last;
   }
@@ -57,17 +59,29 @@ class User {
   getPhone() {
     return this.phone;
   }
-  // TO BE USED - set a user's phone number for contact info addition
+  // set a user's phone number for contact info addition
   setPhone(phone) {
     this.phone = phone;
   }
-  // get the user's currentTeam ID
-  getCurrentTeam() {
-    return this.currentTeam;
+  // get the array of teamObjects currently stored
+  getTeamsArray() {
+    return this.teamsArray;
   }
-  // set the user's currentTeam ID
-  setCurrentTeam(teamId) {
-    this.currentTeam = teamId;
+  // set the whole teams array
+  setTeamsArray(teamsArray) {
+    this.teamsArray = teamsArray;
+  }
+  // add a gameObject to the gamesArray
+  addTeam(teamObject) {
+    this.teamsArray.push(teamObject);
+  }
+  // get the user's currentTeamId ID
+  getCurrentTeamId() {
+    return this.currentTeamId;
+  }
+  // set the user's currentTeamId ID
+  setCurrentTeamId(teamId) {
+    this.currentTeamId = teamId;
   }
   // get the user's username - matches 'username' in the 'users' table of the database
   getHasJoined() {
@@ -77,11 +91,11 @@ class User {
   setHasJoined(hasJoined) {
     this.hasJoined = hasJoined;
   }
-  // get the user's manager status for their currentTeam
+  // get the user's manager status for their currentTeamId
   getIsManager() {
     return this.isManager;
   }
-  // set the user's manager status for their currentTeam
+  // set the user's manager status for their currentTeamId
   setIsManager(isManager) {
     this.isManager = isManager;
   }
