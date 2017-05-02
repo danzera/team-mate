@@ -80,7 +80,7 @@ class User {
     return this.currentTeamId;
   }
   // set the user's currentTeamId ID
-  setcurrentTeamId(teamId) {
+  setCurrentTeamId(teamId) {
     this.currentTeamId = teamId;
   }
   // get the user's username - matches 'username' in the 'users' table of the database
