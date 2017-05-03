@@ -103,15 +103,16 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     // NEED TO PASS ID OF TEAM THROUGH TO THIS FUNCTION
     // DON'T THINK THERE'S A WAY TO REFERENCE THE ID IF WE'RE STORING THE OBJECTS
     // AS DYNAMIC KEYS UNLESS THERE'S A WAY...MAYBE THERE IS...
-    let teamId = teamObject.teamId;
-    let teamName = teamObject.teamName;
-    currentTeamObject.setId(teamId);
-    currentTeamObject.setName(teamName);
+    // let teamId = teamObject.teamId;
+    // let teamName = teamObject.teamName;
+    // currentTeamObject.setId(teamId);
+    // currentTeamObject.setName(teamName);
     // retrieve current team's games from the DB
-    $http.get('/games/' + teamId).then(function(response) {
+    return $http.get('/games/' + teamId).then(function(response) {
       let gamesArray = response.data.rows;
-      currentTeamObject.setGamesArray(gamesArray);
-      $location.path('/team-schedule');
+      return gamesArray;
+      // currentTeamObject.setGamesArray(gamesArray);
+      // $location.path('/team-schedule');
     });
   } // end getUsersTeams()
   // --------END '/games' ROUTES--------

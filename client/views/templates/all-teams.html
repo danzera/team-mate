@@ -5,7 +5,7 @@
   <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
   <div ng-if="allTeams.message === ''">
     <div ng-repeat="(teamId, teamInfoObject) in allTeams.userObject.getTeamsInfoObject()">
-      <button class="btn btn-success" ng-click="allTeams.getTeamsGames(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
+      <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
     </div>
   </div>
   <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>

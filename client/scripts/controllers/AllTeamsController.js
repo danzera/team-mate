@@ -3,7 +3,7 @@ myApp.controller('AllTeamsController', ['$location', 'UserService', function($lo
   allTeams.message = '';
   allTeams.userObject = UserService.userObject;
   allTeams.currentTeamObject = UserService.currentTeamObject;
-  allTeams.getTeamsGames = function(teamId, teamInfoObject) {
+  allTeams.goToTeamSchedule = function(teamId, teamInfoObject) {
     allTeams.currentTeamObject.setId(teamId);
     allTeams.currentTeamObject.setName(teamInfoObject.teamName);
     console.log('current team OBJ', allTeams.currentTeamObject);
