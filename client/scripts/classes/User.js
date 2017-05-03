@@ -1,15 +1,12 @@
 // user class
 class User {
-  constructor(id, username = '', firstName = '', lastName = '', phone = '', teamsArray = [], currentTeamId = '', hasJoined = false, isManager = false) {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '', teamStatusObject = {}) {
     this.id = id; // user id from the database
     this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
-    this.teamsArray = teamsArray;
-    this.currentTeamId = currentTeamId;
-    this.hasJoined = hasJoined;
-    this.isManager = isManager;
+    this.teamStatusObject = teamStatusObject;
   }
   // clear all User properties
   clear() {
@@ -18,10 +15,7 @@ class User {
     this.firstName = '';
     this.lastName = '';
     this.phone = '';
-    this.teamsArray = [];
-    this.currentTeamId = '';
-    this.hasJoined = false;
-    this.isManager = false;
+    this.teamStatusObject = {};
   }
   // get the user's ID - matches 'id' in the 'users' table of the database
   getId() {
@@ -64,39 +58,18 @@ class User {
     this.phone = phone;
   }
   // get the array of teamObjects currently stored
-  getTeamsArray() {
-    return this.teamsArray;
+  getteamStatusObject() {
+    return this.teamStatusObject;
   }
   // set the whole teams array
-  setTeamsArray(teamsArray) {
-    this.teamsArray = teamsArray;
+  setteamStatusObject(teamStatusObject) {
+    this.teamStatusObject = teamStatusObject;
   }
   // add a gameObject to the gamesArray
-  addTeam(teamObject) {
-    this.teamsArray.push(teamObject);
-  }
-  // get the user's currentTeamId ID
-  getCurrentTeamId() {
-    return this.currentTeamId;
-  }
-  // set the user's currentTeamId ID
-  setCurrentTeamId(teamId) {
-    this.currentTeamId = teamId;
-  }
-  // get the user's username - matches 'username' in the 'users' table of the database
-  getHasJoined() {
-    return this.hasJoined;
-  }
-  // set the user's username - used to assign the user username (username) that is returned from the database after user is authenticated
-  setHasJoined(hasJoined) {
-    this.hasJoined = hasJoined;
-  }
-  // get the user's manager status for their currentTeamId
-  getIsManager() {
-    return this.isManager;
-  }
-  // set the user's manager status for their currentTeamId
-  setIsManager(isManager) {
-    this.isManager = isManager;
+  addTeam(teamId, teamName, hasJoined, isManager) {
+    this.teamStatusObject[teamId] = {};
+    this.teamStatusObject[teamId].teamName = teamName;
+    this.teamStatusObject[teamId].hasJoined = hasJoined;
+    this.teamStatusObject[teamId].isManager = isManager;
   }
 }

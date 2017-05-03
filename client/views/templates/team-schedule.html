@@ -1,13 +1,18 @@
 <div class="container">
   <h1>{{teamSchedule.currentTeamObject.getName()}}</h1>
-  <h2 class="lead">Team Schedule</h2>
-  <h2 class="lead alert alert-warning" role="alert" ng-if="!allTeams.userObject.getTeamsArray().length">Your team does not currently have any games scheduled.</h2>
-  <!--<div ng-if="allTeams.userObject.getTeamsArray().length">
-    <div ng-repeat="teamObject in allTeams.userObject.getTeamsArray()">
-      <button class="btn btn-success" ng-click="allTeams.getTeamsGames(teamObject)">{{teamObject.name}}</button>
+  <h2 class="lead alert alert-warning" role="alert" ng-if="teamSchedule.message !== ''">{{teamSchedule.message}}</h2>
+  <div ng-if="teamSchedule.currentTeamObject.getGamesArray().length">
+    <p class="lead">Upcoming Games</p>
+    <div ng-repeat="gameObject in teamSchedule.currentTeamObject.getGamesArray()">
+      <div class="game-overview">
+        <h3 class="h3-game-date">{{gameObject.getGameDate()}}</h3>
+        <p class="game-info">{{gameObject.getGameTime()}} - {{gameObject.getLocation()}}</p>
+        <p ng-if="gameObject.getOpponent() !== ''" class="game-opponent">vs. {{gameObject.getOpponent()}}</p>
+        <p ng-if="gameObject.getOpponent() === ''" class="game-opponent">vs. TBD</p>
+      </div>
     </div>
-  </div>-->
-  <div class="manager-only" ng-if="teamSchedule.userObject.getIsManager()">
+  </div>
+  <div class="manager-only" ng-if="teamSchedule.isManager">
     <a href="#add-game"><input class="btn btn-success" type="button" value="Add New Game" /></a>
   </div>
 </div>

@@ -13,6 +13,9 @@ class Team {
     this.creatorId = '';
     this.gamesArray = [];
   }
+  clearGamesArray() {
+    this.gamesArray = [];
+  }
   // get team id
   getId() {
     return this.id;
@@ -40,10 +43,10 @@ class Team {
     this.creatorId = creatorId;
   }
   // get the array of gameObjects currently stored
-  getGames() {
+  getGamesArray() {
     return this.gamesArray;
   }
-  setGames(gamesArray) {
+  setGamesArray(gamesArray) {
     this.gamesArray = gamesArray;
   }
   // add a gameObject to the gamesArray
