@@ -21,8 +21,8 @@ myApp.controller('TeamScheduleController', ['UserService', function(UserService)
       for (i = 0; i < gamesInfoArray.length; i++) {
         // GOING TO NEED TO PULL OUT PLAYER STATUSES AFTER ADDING JOIN TO THE getTeamsGames route
         let gameId = gamesInfoArray[i].id; // will want this to be .game_id instead of .id after adding the join
-        let gameDate = gamesInfoArray[i].date;
-        let gameTime = gamesInfoArray[i].time;
+        let gameDate = moment(gamesInfoArray[i].date).format('dddd, MMMM Do YYYY');
+        let gameTime = moment(gamesInfoArray[i].time, 'HH:mm:ss').format('h:mm A');
         let location = gamesInfoArray[i].location;
         let opponent = gamesInfoArray[i].opponent;
         let curGame = new Game(gameId, currentTeamId, gameDate, gameTime, location, opponent);
