@@ -10,8 +10,8 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       login.message = 'Please enter your username and password!';
     } else { // username & password not blank - attempt to login with the provided credentials
       login.message = '';
-      UserService.loginUser(tempUser).then(function(loginSuccess) {
-        if (!loginSuccess) {
+      UserService.loginUser(tempUser).then(function(userObject) {
+        if (!userObject.getUsername()) {
           login.message = 'Incorrect e-mail or password. Please try again.';
         } else {
           $location.path('/all-teams');
@@ -27,7 +27,7 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
       console.log('One Moment - Sending credentials to the server...', login.tempUser);
       $http.post('/register', login.tempUser).then(function(response) {
         console.log('great success');
-        alert('Success! You may now login.'); // MAY WANT TO REMOVE?
+        alert('Success! You may now login.');
         $location.path('/login');
       },
       function(response) {
