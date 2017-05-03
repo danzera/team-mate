@@ -1,12 +1,14 @@
-myApp.controller('AllTeamsController', ['UserService', function(UserService) {
+myApp.controller('AllTeamsController', ['$location', 'UserService', function($location, UserService) {
   let allTeams = this;
   allTeams.message = '';
   allTeams.userObject = UserService.userObject;
+  allTeams.currentTeamObject = UserService.currentTeamObject;
   allTeams.getTeamsGames = function(teamId, teamInfoObject) {
-    console.log('controller wants...');
-    console.log('games for teamId', teamId);
-    console.log('user privileges...', teamInfoObject);
-    // UserService.getTeamsGames;
+    allTeams.currentTeamObject.setId(teamId);
+    allTeams.currentTeamObject.setName(teamInfoObject.teamName);
+    console.log('current team OBJ', allTeams.currentTeamObject);
+    console.log('moving from all-teams to team-schedule');
+    $location.path('/team-schedule');
   };
   UserService.getUsersTeams(allTeams.userObject.getId()).then(function(teamsArray) {
     console.log('got users teams...', allTeams);
