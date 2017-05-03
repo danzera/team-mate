@@ -7,9 +7,9 @@ class User {
     this.lastName = lastName;
     this.phone = phone;
     this.teamStatusObject = teamStatusObject;
-    this.currentTeamId = currentTeamId;
-    this.hasJoined = hasJoined;
-    this.isManager = isManager;
+    //this.currentTeamId = currentTeamId;
+    //this.hasJoined = hasJoined;
+    //this.isManager = isManager;
   }
   // clear all User properties
   clear() {
