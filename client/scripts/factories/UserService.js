@@ -48,22 +48,9 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
   function getUsersTeams(userId) {
-    console.log('getting teams for user:', userId);
     return $http.get('/teams/' + userId).then(function(response) {
       let allTeams = response.data.rows;
       return allTeams;
-      // for (i = 0; i < allTeams.length; i++) {
-      //   let teamId = allTeams[i].team_id;
-      //   console.log('teamId', teamId);
-      //   let hasJoined = allTeams[i].joined;
-      //   console.log('hasJoined', hasJoined);
-      //   let isManager = allTeams[i].manager;
-      //   console.log('isManager', isManager);
-      //   // let teamName = allTeams[i].name;
-      //   // let creatorId = allTeams[i].creator_id;
-      //   // let curTeam = new Team(teamId, teamName, creatorId);
-      //   userObject.addTeam(teamId, hasJoined, isManager);
-      // }
     });
   }
 
@@ -111,11 +98,15 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   
   // get all of the teams a user is associated with from the database
   // user may be associated with only one team, or multiple
-  function getTeamsGames(teamObject) {
-    let teamId = teamObject.getId();
+  function getTeamsGames(teamId) {
+    console.log('teamObject in the getTeamsGames function:', teamId);
+    // NEED TO PASS ID OF TEAM THROUGH TO THIS FUNCTION
+    // DON'T THINK THERE'S A WAY TO REFERENCE THE ID IF WE'RE STORING THE OBJECTS
+    // AS DYNAMIC KEYS UNLESS THERE'S A WAY...MAYBE THERE IS...
+    let teamId = teamObject.teamId;
+    let teamName = teamObject.teamName;
     currentTeamObject.setId(teamId);
-    currentTeamObject.setName(teamObject.getName());
-    currentTeamObject.setCreatorId(teamObject.getCreatorId());
+    currentTeamObject.setName(teamName);
     // retrieve current team's games from the DB
     $http.get('/games/' + teamId).then(function(response) {
       let gamesArray = response.data.rows;

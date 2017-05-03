@@ -2,7 +2,12 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   let allTeams = this;
   allTeams.message = '';
   allTeams.userObject = UserService.userObject;
-  allTeams.getTeamsGames = UserService.getTeamsGames;
+  allTeams.getTeamsGames = function(teamId, teamInfoObject) {
+    console.log('controller wants...');
+    console.log('games for teamId', teamId);
+    console.log('user privileges...', teamInfoObject);
+    // UserService.getTeamsGames;
+  };
   UserService.getUsersTeams(allTeams.userObject.getId()).then(function(teamsArray) {
     console.log('got users teams...', allTeams);
     if (!teamsArray.length) {
