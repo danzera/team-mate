@@ -81,7 +81,17 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END '/teams' ROUTES--------
 
   // --------'/games' ROUTES--------
+  
+    
+  // get all of the games for a team by teamId
+  function getTeamsGames(teamId) {
+    return $http.get('/games/' + teamId).then(function(response) {
+      let gamesArray = response.data.rows;
+      return gamesArray;
+    });
+  } // end getUsersTeams()
   // post new game to the "games" table & add the team's players to the "users_games" table
+  // @TODO BASICALLY THE SAME AS THE TRANSITION FROM THE ALL TEAMS PAGE
   function addNewGame(gameObject) {
     $http.post('/games', gameObject).then(function(response) {
       let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
@@ -89,32 +99,12 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       // @TODO retreive all the team's games from the DB -- maybe the push on the next line is enough?
       currentTeamObject.addGame(gameObject); // add the new game to the current team's games
       $location.path('/team-schedule'); // route the user back to the team schedule view
-      // @TODO display all of the team's games on the team schedule view with the newly added game
+      // @TODO display all of the team's games on the team schedule view with the newly added game -- 
       // @TODO add the new game and all of the team's players to the users_games table
       // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
       
     });
   } // end addNewTeam()
-  
-  // get all of the teams a user is associated with from the database
-  // user may be associated with only one team, or multiple
-  function getTeamsGames(teamId) {
-    console.log('teamObject in the getTeamsGames function:', teamId);
-    // NEED TO PASS ID OF TEAM THROUGH TO THIS FUNCTION
-    // DON'T THINK THERE'S A WAY TO REFERENCE THE ID IF WE'RE STORING THE OBJECTS
-    // AS DYNAMIC KEYS UNLESS THERE'S A WAY...MAYBE THERE IS...
-    // let teamId = teamObject.teamId;
-    // let teamName = teamObject.teamName;
-    // currentTeamObject.setId(teamId);
-    // currentTeamObject.setName(teamName);
-    // retrieve current team's games from the DB
-    return $http.get('/games/' + teamId).then(function(response) {
-      let gamesArray = response.data.rows;
-      return gamesArray;
-      // currentTeamObject.setGamesArray(gamesArray);
-      // $location.path('/team-schedule');
-    });
-  } // end getUsersTeams()
   // --------END '/games' ROUTES--------
 
   // @TODO EDIT A TEAM
@@ -141,7 +131,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   return {
     userObject,
     currentTeamObject,
-    loginUser, // function for LoginController
+    loginUser,
     getUser,
     logout,
     addNewTeam,

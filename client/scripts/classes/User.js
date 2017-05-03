@@ -1,12 +1,12 @@
 // user class
 class User {
-  constructor(id, username = '', firstName = '', lastName = '', phone = '', teamsInfoObject = {}, currentTeamId = '', hasJoined = false, isManager = false) {
+  constructor(id, username = '', firstName = '', lastName = '', phone = '', teamStatusObject = {}, currentTeamId = '', hasJoined = false, isManager = false) {
     this.id = id; // user id from the database
     this.username = username; // username === username in the database
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
-    this.teamsInfoObject = teamsInfoObject;
+    this.teamStatusObject = teamStatusObject;
     this.currentTeamId = currentTeamId;
     this.hasJoined = hasJoined;
     this.isManager = isManager;
@@ -18,7 +18,7 @@ class User {
     this.firstName = '';
     this.lastName = '';
     this.phone = '';
-    this.teamsInfoObject = {};
+    this.teamStatusObject = {};
     this.currentTeamId = '';
     this.hasJoined = false;
     this.isManager = false;
@@ -64,19 +64,19 @@ class User {
     this.phone = phone;
   }
   // get the array of teamObjects currently stored
-  getTeamsInfoObject() {
-    return this.teamsInfoObject;
+  getteamStatusObject() {
+    return this.teamStatusObject;
   }
   // set the whole teams array
-  setTeamsInfoObject(teamsInfoObject) {
-    this.teamsInfoObject = teamsInfoObject;
+  setteamStatusObject(teamStatusObject) {
+    this.teamStatusObject = teamStatusObject;
   }
   // add a gameObject to the gamesArray
   addTeam(teamId, teamName, hasJoined, isManager) {
-    this.teamsInfoObject[teamId] = {};
-    this.teamsInfoObject[teamId].teamName = teamName;
-    this.teamsInfoObject[teamId].hasJoined = hasJoined;
-    this.teamsInfoObject[teamId].isManager = isManager;
+    this.teamStatusObject[teamId] = {};
+    this.teamStatusObject[teamId].teamName = teamName;
+    this.teamStatusObject[teamId].hasJoined = hasJoined;
+    this.teamStatusObject[teamId].isManager = isManager;
   }
   // get the user's currentTeamId ID
   getCurrentTeamId() {

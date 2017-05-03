@@ -4,6 +4,7 @@ myApp.controller('AllTeamsController', ['$location', 'UserService', function($lo
   allTeams.userObject = UserService.userObject;
   allTeams.currentTeamObject = UserService.currentTeamObject;
   allTeams.goToTeamSchedule = function(teamId, teamInfoObject) {
+    allTeams.currentTeamObject.clear();
     allTeams.currentTeamObject.setId(teamId);
     allTeams.currentTeamObject.setName(teamInfoObject.teamName);
     console.log('current team OBJ', allTeams.currentTeamObject);

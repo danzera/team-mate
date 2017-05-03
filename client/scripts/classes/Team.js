@@ -13,6 +13,9 @@ class Team {
     this.creatorId = '';
     this.gamesArray = [];
   }
+  clearGamesArray() {
+    this.gamesArray = [];
+  }
   // get team id
   getId() {
     return this.id;
