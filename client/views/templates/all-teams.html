@@ -2,9 +2,8 @@
   <h1 ng-if="!allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getUsername()}}!</h1>
   <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
   <h2 class="lead">Your Teams</h2>
-  {{Object.keys(allTeams.userObject.getTeamsInfoObject())}}
-  <h2 class="lead alert alert-warning" role="alert" ng-if="JSON.stringify(allTeams.userObject.getTeamsInfoObject()) == '{}'">You're not currently a member of any teams. Please create a new team.</h2>
-  <div ng-if="allTeams.userObject.getTeamsInfoObject()">
+  <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
+  <div ng-if="allTeams.message === ''">
     <div ng-repeat="teamObject in allTeams.userObject.getTeamsInfoObject()">
       <button class="btn btn-success" ng-click="allTeams.getTeamsGames(teamObject)">{{teamObject}}</button>
     </div>

@@ -72,8 +72,9 @@ class User {
     this.teamsInfoObject = teamsInfoObject;
   }
   // add a gameObject to the gamesArray
-  addTeam(teamId, hasJoined, isManager) {
+  addTeam(teamId, teamName, hasJoined, isManager) {
     this.teamsInfoObject[teamId] = {};
+    this.teamsInfoObject[teamId].teamName = teamName;
     this.teamsInfoObject[teamId].hasJoined = hasJoined;
     this.teamsInfoObject[teamId].isManager = isManager;
   }

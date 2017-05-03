@@ -8,7 +8,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     return $http.post('/', tempUser).then(function(response) {
       if (response.data.username) { // login successful
         userObject.setId(response.data.id);
-        getUsersTeams(); // get the users teams from the database
+        // TRYING TO RUN THE NEXT LINE UPON view CHANGE 
+        // getUsersTeams(); // get the users teams from the database
         userObject.setUsername(response.data.username);
         if (response.data.first_name) { // user has "first_name" stored in database
           userObject.setFirstName(response.data.first_name);
@@ -46,24 +47,23 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
-  function getUsersTeams() {
-    let userId = userObject.getId();
-    $http.get('/teams/' + userId).then(function(response) {
+  function getUsersTeams(userId) {
+    console.log('getting teams for user:', userId);
+    return $http.get('/teams/' + userId).then(function(response) {
       let allTeams = response.data.rows;
-      console.log('here are all of the user\' teams', allTeams);
-      for (i = 0; i < allTeams.length; i++) {
-        let teamId = allTeams[i].team_id;
-        console.log('teamId', teamId);
-        let hasJoined = allTeams[i].joined;
-        console.log('hasJoined', hasJoined);
-        let isManager = allTeams[i].manager;
-        console.log('isManager', isManager);
-        // let teamName = allTeams[i].name;
-        // let creatorId = allTeams[i].creator_id;
-        // let curTeam = new Team(teamId, teamName, creatorId);
-        userObject.addTeam(teamId, hasJoined, isManager);
-      }
-      console.log('team info object after addition of teams', Object.keys(userObject.getTeamsInfoObject()).length);
+      return allTeams;
+      // for (i = 0; i < allTeams.length; i++) {
+      //   let teamId = allTeams[i].team_id;
+      //   console.log('teamId', teamId);
+      //   let hasJoined = allTeams[i].joined;
+      //   console.log('hasJoined', hasJoined);
+      //   let isManager = allTeams[i].manager;
+      //   console.log('isManager', isManager);
+      //   // let teamName = allTeams[i].name;
+      //   // let creatorId = allTeams[i].creator_id;
+      //   // let curTeam = new Team(teamId, teamName, creatorId);
+      //   userObject.addTeam(teamId, hasJoined, isManager);
+      // }
     });
   }
 
