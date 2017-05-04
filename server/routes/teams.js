@@ -50,11 +50,11 @@ router.post('/', function(req, res) {
 }); // end '/teams' POST
 
 // '/teams/add-player' POST - post new team to the database
-router.post('/add-player/:teamId', function(req, res) {
+router.post('/add-player/:teamId/:userId', function(req, res) {
   var team_id = req.params.teamId;
-  var user_id = req.body.id;
-  var joined = req.body.teamStatusObject[team_id].hasJoined;
-  var manager = req.body.teamStatusObject[team_id].isManager;
+  var user_id = req.params.userId;
+  var joined = req.body[team_id].hasJoined;
+  var manager = req.body[team_id].isManager;
   pool.connect(function(err, database, done) {
     if (err) { // connection error
       console.log('error connecting to the database:', err);

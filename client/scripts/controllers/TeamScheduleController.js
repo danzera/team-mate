@@ -7,14 +7,13 @@ myApp.controller('TeamScheduleController', ['UserService', function(UserService)
   teamSchedule.currentTeamObject.clearGamesArray(); // scrub out any prior games array on view load
   
   let currentTeamId = teamSchedule.currentTeamObject.getId();
-  // teamSchedule.isManager = teamSchedule.userObject.teamStatusObject[currentTeamId].isManager;
   teamSchedule.isManager = teamSchedule.playerStatusObject[currentTeamId].isManager;
 
   UserService.getTeamsGames(currentTeamId).then(function(gamesInfoArray) {
     console.log('got all the teams games...', gamesInfoArray);
     if (!gamesInfoArray.length) {
       console.log('got to here.');
-      if (teamSchedule.userObject.teamStatusObject[currentTeamId].isManager) {
+      if (teamSchedule.isManager) {
         teamSchedule.message = 'You\'re team does not currently have any games scheduled. Click "Add a Game"';
       } else {
         teamSchedule.message = 'Your team does not currently have any games scheduled. Talk to your manager about getting some games scheduled, or create a new team of your own!';

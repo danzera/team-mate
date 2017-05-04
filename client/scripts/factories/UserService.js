@@ -64,7 +64,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
       currentTeamObject.setId(newTeamId); // set the team's ID that was returned from the DB
-      userObject.addTeam(newTeamId, teamName, true, true);
+      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true); // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
+      // userObject.addTeam(newTeamId, teamName, true, true);
       // userObject.setCurrentTeamId(newTeamId); // set ID of the current team the user is viewing
       
       console.log('team added: ', currentTeamObject);
@@ -72,13 +73,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       
       // userObject.setHasJoined(true); // user joins the current team by default (since they created the team)
       // userObject.setIsManager(true); // user is a manager by default (since they created the team) -- can be changed later
-      addPlayerToTeam(newTeamId, userObject); // add the team creator as a manager to the users_teams table
+      addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
 
   // add a player to the users_teams table
-  function addPlayerToTeam(teamId, userObject) {
-    $http.post('/teams/add-player/' + teamId, userObject).then(function(response) {
+  function addPlayerToTeam(teamId, userId, playerStatusObject) {
+    $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
       alert('Team created successfully! You may now add games to your team\'s schedule.');
       $location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
     });
