@@ -56,10 +56,20 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         }]
       }
     })
-    .when('/add-game', { // displays current team schedule
+    .when('/add-game', { // go to add-game view with a form for adding a game
       templateUrl: '/views/templates/add-game.html',
       controller: 'AddGameController',
       controllerAs: 'addGame',
+      resolve: { // get user from factory
+        getuser : ['UserService', function(UserService){
+          return UserService.getUser();
+        }]
+      }
+    })
+    .when('/add-player', { // go to add-player view with a form for adding a player
+      templateUrl: '/views/templates/add-player.html',
+      controller: 'AddPlayerController',
+      controllerAs: 'addPlayer',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();

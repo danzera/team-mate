@@ -57,23 +57,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
   function addNewTeam(teamName) {
-    // could use a tempTeam object in the controller and send that to this function, then set currentTeam in the callback
-    // BUT this works for now
-    currentTeamObject.setName(teamName);
-    currentTeamObject.setCreatorId(userObject.getId()); // set team creator ID
+    currentTeamObject.setName(teamName); // set current team's name
+    currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
     $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
-      currentTeamObject.setId(newTeamId); // set the team's ID that was returned from the DB
-      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true); // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
-      // userObject.addTeam(newTeamId, teamName, true, true);
-      // userObject.setCurrentTeamId(newTeamId); // set ID of the current team the user is viewing
-      
-      console.log('team added: ', currentTeamObject);
-      console.log('user is now...', userObject);
-      
-      // userObject.setHasJoined(true); // user joins the current team by default (since they created the team)
-      // userObject.setIsManager(true); // user is a manager by default (since they created the team) -- can be changed later
+      currentTeamObject.setId(newTeamId); // set current team's ID
+      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
       addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
+      // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
     });
   } // end addNewTeam()
 
@@ -96,14 +87,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       return gamesArray;
     });
   } // end getUsersTeams()
+
   // post new game to the "games" table & add the team's players to the "users_games" table
-  // @TODO BASICALLY THE SAME AS THE TRANSITION FROM THE ALL TEAMS PAGE
   function addNewGame(gameObject) {
     $http.post('/games', gameObject).then(function(response) {
-      let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
-      gameObject.setId(newGameId); // set the team's ID that was returned from the DB
+      //let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
+      //gameObject.setId(newGameId); // set the team's ID that was returned from the DB
       // @TODO retreive all the team's games from the DB -- maybe the push on the next line is enough?
-      currentTeamObject.addGame(gameObject); // add the new game to the current team's games
+      //currentTeamObject.addGame(gameObject); // add the new game to the current team's games
       $location.path('/team-schedule'); // route the user back to the team schedule view
       // @TODO display all of the team's games on the team schedule view with the newly added game -- 
       // @TODO add the new game and all of the team's players to the users_games table
@@ -112,6 +103,12 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end addNewTeam()
   // --------END '/games' ROUTES--------
+
+  // -------'/invite' ROUTE----------
+  function addNewPlayer(inviteObject) {
+
+  }
+  // -------END '/invite' ROUTE------
 
   // @TODO EDIT A TEAM
   // NOT YET USED?

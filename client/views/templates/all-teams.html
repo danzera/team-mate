@@ -4,13 +4,13 @@
   <h2 class="lead">Your Teams</h2>
   <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
   <div ng-if="allTeams.message === ''">
-    <div ng-repeat="(teamId, teamInfoObject) in allTeams.userObject.getteamStatusObject()">
+    <div ng-repeat="(teamId, teamInfoObject) in allTeams.playerStatusObject">
       <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h2 class="lead">Want to Start a New Team?</h2>
+      <h2 class="lead">Want to start a new team?</h2>
       <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>
     </div>
   </div>

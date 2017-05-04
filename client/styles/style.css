@@ -13,6 +13,10 @@
   margin-right: 15px;
 }
 
+#btn-add-player {
+  margin-left: 15px;
+}
+
 .btn {
   margin-bottom: 15px;
   height: 40px;
@@ -25,15 +29,16 @@
 .game-overview {
   color: #333333;
   padding: 15px;
-  margin-bottom: 15px;
+  margin: 0 0 15px;
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: #d6e9c6;
   border-color: #d6e9c6;
 }
 
-.h3-game-date {
+.h4-game-date {
   margin-top: 0px;
+  
 }
 
 .game-info {

@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row"><!--header row-->
+    <div class="col-xs-12">
+      <h1>{{addPlayer.currentTeamObject.getName()}}</h1>
+      <p class="lead">Add a Player to Your Team</p>
+      <h2 class="lead alert alert-danger" ng-if="addPlayer.message !== ''" role="alert">{{addPlayer.message}}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <form ng-submit="addPlayer.addNewPlayer()">
+        <div class="form-group">
+          <label for="in-player-email">E-mail Address</label>
+          <input ng-model="addPlayer.playerEmail" class="form-control" type="email" name="playerEmail" id="in-player-email" placeholder="What is the player's e-mail address?" />
+        </div>
+        <div class="form-buttons">
+          <input class="btn btn-success" type="submit" name="submit" value="Add Player" />
+          <a href="#team-schedule"><button class="btn btn-danger" type="button" name="teamSchedule">Cancel</button></a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

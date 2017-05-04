@@ -1,26 +1,35 @@
 <div class="container">
-  <h1 class="lead">Add a New Game</h1>
-  <h2 class="lead alert alert-danger" role="alert" ng-if="addGame.errorMessage !== ''">{{addGame.errorMessage}}</h2>
-  <form ng-submit="addGame.addNewGame()">
-    <div class="form-group"><!--GAME DATE-->
-      <label for="in-game-date">Date*</label>
-      <input ng-model="addGame.gameDate" class="form-control" type="date" name="gameDate" id="in-game-date" />
+  <div class="row"><!--header row-->
+    <div class="col-xs-12">
+      <h1>{{addGame.currentTeamObject.getName()}}</h1>
+      <p class="lead">Add a New Game</p>
+      <h2 class="lead alert alert-danger" role="alert" ng-if="addGame.errorMessage !== ''">{{addGame.errorMessage}}</h2>
     </div>
-    <div class="form-group"><!--GAME TIME-->
-      <label for="in-game-time">Time*</label>
-      <input ng-model="addGame.gameTime" class="form-control" type="time" name="gameTime" id="in-game-time" />
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <form ng-submit="addGame.addNewGame()">
+        <div class="form-group"><!--GAME DATE-->
+          <label for="in-game-date">Date*</label>
+          <input ng-model="addGame.gameDate" class="form-control" type="date" name="gameDate" id="in-game-date" />
+        </div>
+        <div class="form-group"><!--GAME TIME-->
+          <label for="in-game-time">Time*</label>
+          <input ng-model="addGame.gameTime" class="form-control" type="time" name="gameTime" id="in-game-time" />
+        </div>
+        <div class="form-group"><!--GAME LOCATION-->
+          <label for="in-game-location">Location*</label>
+          <input ng-model="addGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
+        </div>
+        <div class="form-group"><!--GAME OPPONENT-->
+          <label for="in-game-opponent">Opponent</label>
+          <input ng-model="addGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
+        </div>
+        <div class="form-buttons"><!--SUBMIT GAME-->
+          <input class="btn btn-success" type="submit" name="submit" value="Add Game to Schedule" />
+          <a href="#team-schedule"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
+        </div>
+      </form>
     </div>
-    <div class="form-group"><!--GAME LOCATION-->
-      <label for="in-game-location">Location*</label>
-      <input ng-model="addGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
-    </div>
-    <div class="form-group"><!--GAME OPPONENT-->
-      <label for="in-game-opponent">Opponent</label>
-      <input ng-model="addGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
-    </div>
-    <div><!--SUBMIT GAME-->
-      <input class="btn btn-success" type="submit" name="submit" value="Add Game to Schedule" />
-      <a href="#team-schedule"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
-    </div>
-  </form>
+  </div>
 </div>
