@@ -9,8 +9,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     return $http.post('/', tempUser).then(function(response) {
       if (response.data.username) { // login successful
         userObject.setId(response.data.id);
-        // TRYING TO RUN THE NEXT LINE UPON view CHANGE 
-        // getUsersTeams(); // get the users teams from the database
         userObject.setUsername(response.data.username);
         if (response.data.first_name) { // user has "first_name" stored in database
           userObject.setFirstName(response.data.first_name);
@@ -77,9 +75,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   } // end addPlayerToTeam()
   // --------END '/teams' ROUTES--------
 
-  // --------'/games' ROUTES--------
-  
-    
+  // --------'/games' ROUTES--------  
   // get all of the games for a team by teamId
   function getTeamsGames(teamId) {
     return $http.get('/games/' + teamId).then(function(response) {
@@ -91,22 +87,21 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // post new game to the "games" table & add the team's players to the "users_games" table
   function addNewGame(gameObject) {
     $http.post('/games', gameObject).then(function(response) {
-      //let newGameId = response.data.rows[0].id; // DB returns the ID of the game that was created
-      //gameObject.setId(newGameId); // set the team's ID that was returned from the DB
-      // @TODO retreive all the team's games from the DB -- maybe the push on the next line is enough?
-      //currentTeamObject.addGame(gameObject); // add the new game to the current team's games
       $location.path('/team-schedule'); // route the user back to the team schedule view
-      // @TODO display all of the team's games on the team schedule view with the newly added game -- 
-      // @TODO add the new game and all of the team's players to the users_games table
+      // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
       // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
-      
     });
   } // end addNewTeam()
   // --------END '/games' ROUTES--------
 
   // -------'/invite' ROUTE----------
-  function addNewPlayer(inviteObject) {
-
+  function invitePlayer(inviteObject) {
+    console.log('invite in the factory', inviteObject);
+    $http.post('/invite', gameObject).then(function(response) {
+      $location.path('/team-schedule'); // route the user back to the team schedule view
+      // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
+      // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
+    });
   }
   // -------END '/invite' ROUTE------
 
@@ -141,6 +136,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     addNewTeam,
     addNewGame,
     getUsersTeams,
-    getTeamsGames
+    getTeamsGames,
+    invitePlayer
   };
 }]);
