@@ -5,7 +5,6 @@ var path = require('path');
 
 // module with bcrypt functions
 var encryptLib = require('../modules/encryption');
-var connection = require('../modules/connection');
 var pool = require('../modules/database.js');
 
 // Handles request for HTML file

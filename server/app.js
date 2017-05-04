@@ -44,6 +44,8 @@ app.use('/register', register);
 app.use('/user', user);
 app.use('/teams', teams);
 app.use('/games', games);
+app.use('/games', games);
+// app.use('/games', invite);
 app.use('/*', index);
 
 // LISTEN
