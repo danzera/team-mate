@@ -3,10 +3,14 @@
   font-size: 35px;
 }
 
-#btn-header-logout {
+#btn-header-logout, #btn-header-all-teams {
   float: right;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+#btn-header-all-teams {
+  margin-right: 10px;
 }
 
 .btn {

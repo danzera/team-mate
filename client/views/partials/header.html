@@ -2,7 +2,8 @@
   <div class="instructions">
     <div class="container">
         <span class="logo lead">TeamMate</span>
-        <button ng-if="user.userObject.username" id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
+        <button ng-if="user.userObject.getUsername()" id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
+        <button ng-if="user.currentTeamObject.getName()" id="btn-header-all-teams" class="btn btn-default" ng-click="user.allTeams()">All Teams</button>
     </div>
   </div>
 </div>

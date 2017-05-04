@@ -28,7 +28,6 @@ myApp.controller('TeamScheduleController', ['UserService', function(UserService)
         let curGame = new Game(gameId, currentTeamId, gameDate, gameTime, location, opponent);
         teamSchedule.currentTeamObject.addGame(curGame);
       }
-      console.log('ADDING ALL THE FREAKING GAMES!', teamSchedule.currentTeamObject.getGamesArray());
     }
   }); // end UserService.getTeamsGames
 }]);
