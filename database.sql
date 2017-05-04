@@ -5,7 +5,7 @@ CREATE DATABASE "team-mate";
 -- create "users" table
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "username" VARCHAR(80) NOT NULL UNIQUE,
+  "username" VARCHAR(120) NOT NULL UNIQUE,
   "password" VARCHAR(120) NOT NULL,
   "first_name" VARCHAR(120),
   "last_name" VARCHAR(120),
@@ -45,6 +45,15 @@ CREATE TABLE "users_games" (
   "user_id" INTEGER NOT NULL REFERENCES "users",
   "user_status" VARCHAR(20)
 );
+
+-- create "invites" table
+CREATE TABLE "invites" (
+  "id" SERIAL PRIMARY KEY,
+  "email" VARCHAR(120),
+  "invite_team_id" INTEGER REFERENCES "teams",
+  "invite_is_manager" VARCHAR(20)
+);
+
 --------END CREATE DB & TABLES-------------
 
 ---------- '/teams' ROUTE ---------------

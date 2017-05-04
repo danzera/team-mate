@@ -2,12 +2,14 @@ myApp.controller('TeamScheduleController', ['UserService', function(UserService)
   let teamSchedule = this; // reference to the controller
   teamSchedule.message = ''; // message to display if team has no games on its schedule
   teamSchedule.userObject = UserService.userObject;
+  teamSchedule.playerStatusObject = UserService.playerStatusObject; // NEW
   teamSchedule.currentTeamObject = UserService.currentTeamObject;
   teamSchedule.currentTeamObject.clearGamesArray(); // scrub out any prior games array on view load
   
   let currentTeamId = teamSchedule.currentTeamObject.getId();
-  teamSchedule.isManager = teamSchedule.userObject.teamStatusObject[currentTeamId].isManager;
-  
+  // teamSchedule.isManager = teamSchedule.userObject.teamStatusObject[currentTeamId].isManager;
+  teamSchedule.isManager = teamSchedule.playerStatusObject[currentTeamId].isManager;
+
   UserService.getTeamsGames(currentTeamId).then(function(gamesInfoArray) {
     console.log('got all the teams games...', gamesInfoArray);
     if (!gamesInfoArray.length) {

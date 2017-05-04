@@ -1,5 +1,6 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
   let userObject = new User(); // instantiate a new userObject on factory load
+  let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
   let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
 
   // --------AUTHENTICATION--------
@@ -134,6 +135,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
+    playerStatusObject,
     currentTeamObject,
     loginUser,
     getUser,
