@@ -98,9 +98,4 @@ INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES (
 -- receives inviteObject
 -- nothing returned
 INSERT INTO "invites" ("invite_team_id", "email", "invite_is_manager") VALUES ($1, $2, $3); -- [invite_team_id, email, invite_is_manager]
-
--- @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
--- '/games/:teamId' route
--- get all of a team's games from the "games" table
--- SELECT * FROM "games" WHERE "team_id" = 12 ORDER BY "date";
----------- END '/games' ROUTE ---------------
+---------- END '/invite' ROUTE ---------------

@@ -95,6 +95,18 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END '/games' ROUTES--------
 
   // -------'/invite' ROUTE----------
+  // 
+  function getUsersInvites(username) {
+    console.log(username);
+     $http.get('/invite/' + username).then(function(response) {
+    // return $http.get('/invites/' + username).then(function(response) {
+      let allTeamInvites = response.data.rows;
+      console.log('back with invites', allTeamInvites)
+      return allTeamInvites;
+    });
+  }
+  getUsersInvites('dczera@gmail.com');
+
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
   function invitePlayer(inviteObject) {
