@@ -71,7 +71,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // add a player to the users_teams table
   function addPlayerToTeam(teamId, userId, playerStatusObject) {
-    $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
+    return $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
       console.log('PLAYER ADDED!');
       //$location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
     });
@@ -136,9 +136,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // -----other functions/multi-routes-----
   function joinTeam(teamId, teamInfoObject, userObject, playerStatusObject) {
-    playerStatusObject.setHasJoinedStatus(teamId, true); // change user's "hasJoined" status to true for the specified team
-    addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
     deleteInvite(teamId, userObject.getUsername());
+    addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
     console.log('playerStatusObject after factory magic', playerStatusObject);
   }
   // ---end other functions/multi-routes---

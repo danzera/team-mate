@@ -27,6 +27,7 @@ router.get('/:userId', function(req, res) {
 
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
+  // IF USER IS AUTHENTICATED, USER REQ.USER.ID
   var name = req.body.name;
   var creator_id = req.body.creatorId;
   pool.connect(function(err, database, done) {
