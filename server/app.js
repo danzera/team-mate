@@ -17,6 +17,7 @@ var user = require('./routes/user.js');
 var register = require('./routes/register.js');
 var teams = require('./routes/teams.js'); // add new team, add player to a team
 var games = require('./routes/games.js'); // add new game
+var invite = require('./routes/invite.js'); // invite players to join team
 
 // APP CONFIGURATION
 app.set('port', (process.env.PORT || 5000));
@@ -45,7 +46,7 @@ app.use('/user', user);
 app.use('/teams', teams);
 app.use('/games', games);
 app.use('/games', games);
-// app.use('/games', invite);
+app.use('/invite', invite);
 app.use('/*', index);
 
 // LISTEN

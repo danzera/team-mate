@@ -6,27 +6,26 @@ var pool = require('../modules/database.js');
 router.post('/', function(req, res) {
   console.log(req.body);
   var team_id = req.body.teamId;
-  var date = req.body.gameDate;
-  var time = req.body.gameTime;
-  var location = req.body.location;
-  var opponent = req.body.opponent;
+  var email = req.body.email;
+  var manager = req.body.isManager;;
   pool.connect(function(err, database, done) {
     if (err) { // connection error
       console.log('error connecting to the database:', err);
       res.sendStatus(500);
     } else { // we connected
-      // INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES (12, '2017-05-08', '09:30:00', 'Taft 2', 'The Roys') RETURNING "id";
-      database.query('INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES ($1, $2, $3, $4, $5) RETURNING "id";', [team_id, date, time, location, opponent],
+      database.query('INSERT INTO "invites" ("team_id", "email", "manager") VALUES ($1, $2, $3);', [team_id, email, manager],
         function(queryErr, result) { // query callback
           done(); // release connection to the pool
           if (queryErr) {
             console.log('error making query', queryErr);
             res.sendStatus(500);
           } else {
-            console.log('successful insert into "teams"', result);
+            console.log('successful insert into "invites"', result);
             res.send(result);
           }
         }); // end query
     } // end if-else
   }); // end pool.connect
-}); // end '/games' POST
+}); // end '/invite' POST
+
+module.exports = router;

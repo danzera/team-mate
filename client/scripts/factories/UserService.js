@@ -95,13 +95,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END '/games' ROUTES--------
 
   // -------'/invite' ROUTE----------
+  // post a player to the 'invites' table
+  // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
   function invitePlayer(inviteObject) {
     console.log('invite in the factory', inviteObject);
-    // $http.post('/invite', gameObject).then(function(response) {
-    //   $location.path('/team-schedule'); // route the user back to the team schedule view
-    //   // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
-    //   // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
-    // });
+    $http.post('/invite', inviteObject).then(function(response) {
+      $location.path('/team-schedule'); // route the user back to the team schedule view
+    });
   }
   // -------END '/invite' ROUTE------
 
