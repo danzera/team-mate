@@ -52,4 +52,28 @@ router.post('/', function(req, res) {
   }); // end pool.connect
 }); // end '/invite' POST
 
+// '/invite' DELETE - delete an invite from the 'invites' table
+router.delete('/:teamId/:username', function(req, res) {
+  var team_id = req.params.teamId;
+  var email = req.params.username;
+  pool.connect(function(err, database, done) {
+    if (err) { // connection error
+      console.log('error connecting to the database:', err);
+      res.sendStatus(500);
+    } else { // we connected
+      database.query('DELETE FROM "invites" WHERE ("team_id", "email") = ($1, $2);', [team_id, email],
+        function(queryErr, result) { // query callback
+          done(); // release connection to the pool
+          if (queryErr) {
+            console.log('error making query', queryErr);
+            res.sendStatus(500);
+          } else {
+            console.log('successful insert into "invites"', result);
+            res.send(result);
+          }
+        }); // end query
+    } // end if-else
+  }); // end pool.connect
+}); // end '/invite' DELETE
+
 module.exports = router;

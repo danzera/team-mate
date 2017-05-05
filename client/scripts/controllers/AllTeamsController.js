@@ -11,7 +11,24 @@ myApp.controller('AllTeamsController', ['$location', 'UserService', function($lo
 
   allTeams.joinTeam = function(teamId, teamInfoObject) {
     console.log('heading to the factory to join team', teamId, teamInfoObject);
-    UserService.joinTeam(teamId, teamInfoObject);
+    UserService.joinTeam(teamId, teamInfoObject, allTeams.userObject, allTeams.playerStatusObject);
+    // allTeams.getUsersInvites();
+    UserService.getUsersTeams(allTeams.userObject.getId()).then(function(teamsArray) {
+      console.log('TEAMS ARRAY?', teamsArray);
+      if (!teamsArray.length) {
+        allTeams.message = 'You\'re not currently a member of any teams. Please join or create a new team.';
+      } else {
+        for (i = 0; i < teamsArray.length; i++) {
+          let teamId = teamsArray[i].team_id;
+          let teamName = teamsArray[i].name;
+          let hasJoined = teamsArray[i].joined;
+          console.log('team', teamName, 'joined', hasJoined);
+          let isManager = teamsArray[i].manager;
+          allTeams.userObject.addTeam(teamId, teamName, hasJoined, isManager);
+          allTeams.playerStatusObject.addTeamStatus(teamId, teamName, hasJoined, isManager);
+        }
+      }
+    });
   }
   
   allTeams.goToTeamSchedule = function(teamId, teamInfoObject) {
@@ -23,8 +40,12 @@ myApp.controller('AllTeamsController', ['$location', 'UserService', function($lo
 
   // GET THE USER'S INVITES WHEN THE CONTROLLER LOADS
   UserService.getUsersInvites(allTeams.userObject.getUsername()).then(function(hasInvites) {
+    console.log('got back from invites:', hasInvites);
+    console.log('player status object is now...', allTeams.playerStatusObject);
     if (hasInvites) {
       allTeams.hasInvites = hasInvites;
+    } else {
+      allTeams.hasInvites = false;
     }
   });
 
@@ -37,6 +58,7 @@ myApp.controller('AllTeamsController', ['$location', 'UserService', function($lo
         let teamId = teamsArray[i].team_id;
         let teamName = teamsArray[i].name;
         let hasJoined = teamsArray[i].joined;
+        console.log('team', teamName, 'joined', hasJoined);
         let isManager = teamsArray[i].manager;
         allTeams.userObject.addTeam(teamId, teamName, hasJoined, isManager);
         allTeams.playerStatusObject.addTeamStatus(teamId, teamName, hasJoined, isManager);

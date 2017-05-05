@@ -64,6 +64,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       currentTeamObject.setId(newTeamId); // set current team's ID
       playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
       addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
+      $location.path('/all-teams');
       // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
     });
   } // end addNewTeam()
@@ -71,8 +72,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // add a player to the users_teams table
   function addPlayerToTeam(teamId, userId, playerStatusObject) {
     $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
-      alert('Team created successfully! You may now add games to your team\'s schedule.');
-      $location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
+      console.log('PLAYER ADDED!');
+      //$location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
     });
   } // end addPlayerToTeam()
   // --------END '/teams' ROUTES--------
@@ -99,7 +100,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // -------'/invite' ROUTE----------
   //
   function getUsersInvites(username) {
-    console.log(username);
      return $http.get('/invite/' + username).then(function(response) {
       // return $http.get('/invites/' + username).then(function(response) {
       let allTeamInvites = response.data.rows;
@@ -116,7 +116,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       }
     }); // end $http callback function
   } // end getUsersInvites()
-  
 
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
@@ -126,11 +125,20 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       $location.path('/team-schedule'); // route the user back to the team schedule view
     });
   }
+
+  function deleteInvite(teamId, username) {
+    console.log('deleting invite for', username, 'from team', teamId);
+    $http.delete('/invite/' + teamId + '/' + username).then(function() {
+      console.log('invite deleted!');
+    });
+  }
   // -------END '/invite' ROUTE------
 
   // -----other functions/multi-routes-----
-  function joinTeam(teamId, teamInfoObject) {
-    playerStatusObject.setHasJoinedStatus(teamId, true);
+  function joinTeam(teamId, teamInfoObject, userObject, playerStatusObject) {
+    playerStatusObject.setHasJoinedStatus(teamId, true); // change user's "hasJoined" status to true for the specified team
+    addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
+    deleteInvite(teamId, userObject.getUsername());
     console.log('playerStatusObject after factory magic', playerStatusObject);
   }
   // ---end other functions/multi-routes---
