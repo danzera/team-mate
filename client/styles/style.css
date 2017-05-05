@@ -3,6 +3,10 @@
   font-size: 35px;
 }
 
+/*#h2-pending-invitations {
+  margin-bottom: 0px;
+}*/
+
 #btn-header-logout, #btn-header-all-teams {
   float: right;
   margin-top: 5px;

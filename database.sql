@@ -51,7 +51,7 @@ CREATE TABLE "invites" (
   "id" SERIAL PRIMARY KEY,
   "team_id" INTEGER REFERENCES "teams",
   "email" VARCHAR(120),
-  "manager" VARCHAR(20)
+  "manager" BOOLEAN DEFAULT FALSE
 );
 --------END CREATE DB & TABLES-------------
 

@@ -38,7 +38,9 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      userObject.clear(); // wipe the userObject
+      userObject.clear(); // wipe out the userObject
+      playerStatusObject.clear(); // wipe out the playerStatusObject
+      currentTeamObject.clear(); // wipe out the currentTeamObject
       $location.path('/home'); // redirect them to the homepage
     }); // end $http.get()
   } // end logout()
@@ -95,17 +97,26 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------END '/games' ROUTES--------
 
   // -------'/invite' ROUTE----------
-  // 
+  //
   function getUsersInvites(username) {
     console.log(username);
-     $http.get('/invite/' + username).then(function(response) {
-    // return $http.get('/invites/' + username).then(function(response) {
+     return $http.get('/invite/' + username).then(function(response) {
+      // return $http.get('/invites/' + username).then(function(response) {
       let allTeamInvites = response.data.rows;
-      console.log('back with invites', allTeamInvites)
-      return allTeamInvites;
-    });
-  }
-  getUsersInvites('dczera@gmail.com');
+      if (allTeamInvites.length > 0) {
+        for (i = 0; i < allTeamInvites.length; i++) {
+          let teamId = allTeamInvites[i].team_id;
+          let teamName = allTeamInvites[i].name;
+          let isManager = allTeamInvites[i].manager;
+          playerStatusObject.addTeamStatus(teamId, teamName, false, isManager);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }); // end $http callback function
+  } // end getUsersInvites()
+  
 
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
@@ -116,6 +127,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   }
   // -------END '/invite' ROUTE------
+
+  // -----other functions/multi-routes-----
+  function joinTeam(teamId, teamInfoObject) {
+    playerStatusObject.setHasJoinedStatus(teamId, true);
+    console.log('playerStatusObject after factory magic', playerStatusObject);
+  }
+  // ---end other functions/multi-routes---
 
   // @TODO EDIT A TEAM
   // NOT YET USED?
@@ -149,6 +167,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     addNewGame,
     getUsersTeams,
     getTeamsGames,
-    invitePlayer
+    invitePlayer,
+    getUsersInvites,
+    joinTeam
   };
 }]);

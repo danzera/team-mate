@@ -1,11 +1,28 @@
 <div class="container">
-  <h1 ng-if="!allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getUsername()}}!</h1>
-  <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
-  <h2 class="lead">Your Teams</h2>
-  <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
-  <div ng-if="allTeams.message === ''">
-    <div ng-repeat="(teamId, teamInfoObject) in allTeams.playerStatusObject">
-      <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 ng-if="!allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getUsername()}}!</h1>
+      <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
+    </div>
+  </div>
+  <div class="row" ng-if="allTeams.hasInvites">
+    <div class="col-xs-12">
+      <h2 id="h2-pending-invitations" class="lead">Pending Invitations</h2>
+      <!--<p>Click on the team to join!</p>-->
+      <div ng-repeat="(teamId, teamInfoObject) in allTeams.playerStatusObject">
+        <button class="btn btn-default" ng-if="!teamInfoObject.hasJoined" ng-click="allTeams.joinTeam(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="lead">Your Teams</h2>
+      <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
+      <div ng-if="allTeams.message === ''">
+        <div ng-repeat="(teamId, teamInfoObject) in allTeams.playerStatusObject">
+          <button class="btn btn-success" ng-if="teamInfoObject.hasJoined" ng-click="allTeams.goToTeamSchedule(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
