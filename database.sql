@@ -49,38 +49,46 @@ CREATE TABLE "users_games" (
 -- create "invites" table
 CREATE TABLE "invites" (
   "id" SERIAL PRIMARY KEY,
+  "team_id" INTEGER REFERENCES "teams",
   "email" VARCHAR(120),
-  "invite_team_id" INTEGER REFERENCES "teams",
-  "invite_is_manager" VARCHAR(20)
+  "manager" VARCHAR(20)
 );
-
 --------END CREATE DB & TABLES-------------
 
+
 ---------- '/teams' ROUTE ---------------
+-- '/teams/:userId' GET
+-- called by getUsersTeams() in UserService
+-- receives req.params ^
+-- returns all team info for teams a user is associated with in the users_teams table
+SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1; -- [user_id]
+
 -- '/teams' POST --
 -- called by addNewTeam() in UserService
 -- receives teamObject
 -- returns ID of the newly created team
 INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id"; -- [name, creator_id]
 
--- '/teams/add-player' POST --
+-- '/teams/add-player/:teamId/:userId' POST
 -- called by addPlayerToTeam() in UserService
--- receives userObject
+-- receives req.params ^ & playerStatusObject
 -- nothing returned
 INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4); -- [user_id, team_id, joined, manager]
 ---------- END '/teams' ROUTE ---------------
 
+
 ---------- '/games' ROUTE ---------------
+-- '/games/:teamId' GET
+-- called by getTeamsGames() in UserService
+-- receives req.params ^
+-- returns all games from the "games" table for the specified teamId
+SELECT * FROM "games" WHERE "team_id" = $1 ORDER BY "date"; -- [team_id]
+
 -- '/games' POST --
 -- called by addNewGame() in UserService
 -- receives gameObject
 -- returns ID of the newly created game
 INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES ($1, $2, $3, $4, $5) RETURNING "id"; -- [team_id, date, time, location, opponent]
-
--- @TODO --ROUTE WORKING-- COME BACK TO THIS WHEN WE COME BACK TO THE TEAM-SCHEDULE BRANCH
--- '/games/:teamId' route
--- get all of a team's games from the "games" table
--- SELECT * FROM "games" WHERE "team_id" = 12 ORDER BY "date";
 ---------- END '/games' ROUTE ---------------
 
 

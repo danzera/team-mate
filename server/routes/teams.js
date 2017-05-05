@@ -49,7 +49,7 @@ router.post('/', function(req, res) {
   }); // end pool.connect
 }); // end '/teams' POST
 
-// '/teams/add-player' POST - post new team to the database
+// '/teams/add-player/:teamId/:userId' POST - add player to the "users_team" in the database
 router.post('/add-player/:teamId/:userId', function(req, res) {
   var team_id = req.params.teamId;
   var user_id = req.params.userId;
