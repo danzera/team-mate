@@ -89,13 +89,18 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // post new game to the "games" table & add the team's players to the "users_games" table
   function addNewGame(gameObject) {
-    $http.post('/games', gameObject).then(function(response) {
-      $location.path('/team-schedule'); // route the user back to the team schedule view
+    return $http.post('/games', gameObject).then(function(response) {
+      return response;
+      // $location.path('/team-schedule'); // route the user back to the team schedule view
       // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
       // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
   // --------END '/games' ROUTES--------
+
+  function redirectToTeamSchedule() {
+    $location.path('/team-schedule');
+  }
 
   // -------'/invite' ROUTE----------
   //
@@ -176,6 +181,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getTeamsGames,
     invitePlayer,
     getUsersInvites,
-    joinTeam
+    joinTeam,
+    redirectToTeamSchedule
   };
 }]);

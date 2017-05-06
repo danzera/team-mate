@@ -1,5 +1,6 @@
 myApp.controller('AddGameController', ['UserService', function(UserService) {
   let addGame = this;
+  let redirectToTeamSchedule = UserService.redirectToTeamSchedule;
   addGame.currentTeamObject = UserService.currentTeamObject;
   addGame.errorMessage = '';
   addGame.gameDate = '';
@@ -16,7 +17,9 @@ myApp.controller('AddGameController', ['UserService', function(UserService) {
           let adjustedDate = moment(addGame.gameDate).format('YYYY-MM-DD');
           let adjustedTime = moment(addGame.gameTime).format('HH:mm');
           let newGame = new Game(undefined, teamId, adjustedDate, adjustedTime, addGame.location, addGame.opponent);
-          UserService.addNewGame(newGame); // send new game to the factory
+          UserService.addNewGame(newGame).then(redirectToTeamSchedule); // send new game to the factory
         }
   };
+
+
 }]);
