@@ -1,50 +1,86 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
-  let userObject = new User(); // instantiate a new userObject on factory load
+  // let userObject = new User(); // instantiate a new userObject on factory load
+  let userObject = {
+    username: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    teamsArray: []
+  }
   let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
   let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
 
-  // --------AUTHENTICATION--------
-  // login function for the LoginController
+  //--------AUTHENTICATION--------
+  // login an existing user
   function loginUser(tempUser) {
     return $http.post('/', tempUser).then(function(response) {
       if (response.data.username) { // login successful
-        userObject.setId(response.data.id);
-        userObject.setUsername(response.data.username);
-        if (response.data.first_name) { // user has "first_name" stored in database
-          userObject.setFirstName(response.data.first_name);
+        userObject.username = response.data.username;
+        if (response.data.first_name) {
+          userObject.firstName = response.data.first_name;
         }
-        if (response.data.last_name) { // user has "last_name" stored in database
-          userObject.setLastName(response.data.last_name);
+        if (response.data.last_name) {
+          userObject.lastName = response.data.last_name;
         }
-        if (response.data.phone) { // user has "phone" stored in database
-          userObject.setPhone(response.data.phone);
+        if (response.data.phone) {
+          userObject.phone = response.data.phone;
         }
+        console.log('userObject after login:', userObject);
+        return true; // logged in
+      } else {
+        return false; // failed login
       }
-      return userObject; // username will be '' if login ussuccessful
     });
   } // end login()
 
-  // get user from the database
+  // register a new user
+  function registerUser(tempUser) {
+    return $http.post('/register', tempUser);
+  } // end registerUser()
+
+  // verify user authentication
   function getUser() {
     $http.get('/user').then(function(response) {
-      if (response.data.username) {
-        userObject.setUsername(response.data.username);
-      } else { // user has no session on the server
-        $location.path('/home'); // redirect them to the homepage
+      if (!response.data.username) {
+        redirectToHome();
       }
-    }); // end $http.get()
+    });
   } // end getUser()
 
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      userObject.clear(); // wipe out the userObject
+      userObject.username = '';
+      userObject.firstName = '';
+      userObject.lastName = '';
+      userObject.phone = '';
+      teamsArray = [];
       playerStatusObject.clear(); // wipe out the playerStatusObject
       currentTeamObject.clear(); // wipe out the currentTeamObject
-      $location.path('/home'); // redirect them to the homepage
+      redirectToHome();
     }); // end $http.get()
   } // end logout()
-  // --------END AUTHENTICATION--------
+  //--------END AUTHENTICATION--------
+
+  //-------'/invite' ROUTE----------
+  // get user's team invites
+  function getUsersInvites(username) {
+     return $http.get('/invite/' + username).then(function(response) {
+      // return $http.get('/invites/' + username).then(function(response) {
+      let allTeamInvites = response.data.rows;
+      if (allTeamInvites.length > 0) {
+        for (i = 0; i < allTeamInvites.length; i++) {
+          let teamId = allTeamInvites[i].team_id;
+          let teamName = allTeamInvites[i].name;
+          let isManager = allTeamInvites[i].manager;
+          playerStatusObject.addTeamStatus(teamId, teamName, false, isManager);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }); // end $http callback function
+  } // end getUsersInvites()
 
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
@@ -98,29 +134,28 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   } // end addNewTeam()
   // --------END '/games' ROUTES--------
 
+
+  //----------REDIRECTS--------------
+  function redirectToLogin() {
+    $location.path('/login');
+  }
+
+  function redirectToAllTeams() {
+    $location.path('/all-teams');
+  }
+
   function redirectToTeamSchedule() {
     $location.path('/team-schedule');
   }
 
+  function redirectToHome() {
+    $location.path('/home');
+  }
+  //---------END REDIRECTS-----------
+  
+
   // -------'/invite' ROUTE----------
-  //
-  function getUsersInvites(username) {
-     return $http.get('/invite/' + username).then(function(response) {
-      // return $http.get('/invites/' + username).then(function(response) {
-      let allTeamInvites = response.data.rows;
-      if (allTeamInvites.length > 0) {
-        for (i = 0; i < allTeamInvites.length; i++) {
-          let teamId = allTeamInvites[i].team_id;
-          let teamName = allTeamInvites[i].name;
-          let isManager = allTeamInvites[i].manager;
-          playerStatusObject.addTeamStatus(teamId, teamName, false, isManager);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    }); // end $http callback function
-  } // end getUsersInvites()
+  
 
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
@@ -170,9 +205,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
+    redirectToLogin,
+    redirectToTeamSchedule,
+    redirectToAllTeams,
     playerStatusObject,
     currentTeamObject,
     loginUser,
+    registerUser,
     getUser,
     logout,
     addNewTeam,
@@ -181,7 +220,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getTeamsGames,
     invitePlayer,
     getUsersInvites,
-    joinTeam,
-    redirectToTeamSchedule
+    joinTeam
   };
 }]);
