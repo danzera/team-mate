@@ -2,77 +2,87 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../modules/database.js');
 
-// '/teams/:userId' GET - get all of a users teams from the database
-router.get('/:userId', function(req, res) {
-  var user_id = req.params.userId;
-  console.log(user_id, 'is requesting all their teams');
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-    } else { // we connected
-      database.query('SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1;', [user_id],
-        function(queryErr, result) { // query callback
-          done();
-          if (queryErr) {
-            console.log('error making query:', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('got users_teams/teams', result);
-            res.send(result);
-          }
-      }); // end query
-    } // end if-else
-  }); // end pool.connect
-}); // end '/teams/:userId' GET
+// '/teams' GET - get any teams from the "teams" table for the current user
+router.get('/', function(req, res) {
+  if (req.isAuthenticated()) { // user is authenticated
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+      } else { // we connected
+        database.query('SELECT "team_id", "name", "manager" FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1;', [req.user.id],
+          function(queryErr, result) { // query callback
+            done();
+            if (queryErr) {
+              console.log('error making query:', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('got users_teams/teams', result);
+              res.send(result);
+            }
+        }); // end query callback
+      } // end DB connection if-else
+    }); // end pool.connect
+  } else { // user not authenticated
+    res.sendStatus(401);
+  }
+}); // end '/teams' GET
 
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
-  var name = req.body.name;
-  var creator_id = req.body.creatorId;
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-      res.sendStatus(500);
-    } else { // we connected
-      database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id";', [name, creator_id],
-        function(queryErr, result) { // query callback
-          done(); // release connection to the pool
-          if (queryErr) {
-            console.log('error making query', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('successful insert into "teams"', result);
-            res.send(result);
-          }
-      }); // end query
-    } // end if-else
-  }); // end pool.connect
+  if (req.isAuthenticated()) { // user is authenticated
+    var name = req.body.name;
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+        res.sendStatus(500);
+      } else { // we connected
+        database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id";', [name, req.user.id],
+          function(queryErr, result) { // query callback
+            done(); // release connection to the pool
+            if (queryErr) {
+              console.log('error making query on /teams POST', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('successful insert into "teams"', result);
+              res.send(result);
+            }
+        }); // end query
+      } // end if-else
+    }); // end pool.connect
+  } else {
+    res.sendStatus(401);
+  }
 }); // end '/teams' POST
 
-// '/teams/add-player' POST - post new team to the database
-router.post('/add-player/:teamId', function(req, res) {
-  var team_id = req.params.teamId;
-  var user_id = req.body.id;
-  var joined = req.body.teamStatusObject[team_id].hasJoined;
-  var manager = req.body.teamStatusObject[team_id].isManager;
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-      res.sendStatus(500);
-    } else { // we connected
-      database.query('INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4);', [user_id, team_id, joined, manager],
-        function(queryErr, result) { // query callback
-          done(); // release connection to the pool
-          if (queryErr) {
-            console.log('error making query', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('successful insert into "users_teams" on the /teams/add-player route');
-            res.sendStatus(201);
-          }
-        }); // end query
-    } // end if-else
-  }); // end pool.connect
+// '/teams/add-player/:teamId/:userId' POST - add player to the "users_team" in the database
+router.post('/add-player', function(req, res) {
+  if (req.isAuthenticated()) { // user is authenticated
+    var team_id = req.body.team_id;
+    console.log('REQ.BODY HEEEEEEERRRRREEEE', req.body);
+    var manager = req.body.manager;
+    // var user_id = req.params.userId;
+    // var joined = req.body[team_id].hasJoined;
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+        res.sendStatus(500);
+      } else { // we connected
+        database.query('INSERT INTO "users_teams" ("user_id", "team_id", "manager") VALUES ($1, $2, $3);', [req.user.id, team_id, manager],
+          function(queryErr, result) { // query callback
+            done(); // release connection to the pool
+            if (queryErr) {
+              console.log('error making query', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('successful insert into "users_teams" on the /teams/add-player route');
+              res.sendStatus(201);
+            }
+          }); // end query
+      } // end if-else
+    }); // end pool.connect
+  } else { // user not authenticated
+    res.sendStatus(401);
+  }
 }); // end '/teams/add-player' POST
 
 

@@ -1,10 +1,9 @@
 myApp.controller('UserController', ['$http', '$location', 'UserService', function($http, $location, UserService) {
-  var user = this; // reference to the controller -- matches controllerAs syntax
+  // DATA-BINDING VARIABLES
+  let user = this; // controller reference
   user.userObject = UserService.userObject;
   user.currentTeamObject = UserService.currentTeamObject;
+
+  // DATA-BINDING FUNCTIONS
   user.logout = UserService.logout;
-  user.allTeams = function() {
-    user.currentTeamObject.clear();
-    $location.path('/all-teams');
-  }
 }]);

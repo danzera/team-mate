@@ -1,18 +1,42 @@
 <div class="container">
-  <h1 class="lead">Create a TeamMate Login</h1>
-  <h2 class="lead alert alert-danger" role="alert" ng-if="login.message !== ''">{{login.message}}</h2>
-  <form ng-submit="login.registerUser()">
-    <div class="form-group">
-      <label for="in-user-username">E-mail:</label>
-      <input type="text" ng-model="login.tempUser.username" class="form-control" id="in-user-username"/>
+  <div class="row"><!--HEADER-->
+    <div class="col-xs-12">
+      <h1 class="lead">Create a TeamMate Login</h1>
     </div>
-    <div class="form-group">
-      <label for="in-user-password">Password:</label>
-      <input type="password" ng-model="login.tempUser.password" class="form-control" id="in-user-password" />
+  </div>
+  <div class="row" ng-if="register.message !== ''"><!--CONDITIONAL ERROR MESSAGE-->
+    <div class="col-xs-12">
+      <h2 class="lead alert alert-danger" role="alert">{{register.message}}</h2>
     </div>
-    <div class="form-group">
-      <input class="btn btn-default" type="submit" name="submit" value="Create Login" />
-      <a href="#login">Already have a TeamMate Login?</a>
+  </div>
+  <div class="row"><!--REGISTRATION FORM-->
+    <div class="col-xs-12">
+      <form ng-submit="register.registerUser(register.tempUser)">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="in-user-username">E-mail:</label>
+              <input type="email" ng-model="register.tempUser.username" class="form-control" id="in-user-username"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="in-user-password">Password:</label>
+              <input type="password" ng-model="register.tempUser.password" class="form-control" id="in-user-password" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <input class="btn btn-default" type="submit" name="submit" value="Create Login" />
+              <a href="#login">Already have a TeamMate Login?</a>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
+  </div><!--end REGISTRATION FORM row-->
 </div>

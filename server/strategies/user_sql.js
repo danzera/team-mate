@@ -1,7 +1,6 @@
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var encryptLib = require('../modules/encryption');
-var connection = require('../modules/connection');
 var pool = require('../modules/database.js');
 //@TODO update pool config for Heroku deployment
 
