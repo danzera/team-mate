@@ -19,21 +19,16 @@ myApp.controller('AddGameController', ['UserService', function(UserService) {
           addGame.message = ''; // reset error message to the empty string
           gameObject.date = addGame.date;
           gameObject.time = addGame.time;
-          console.log('game to be added:', gameObject);
-          console.log('game date:', gameObject.date);
-          console.log('game time:', gameObject.time);
-          UserService.adjustGameDateAndTime(gameObject);
-          console.log('new game has been adjusted:', gameObject);
-          //UserService.addNewGame(newGame).then(redirectToTeamSchedule); // send new game to the factory
+          UserService.adjustGameDateAndTime(gameObject); // convert date/time with moment.js
+          UserService.addNewGame(gameObject)
+            .then(redirectToTeamSchedule); // send new game to the factory
 
-          // let adjustedDate = moment(addGame.gameDate).format('YYYY-MM-DD');
-          // let adjustedTime = moment(addGame.gameTime).format('HH:mm');
-          // let newGame = new Game(undefined, teamId, adjustedDate, adjustedTime, addGame.location, addGame.opponent);
+            // @TODO add all players on the team to new game in users_games table
+            // should probably be in the .then chain immediately above
+            // before the .then(redirectToTeamSchedule)
         }
   };
 
   let redirectToTeamSchedule = UserService.redirectToTeamSchedule;
-  // let adjustGameDateAndTime = UserService.adjustGameDateAndTime;
-
-
-}]);
+  
+}]); // END CONTROLLER

@@ -16,7 +16,7 @@ pool.connect(function(err, database, done) {
       function(queryErr, result) { // query callback
         done(); // release connection to the pool
         if (queryErr) {
-          console.log('error making query', queryErr);
+          console.log('error making query on /teams/:teamId GET', queryErr);
           res.sendStatus(500);
         } else {
           console.log('successful insert into "teams"', result);
@@ -30,9 +30,9 @@ pool.connect(function(err, database, done) {
 // '/games' POST - post new game to the database
 router.post('/', function(req, res) {
   console.log(req.body);
-  var team_id = req.body.teamId;
-  var date = req.body.gameDate;
-  var time = req.body.gameTime;
+  var team_id = req.body.team_id;
+  var date = req.body.date;
+  var time = req.body.time;
   var location = req.body.location;
   var opponent = req.body.opponent;
   pool.connect(function(err, database, done) {
@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
         function(queryErr, result) { // query callback
           done(); // release connection to the pool
           if (queryErr) {
-            console.log('error making query', queryErr);
+            console.log('error making query on /teams POST', queryErr);
             res.sendStatus(500);
           } else {
             console.log('successful insert into "teams"', result);

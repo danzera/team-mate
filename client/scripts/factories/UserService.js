@@ -111,25 +111,18 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     return $http.post('/teams/add-player', teamObject);
   } // end addPlayerToTeam()
 
-    // post new team to the "teams" table & add user as a manager to the "users_teams" table
+  // post new team to the "teams" table
   function addNewTeam() {
-    // currentTeamObject.setName(teamName); // set current team's name
-    // currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
     return $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
       currentTeamObject.team_id = newTeamId; 
       return currentTeamObject;
-      // set current team's ID
-      //playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
-      //addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
-
-
   // --------END '/teams' ROUTES--------
 
   // --------'/games' ROUTES--------  
-  // get all of the games for a team by teamId
+  // get all of the games for a team by team_id
   function getCurrentTeamsGames() {
     currentTeamObject.gamesArray = [];
     let teamId = currentTeamObject.team_id;
@@ -144,6 +137,16 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       }
     });
   } // end getUsersTeams()
+
+  // post new game to the "games" table & add the team's players to the "users_games" table
+  function addNewGame(gameObject) {
+    console.log('attempting to add new game in UserService.addNewGame:', gameObject)
+    return $http.post('/games', gameObject);
+      // @TODO add all players on the team to new game in users_games table
+      // shoul probably be in the .then chain of the AddGameController
+      // before the .then(redirectToTeamSchedule)
+  } // end addNewGame()
+
   // --------END '/games' ROUTES--------
 
   // --------SUPPORT FUNCTIONS----------
@@ -201,20 +204,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $location.path('/home');
   }
   //---------END REDIRECTS-----------
-
-
-
-  // post new game to the "games" table & add the team's players to the "users_games" table
-  function addNewGame(gameObject) {
-    return $http.post('/games', gameObject).then(function(response) {
-      return response;
-      // $location.path('/team-schedule'); // route the user back to the team schedule view
-      // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
-      // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
-    });
-  } // end addNewTeam()
-  
-  
 
   // -------'/invite' ROUTE----------
   
