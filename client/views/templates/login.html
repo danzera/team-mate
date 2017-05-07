@@ -1,8 +1,8 @@
 <div class="container"><!--TEAMMATE LOGIN SCREEN-->
   <div class="row"><!--HEADER-->
     <div class="col-xs-12">
-      <h1 class="lead">Login with TeamMate</h1>
-      <h2 class="lead alert alert-danger" role="alert" ng-if="login.message !== ''">{{login.message}}</h2>
+      <h1 class="view-heading lead">Login with TeamMate</h1>
+      <h2 class="error-message lead alert alert-danger" role="alert" ng-if="login.message !== ''">{{login.message}}</h2>
     </div>
   </div>
   <div class="row"><!--LOGIN FORM-->
@@ -26,13 +26,22 @@
         </div>
         <div class="row"><!--FORM SUMBITTAL & LINK TO '/register' -->
           <div class="col-xs-12">
-            <div class="form-group">
-              <input class="btn btn-default" type="submit" name="submit" value="Log In" />
-              <a href="#register">Create a TeamMate Login</a>
+            <div class="last form-group">
+              <input class="btn btn-primary" type="submit" name="submit" value="Log In" />
             </div>
           </div>
         </div>
       </form>
     </div>
   </div><!--end LOGIN FORM row-->
+  <div class="row">
+    <div class="col-xs-12">
+      <a href="#register"><button class="btn btn-success" type="button">Don't have a TeamMate Login yet?</button></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <a href="#home"><button class="btn btn-default" type="button">Home</button></a>
+    </div>
+  </div>
 </div>

@@ -1,15 +1,15 @@
-<div class="instructions" ng-controller="UserController as user">
+<div ng-controller="UserController as user">
   <div class="container">
-    <div class="row">
+    <div class="row header">
       <div class="col-xs-6">
         <span class="logo lead">TeamMate</span>
       </div>
-      <div class="col-xs-3">
+      <div id="header-btn-col-all-teams" class="col-xs-3">
         <div ng-if="user.currentTeamObject.name">
           <a href="#all-teams"><button id="btn-header-all-teams" class="btn btn-default">All Teams</button></a>
         </div>
       </div>
-      <div class="col-xs-3">
+      <div id="header-btn-col-logout" class="col-xs-3">
         <div ng-if="user.userObject.username">
           <button id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
         </div>

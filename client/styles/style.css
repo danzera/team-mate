@@ -3,47 +3,81 @@
   font-size: 3em;
 }
 
-#welcome-home {
+.header {
+  background-color: #333333;
+  color: #DDDDDD;
+}
+
+.header .container h1 {
+  /*font-size: 24px;*/
+  font-weight: 700;
+}
+
+#btn-header-logout, #btn-header-all-teams {
+  text-align: center;
+  font-size: 1em;
+  padding-left: 0px;
+  padding-right: 0px;
+  float: right;
+  width: 100%;
+  height: 2.75em;
+  margin-top: .6em;
+  margin-bottom: .25em;
+}
+
+#header-btn-col-logout {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+#header-btn-col-all-teams {
+  padding-right: 0px;
+}
+
+.view-heading {
   font-size: 2em !important;
   text-align: center;
+}
+
+.btn-team, .btn-manager {
+  margin-bottom: 1em !important;
 }
 
 .btn {
   width: 100%;
   height: 60px;
   margin-bottom: 2em;
+  font-size: 1.25em;
 }
 
-/*.btn {
-  margin-bottom: 15px;
-}*/
-
-#welcome {
-  font-size: 2em;
-  max-width: 100%;
-}
-/*#h2-pending-invitations {
-  margin-bottom: 0px;
-}*/
-
-#btn-header-logout, #btn-header-all-teams {
-  float: right;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-#btn-header-all-teams {
-  margin-right: 15px;
-}
-
-#btn-add-player {
-  margin-left: 15px;
-}
-
-
-
-.h2-team-schedule {
+.error-message {
   margin-top: 0px;
+}
+
+.last {
+  margin-bottom: 0px;
+}
+
+.welcome-all-teams-top, .h1-team-schedule {
+  font-size: 2.5em;
+  max-width: 100%;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.welcome-all-teams-bottom {
+  font-size: 2.5em;
+  max-width: 100%;
+  margin-top: 0px !important;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.sub-heading {
+  font-size: 2em !important;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .game-overview {
@@ -70,15 +104,12 @@
   margin-bottom: 0px;
 }
 
+
 /*---CSS THAT CAME WITH PASSPORT INFO---*/
-.instructions .container h1 {
-  font-size: 24px;
-  font-weight: 700;
-}
+/*
 
 .instructions {
-  background-color: #333333;
-  color: #DDDDDD;
+
 }
 
 #entryForm {
@@ -87,12 +118,12 @@
 
 #container {
   margin-top: 10px;
-}
+}*/
 
 /*.container p{
   margin-top : 14px;
 }*/
-
+/*
 .message {
   padding: 10px 0;
 }
@@ -111,4 +142,4 @@
 
 .btn-danger{
   margin-left: 10px;
-}
+}*/
