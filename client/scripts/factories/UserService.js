@@ -154,6 +154,12 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     }
   }
 
+  function adjustGameDateAndTime(gameObject) {
+    gameObject.date = moment(gameObject.date).format('YYYY-MM-DD');
+    gameObject.time = moment(gameObject.time).format('HH:mm');
+    return gameObject;
+  }
+
   function clearCurrentUser() {
     userObject.username = '';
     userObject.firstName = '';
@@ -256,6 +262,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     addPlayerToTeam,
     getCurrentTeamsGames,
     setCurrentTeamInfo,
+    adjustGameDateAndTime,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,

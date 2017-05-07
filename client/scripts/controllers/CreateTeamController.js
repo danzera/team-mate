@@ -11,7 +11,7 @@ myApp.controller('CreateTeamController', ['UserService', function(UserService) {
     if (teamName === '') {
       createTeam.message = 'Please enter a name for your team.';
     } else {
-      createTeam.errorMessage = ''; // set error message back to empty string
+      createTeam.message = ''; // set error message back to empty string
       createTeam.currentTeamObject.name = teamName;
       createTeam.currentTeamObject.manager = true;
       UserService.addNewTeam()
