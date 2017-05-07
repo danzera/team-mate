@@ -67,11 +67,11 @@ SELECT "team_id", "name", "manager" FROM "teams" JOIN "users_teams" ON "teams"."
 -- returns ID of the newly created team
 INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id"; -- [name, creator_id]
 
--- '/teams/add-player/:teamId/:userId' POST
+-- '/teams/add-player' POST
 -- called by addPlayerToTeam() in UserService
--- receives req.params ^ & playerStatusObject
+-- receives inviteObject
 -- nothing returned
-INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4); -- [user_id, team_id, joined, manager]
+INSERT INTO "users_teams" ("user_id", "team_id", "manager") VALUES ($1, $2, $3); -- [req.user.id, team_id, manager]
 ---------- END '/teams' ROUTE ---------------
 
 

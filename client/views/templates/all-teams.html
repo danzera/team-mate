@@ -12,10 +12,10 @@
           <h2 id="h2-pending-invitations" class="lead">Pending Invitations</h2>
         </div>
       </div>
-      <div ng-repeat="invite in allTeams.userObject.invitesArray">
+      <div ng-repeat="inviteObject in allTeams.userObject.invitesArray">
         <div class="row">
           <div class="col-xs-12">
-            <button class="btn btn-default" ng-click="allTeams.acceptInvite(invite.team_id)">{{invite.name}}</button>
+            <button class="btn btn-default" ng-click="allTeams.acceptInvite(inviteObject)">{{inviteObject.name}}</button>
           </div>
         </div>
       </div>
@@ -29,10 +29,10 @@
   </div>
   <div class="row" ng-if="allTeams.message === ''">
     <div class="col-xs-12">
-      <div ng-repeat="team in allTeams.userObject.teamsArray">
+      <div ng-repeat="teamObject in allTeams.userObject.teamsArray">
         <div class="row">
           <div class="col-xs-12">
-            <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(team.team_id)">{{team.name}}</button>
+            <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamObject)">{{teamObject.name}}</button>
           </div>
         </div>
       </div>

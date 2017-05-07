@@ -7,9 +7,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     phone: '',
     invitesArray: [],
     teamsArray: []
-  }
+  };
+  let currentTeamObject = {
+    id: '',
+    name: '',
+    gamesArray: []
+  };
   let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
-  let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
+  // let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
 
   //--------AUTHENTICATION--------
   // login an existing user
@@ -83,6 +88,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     }); // end $http callback function
   } // end getUsersInvites()
 
+  // accept an invitation to join a team (delete from invites table)
   function acceptInvite(teamId) {
     console.log('deleting invite for', userObject.username, 'from team', teamId);
     return $http.delete('/invite/' + teamId);
@@ -106,6 +112,34 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   }
 
+  // add a player to the users_teams table
+  function addPlayerToTeam(inviteObject) {
+    console.log('adding player to team via inviteObject', inviteObject);
+    return $http.post('/teams/add-player', inviteObject);
+  } // end addPlayerToTeam()
+
+
+
+  //----------REDIRECTS--------------
+  function redirectToLogin() {
+    $location.path('/login');
+  }
+
+  function redirectToAllTeams() {
+    $location.path('/all-teams');
+  }
+
+  function redirectToTeamSchedule() {
+    $location.path('/team-schedule');
+  }
+
+  function redirectToHome() {
+    $location.path('/home');
+  }
+  //---------END REDIRECTS-----------
+
+
+
   // post new team to the "teams" table & add user as a manager to the "users_teams" table
   function addNewTeam(teamName) {
     currentTeamObject.setName(teamName); // set current team's name
@@ -120,13 +154,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end addNewTeam()
 
-  // add a player to the users_teams table
-  function addPlayerToTeam(teamId, userId, playerStatusObject) {
-    return $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
-      console.log('PLAYER ADDED!');
-      //$location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
-    });
-  } // end addPlayerToTeam()
+
   // --------END '/teams' ROUTES--------
 
   // --------'/games' ROUTES--------  
@@ -148,25 +176,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   } // end addNewTeam()
   // --------END '/games' ROUTES--------
-
-
-  //----------REDIRECTS--------------
-  function redirectToLogin() {
-    $location.path('/login');
-  }
-
-  function redirectToAllTeams() {
-    $location.path('/all-teams');
-  }
-
-  function redirectToTeamSchedule() {
-    $location.path('/team-schedule');
-  }
-
-  function redirectToHome() {
-    $location.path('/home');
-  }
-  //---------END REDIRECTS-----------
   
 
   // -------'/invite' ROUTE----------
@@ -183,20 +192,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
 
   // -------END '/invite' ROUTE------
-
-  // -----OTHER FUNCTIONS-----
-
-
-
-  // ----END OTHER FUNCTIONS----
-
-
-  function joinTeam(teamId, teamInfoObject, userObject, playerStatusObject) {
-    deleteInvite(teamId, userObject.getUsername());
-    addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
-    console.log('playerStatusObject after factory magic', playerStatusObject);
-  }
-  // ^^^^^^ WEID FUNCTION - HOPEFULLY REPLACE WITH A PROMISE CHAIN ^^^^^^
 
   // @TODO EDIT A TEAM
   // NOT YET USED?
@@ -221,14 +216,15 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
+    currentTeamObject,
     getUsersInvites,
     getUsersTeams,
     acceptInvite,
+    addPlayerToTeam,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,
     playerStatusObject,
-    currentTeamObject,
     loginUser,
     registerUser,
     getUser,
@@ -236,7 +232,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     addNewTeam,
     addNewGame,
     getTeamsGames,
-    invitePlayer,
-    joinTeam
+    invitePlayer
   };
 }]);

@@ -28,4 +28,5 @@ myApp.controller('RegisterController', ['UserService', function(UserService) {
   function displayErrorMessage(httpError) { // message to display on registration error
     register.message = "Oops! Something went wrong. Please try again.";
   }
+  
 }]); // END CONTROLLER
