@@ -1,12 +1,47 @@
 <div class="container">
-  <h1 ng-if="!allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getUsername()}}!</h1>
-  <h1 ng-if="allTeams.userObject.getFirstName()" id="welcome">Welcome, {{allTeams.userObject.getFirstName()}}!</h1>
-  <h2 class="lead">Your Teams</h2>
-  <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
-  <div ng-if="allTeams.message === ''">
-    <div ng-repeat="(teamId, teamInfoObject) in allTeams.userObject.getteamStatusObject()">
-      <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamId, teamInfoObject)">{{teamInfoObject.teamName}}</button>
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 ng-if="allTeams.userObject.firstName" id="welcome">Welcome, {{allTeams.userObject.firstName}}!</h1>
+      <h1 ng-if="!allTeams.userObject.firstName" id="welcome">Welcome!</h1>
     </div>
   </div>
-  <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>
+  <div class="row" ng-if="allTeams.userObject.invitesArray.length">
+    <div class="col-xs-12">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2 id="h2-pending-invitations" class="lead">Pending Invitations</h2>
+        </div>
+      </div>
+      <div ng-repeat="teamObject in allTeams.userObject.invitesArray">
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-default" ng-click="allTeams.acceptInvite(teamObject)">{{teamObject.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="lead">Your Teams</h2>
+      <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
+    </div>
+  </div>
+  <div class="row" ng-if="allTeams.message === ''">
+    <div class="col-xs-12">
+      <div ng-repeat="teamObject in allTeams.userObject.teamsArray">
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-success" ng-click="allTeams.goToTeamSchedule(teamObject)">{{teamObject.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="lead">Want to start a new team?</h2>
+      <a href="#create-team"><button class="btn btn-primary" type="button">Create a Team</button></a>
+    </div>
+  </div>
 </div>
