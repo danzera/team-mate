@@ -79,14 +79,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
         console.log('NO INVITES');
         return false;
       }
-    }); // end $http callback function
+    });
   } // end getUsersInvites()
 
   // accept an invitation to join a team (delete from invites table)
   function acceptInvite(teamId) {
     console.log('deleting invite for', userObject.username, 'from team', teamId);
     return $http.delete('/invite/' + teamId);
-  }
+  } // end acceptInvite()
 
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
@@ -102,15 +102,29 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       } else {
         return false;
       }
-      // return allTeams;
     });
-  }
+  } // end getUsersTeams()
 
   // add a player to the users_teams table
-  function addPlayerToTeam(inviteObject) {
-    console.log('adding player to team via inviteObject', inviteObject);
-    return $http.post('/teams/add-player', inviteObject);
+  function addPlayerToTeam(teamObject) {
+    console.log('adding player to team via inviteObject', teamObject);
+    return $http.post('/teams/add-player', teamObject);
   } // end addPlayerToTeam()
+
+    // post new team to the "teams" table & add user as a manager to the "users_teams" table
+  function addNewTeam(teamName) {
+    currentTeamObject.setName(teamName); // set current team's name
+    currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
+    $http.post('/teams', currentTeamObject).then(function(response) {
+      let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
+      currentTeamObject.setId(newTeamId); // set current team's ID
+      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
+      addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
+    });
+  } // end addNewTeam()
+
+
+  // --------END '/teams' ROUTES--------
 
   // --------'/games' ROUTES--------  
   // get all of the games for a team by teamId
@@ -128,8 +142,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       }
     });
   } // end getUsersTeams()
-
-
   // --------END '/games' ROUTES--------
 
   // --------SUPPORT FUNCTIONS----------
@@ -154,6 +166,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     currentTeamObject.isManager = false;
     currentTeamObject.gamesArray = [];
   }
+
+  function setCurrentTeamInfo(teamObject) {
+    console.log('setting team object ===', teamObject);
+    currentTeamObject.id = teamObject.team_id;
+    currentTeamObject.name = teamObject.name;
+    currentTeamObject.isManager = teamObject.isManager;
+    currentTeamObject.gamesArray = [];
+  }
   //-----END SUPPORT FUNCTIONS--------
 
   //----------REDIRECTS--------------
@@ -173,25 +193,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $location.path('/home');
   }
   //---------END REDIRECTS-----------
-
-
-
-  // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function addNewTeam(teamName) {
-    currentTeamObject.setName(teamName); // set current team's name
-    currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
-    $http.post('/teams', currentTeamObject).then(function(response) {
-      let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
-      currentTeamObject.setId(newTeamId); // set current team's ID
-      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
-      addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
-      $location.path('/all-teams');
-      // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
-    });
-  } // end addNewTeam()
-
-
-  // --------END '/teams' ROUTES--------
 
 
 
@@ -252,6 +253,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     acceptInvite,
     addPlayerToTeam,
     getCurrentTeamsGames,
+    setCurrentTeamInfo,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,

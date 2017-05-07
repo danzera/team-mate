@@ -12,10 +12,10 @@
           <h2 id="h2-pending-invitations" class="lead">Pending Invitations</h2>
         </div>
       </div>
-      <div ng-repeat="inviteObject in allTeams.userObject.invitesArray">
+      <div ng-repeat="teamObject in allTeams.userObject.invitesArray">
         <div class="row">
           <div class="col-xs-12">
-            <button class="btn btn-default" ng-click="allTeams.acceptInvite(inviteObject)">{{inviteObject.name}}</button>
+            <button class="btn btn-default" ng-click="allTeams.acceptInvite(teamObject)">{{teamObject.name}}</button>
           </div>
         </div>
       </div>

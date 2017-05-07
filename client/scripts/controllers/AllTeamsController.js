@@ -7,26 +7,29 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   console.log('all-teams loaded', allTeams.currentTeamObject);
   
   // DATA-BINDING FUNCTIONS
-  allTeams.acceptInvite = function(inviteObject) {
-    console.log('user wants to join team:', inviteObject);
-    UserService.acceptInvite(inviteObject.team_id)
-      .then(addPlayerToTeam(inviteObject))
+  allTeams.acceptInvite = function(teamObject) {
+    setCurrentTeamInfo(teamObject);
+    console.log('user wants to join team:', allTeams.currentTeamObject);
+    UserService.acceptInvite(teamObject.team_id)
+      .then(addPlayerToTeam(teamObject))
       .then(refreshData);
   };
   
   allTeams.goToTeamSchedule = function(teamObject) {
-    allTeams.currentTeamObject.id = teamObject.team_id;
-    allTeams.currentTeamObject.name = teamObject.name;
-    allTeams.currentTeamObject.isManager = teamObject.manager;
+    console.log('team object requested to be sent to...', teamObject);
+    setCurrentTeamInfo(teamObject);
+    // allTeams.currentTeamObject.id = teamObject.team_id;
+    // allTeams.currentTeamObject.name = teamObject.name;
+    // allTeams.currentTeamObject.isManager = teamObject.manager;
     console.log('navigating to team-schedule for team:', allTeams.currentTeamObject);
     UserService.redirectToTeamSchedule();
   };
 
-  // CONTROLLER FUNCTIONSq
-
+  // CONTROLLER FUNCTIONS
   let getUsersInvites = UserService.getUsersInvites;
   let getUsersTeams = UserService.getUsersTeams;
   let addPlayerToTeam = UserService.addPlayerToTeam;
+  let setCurrentTeamInfo = UserService.setCurrentTeamInfo;
 
   function verifyUserHasTeams(hasTeams) { // set message to display if user is not a member of a team yet
     if(!hasTeams) {
@@ -37,13 +40,13 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   }
 
   function refreshData() {
+    UserService.clearCurrentTeam();
     getUsersInvites()
       .then(getUsersTeams)
       .then(verifyUserHasTeams);
   }
 
   // RUN AT CONTROLLER LOAD
-  UserService.clearCurrentTeam();
   refreshData();
 
 }]); // END CONTROLLER
