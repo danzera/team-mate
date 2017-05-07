@@ -1,10 +1,10 @@
 <div class="container">
   <div class="row"><!--header row-->
     <div class="col-xs-12">
-      <h1>{{teamSchedule.currentTeamObject.getName()}}</h1>
+      <h1>{{teamSchedule.currentTeamObject.name}}</h1>
     </div>
   </div><!--END header row-->
-  <div class="row manager-only" ng-if="teamSchedule.isManager"><!--manager only section-->
+  <div class="row manager-only" ng-if="teamSchedule.currentTeamObject.isManager"><!--manager only section-->
     <div class="col-xs-12">
       <div class="row"><!--manager sub-header-->
         <div class="col-xs-12">
@@ -27,13 +27,12 @@
           <h2 class="lead alert alert-warning" ng-if="teamSchedule.message !== ''" role="alert">{{teamSchedule.message}}</h2>
         </div>
       </div>
-      <div class="row" ng-if="teamSchedule.currentTeamObject.getGamesArray().length">
-        <div class="col-xs-12" ng-repeat="gameObject in teamSchedule.currentTeamObject.getGamesArray()">
+      <div class="row" ng-if="teamSchedule.message === ''">
+        <div class="col-xs-12" ng-repeat="gameObject in teamSchedule.currentTeamObject.gamesArray">
           <div class="row game-overview">
-            <h4 class="h4-game-date">{{gameObject.getGameDate()}}</h4>
-            <p class="game-info">{{gameObject.getGameTime()}} - {{gameObject.getLocation()}}</p>
-            <p ng-if="gameObject.getOpponent() !== ''" class="game-opponent">vs. {{gameObject.getOpponent()}}</p>
-            <p ng-if="gameObject.getOpponent() === ''" class="game-opponent">vs. TBD</p>
+            <h4 class="h4-game-date">{{gameObject.date}}</h4>
+            <p class="game-info">{{gameObject.time}} - {{gameObject.location}}</p>
+            <p ng-if="gameObject.opponent" class="game-opponent">vs. {{gameObject.opponent}}</p>
           </div>
         </div><!--END ng-repeat-->
       </div>

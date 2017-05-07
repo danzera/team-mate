@@ -11,6 +11,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   let currentTeamObject = {
     id: '',
     name: '',
+    isManager: false, // set to true in all-teams if player is a manager
     gamesArray: []
   };
   let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
@@ -56,17 +57,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      userObject.username = '';
-      userObject.firstName = '';
-      userObject.lastName = '';
-      userObject.phone = '';
-      teamsArray = [];
-      // ----- 
-      playerStatusObject.clear(); // wipe out the playerStatusObject
-      currentTeamObject.clear(); // wipe out the currentTeamObject
-      // ----- ^ OLD - UPDATE OR REMOVE DEPENDING ON THE OBJECTS THAT ARE CREATED
+      clearCurrentUser(); // clear userObject data
+      clearCurrentTeam(); // clear currentTeamObject data
       redirectToHome();
-    }); // end $http.get()
+    });
   } // end logout()
   //--------END AUTHENTICATION--------
 
@@ -97,7 +91,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
   function getUsersTeams() {
-    userObject.TeamsArray = [];
+    userObject.teamsArray = [];
     return $http.get('/teams').then(function(response) {
       let allTeams = response.data.rows;
       if (allTeams.length) {
@@ -118,7 +112,49 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     return $http.post('/teams/add-player', inviteObject);
   } // end addPlayerToTeam()
 
+  // --------'/games' ROUTES--------  
+  // get all of the games for a team by teamId
+  function getCurrentTeamsGames() {
+    currentTeamObject.gamesArray = [];
+    let teamId = currentTeamObject.id;
+    return $http.get('/games/' + teamId).then(function(response) {
+      let gamesArray = response.data.rows;
+      if (gamesArray.length) {
+        currentTeamObject.gamesArray = gamesArray;
+        convertGameDatesAndTimes();
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } // end getUsersTeams()
 
+
+  // --------END '/games' ROUTES--------
+
+  // --------SUPPORT FUNCTIONS----------
+  function convertGameDatesAndTimes() {
+    for (gameObject of currentTeamObject.gamesArray) {
+      gameObject.date = moment(gameObject.date).format('dddd, MMMM Do YYYY');
+      gameObject.time = moment(gameObject.time, 'HH:mm:ss').format('h:mm A');
+    }
+  }
+
+  function clearCurrentUser() {
+    userObject.username = '';
+    userObject.firstName = '';
+    userObject.lastName = '';
+    userObject.phone = '';
+    teamsArray = [];
+  }
+
+  function clearCurrentTeam() {
+    currentTeamObject.id = '';
+    currentTeamObject.name = '';
+    currentTeamObject.isManager = false;
+    currentTeamObject.gamesArray = [];
+  }
+  //-----END SUPPORT FUNCTIONS--------
 
   //----------REDIRECTS--------------
   function redirectToLogin() {
@@ -157,14 +193,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // --------END '/teams' ROUTES--------
 
-  // --------'/games' ROUTES--------  
-  // get all of the games for a team by teamId
-  function getTeamsGames(teamId) {
-    return $http.get('/games/' + teamId).then(function(response) {
-      let gamesArray = response.data.rows;
-      return gamesArray;
-    });
-  } // end getUsersTeams()
+
 
   // post new game to the "games" table & add the team's players to the "users_games" table
   function addNewGame(gameObject) {
@@ -175,7 +204,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
-  // --------END '/games' ROUTES--------
+  
   
 
   // -------'/invite' ROUTE----------
@@ -221,6 +250,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getUsersTeams,
     acceptInvite,
     addPlayerToTeam,
+    getCurrentTeamsGames,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,
@@ -231,7 +261,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     logout,
     addNewTeam,
     addNewGame,
-    getTeamsGames,
     invitePlayer
   };
 }]);

@@ -14,9 +14,9 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   };
   
   allTeams.goToTeamSchedule = function(teamObject) {
-    // allTeams.currentTeamObject.clear();
     allTeams.currentTeamObject.id = teamObject.team_id;
     allTeams.currentTeamObject.name = teamObject.name;
+    allTeams.currentTeamObject.isManager = teamObject.manager;
     console.log('navigating to team-schedule for team:', allTeams.currentTeamObject);
     UserService.redirectToTeamSchedule();
   };
@@ -40,7 +40,7 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
       .then(verifyUserHasTeams);
   }
 
-  // RUN AT PAGE LOAD
+  // RUN AT CONTROLLER LOAD
   refreshData();
 
 }]); // END CONTROLLER

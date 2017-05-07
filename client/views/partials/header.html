@@ -5,10 +5,14 @@
         <span class="logo lead">TeamMate</span>
       </div>
       <div class="col-xs-3">
-        <button ng-if="user.currentTeamObject.name" id="btn-header-all-teams" class="btn btn-default" ng-click="user.allTeams()">All Teams</button>
+        <div ng-if="user.currentTeamObject.name">
+          <a href="#all-teams"><button id="btn-header-all-teams" class="btn btn-default">All Teams</button></a>
+        </div>
       </div>
       <div class="col-xs-3">
-        <button ng-if="user.userObject.username" id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
+        <div ng-if="user.userObject.username">
+          <button id="btn-header-logout" class="btn btn-default" ng-click="user.logout()">Log Out</button>
+        </div>
       </div>
     </div>
   </div>
