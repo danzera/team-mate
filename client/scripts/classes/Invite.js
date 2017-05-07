@@ -1,7 +1,7 @@
 class Invite {
-  constructor (teamId, email, isManager) {
+  constructor (teamId, email, manager) {
     this.teamId = teamId;
     this.email = email;
-    this.isManager = isManager;
+    this.manager = manager;
   }
 }

@@ -33,7 +33,7 @@ router.post('/', function(req, res) {
   console.log(req.body);
   var team_id = req.body.teamId;
   var email = req.body.email;
-  var manager = req.body.isManager;;
+  var manager = req.body.manager;;
   pool.connect(function(err, database, done) {
     if (err) { // connection error
       console.log('error connecting to the database:', err);
