@@ -116,6 +116,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     return $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
       currentTeamObject.team_id = newTeamId; 
+      alert('New team successfully created! Now add some games and invite some players to join your team');
       return currentTeamObject;
     });
   } // end addNewTeam()
@@ -204,11 +205,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $location.path('/home');
   }
   //---------END REDIRECTS-----------
-
-  // -------'/invite' ROUTE----------
-  
-
-
 
   // @TODO EDIT A TEAM
   // NOT YET USED?

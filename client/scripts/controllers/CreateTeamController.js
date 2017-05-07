@@ -4,16 +4,10 @@ myApp.controller('CreateTeamController', ['UserService', function(UserService) {
   createTeam.message = ''; 
   createTeam.currentTeamObject = UserService.currentTeamObject;
   createTeam.currentTeamObject.manager = true; // creator is a manager by default
-  // createTeam.teamName = '';
 
   // DATA-BINDING FUNCTIONS
   createTeam.addNewTeam = function() {
     if (verifyUserInput()) {
-    //   createTeam.message = 'Please enter a name for your team.';
-    // } else {
-    //   createTeam.message = ''; // set error message back to empty string
-    //   createTeam.currentTeamObject.name = teamName;
-    //   createTeam.currentTeamObject.manager = true;
       UserService.addNewTeam()
         .then(addPlayerToTeam)
         .then(getUsersTeams)
