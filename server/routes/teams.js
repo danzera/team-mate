@@ -2,28 +2,32 @@ var express = require('express');
 var router = express.Router();
 var pool = require('../modules/database.js');
 
-// '/teams/:userId' GET - get all of a users teams from the database
-router.get('/:userId', function(req, res) {
-  var user_id = req.params.userId;
-  console.log(user_id, 'is requesting all their teams');
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-    } else { // we connected
-      database.query('SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1;', [user_id],
-        function(queryErr, result) { // query callback
-          done();
-          if (queryErr) {
-            console.log('error making query:', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('got users_teams/teams', result);
-            res.send(result);
-          }
-      }); // end query
-    } // end if-else
-  }); // end pool.connect
-}); // end '/teams/:userId' GET
+// '/teams' GET - get any teams from the "teams" table for the current user
+router.get('/', function(req, res) {
+  if (req.isAuthenticated()) { // user is authenticated
+    // var user_id = req.params.userId;
+    // console.log(user_id, 'is requesting all their teams');
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+      } else { // we connected
+        database.query('SELECT "team_id", "name", "manager" FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1;', [req.user.id],
+          function(queryErr, result) { // query callback
+            done();
+            if (queryErr) {
+              console.log('error making query:', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('got users_teams/teams', result);
+              res.send(result);
+            }
+        }); // end query callback
+      } // end DB connection if-else
+    }); // end pool.connect
+  } else { // user not authenticated
+    res.sendStatus(401);
+  }
+}); // end '/teams' GET
 
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {

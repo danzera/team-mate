@@ -4,15 +4,13 @@ var pool = require('../modules/database.js');
 
 // '/invite' GET - get any invites from the "invites" table for the current user
 router.get('/', function(req, res) {
-  if (req.user.isAuthenticated()) {
-    // var username = req.params.username.toString();
-    // console.log('getting invites for username', username);
+  if (req.isAuthenticated()) { // user is authenticated
     pool.connect(function(err, database, done) {
       if (err) { // connection error
         console.log('error connecting to the database:', err);
         res.sendStatus(500);
       } else { // we connected
-        database.query('SELECT * FROM "invites" JOIN "teams" ON "invites"."team_id" = "teams"."id" WHERE "invites"."email" = $1;', [req.user.id],
+        database.query('SELECT "team_id", "name", "manager" FROM "invites" JOIN "teams" ON "invites"."team_id" = "teams"."id" WHERE "invites"."email" = $1;', [req.user.username],
           function(queryErr, result) { // query callback
             done(); // release connection to the pool
             if (queryErr) {
@@ -28,7 +26,7 @@ router.get('/', function(req, res) {
   } else { // user not authenticated
     res.sendStatus(401);
   }
-}); // end '/games/:teamId' GET
+}); // end '/games' GET
 
 // '/invite' POST - post a new invite to the 'invites' table
 router.post('/', function(req, res) {
@@ -57,27 +55,30 @@ router.post('/', function(req, res) {
 }); // end '/invite' POST
 
 // '/invite' DELETE - delete an invite from the 'invites' table
-router.delete('/:teamId/:username', function(req, res) {
-  var team_id = req.params.teamId;
-  var email = req.params.username;
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-      res.sendStatus(500);
-    } else { // we connected
-      database.query('DELETE FROM "invites" WHERE ("team_id", "email") = ($1, $2);', [team_id, email],
-        function(queryErr, result) { // query callback
-          done(); // release connection to the pool
-          if (queryErr) {
-            console.log('error making query', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('successful insert into "invites"', result);
-            res.send(result);
-          }
-        }); // end query
-    } // end if-else
-  }); // end pool.connect
-}); // end '/invite' DELETE
+router.delete('/:teamId', function(req, res) {
+  if (req.isAuthenticated()) { // user is authenticated
+    var team_id = req.params.teamId;
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+        res.sendStatus(500);
+      } else { // we connected
+        database.query('DELETE FROM "invites" WHERE ("team_id", "email") = ($1, $2);', [team_id, req.user.username],
+          function(queryErr, result) { // query callback
+            done(); // release connection to the pool
+            if (queryErr) {
+              console.log('error making query', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('successful deletion from "invites"', result);
+              res.send(result);
+            }
+          }); // end query
+      } // end if-else
+    }); // end pool.connect
+  } else { // user not authenticated
+    res.sendStatus(401);
+  }
+}); // end '/invite/:teamId' DELETE
 
 module.exports = router;

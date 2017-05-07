@@ -5,6 +5,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     firstName: '',
     lastName: '',
     phone: '',
+    invitesArray: [],
     teamsArray: []
   }
   let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
@@ -55,8 +56,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
       userObject.lastName = '';
       userObject.phone = '';
       teamsArray = [];
+      // ----- 
       playerStatusObject.clear(); // wipe out the playerStatusObject
       currentTeamObject.clear(); // wipe out the currentTeamObject
+      // ----- ^ OLD - UPDATE OR REMOVE DEPENDING ON THE OBJECTS THAT ARE CREATED
       redirectToHome();
     }); // end $http.get()
   } // end logout()
@@ -64,30 +67,42 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   //-------'/invite' ROUTE----------
   // get user's team invites
-  function getUsersInvites(username) {
-     return $http.get('/invite/' + username).then(function(response) {
-      // return $http.get('/invites/' + username).then(function(response) {
-      let allTeamInvites = response.data.rows;
-      if (allTeamInvites.length > 0) {
-        for (i = 0; i < allTeamInvites.length; i++) {
-          let teamId = allTeamInvites[i].team_id;
-          let teamName = allTeamInvites[i].name;
-          let isManager = allTeamInvites[i].manager;
-          playerStatusObject.addTeamStatus(teamId, teamName, false, isManager);
-        }
+  function getUsersInvites() {
+    userObject.invitesArray = [];
+    return $http.get('/invite').then(function(response) {
+      let allInvites = response.data.rows;
+      if (allInvites.length) {
+        console.log('YAY INVITES:', allInvites);
+        userObject.invitesArray = allInvites;
+        console.log('userObject.invitesArray', userObject.invitesArray);
         return true;
       } else {
+        console.log('NO INVITES');
         return false;
       }
     }); // end $http callback function
   } // end getUsersInvites()
 
+  function acceptInvite(teamId) {
+    console.log('deleting invite for', userObject.username, 'from team', teamId);
+    return $http.delete('/invite/' + teamId);
+  }
+
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
-  function getUsersTeams(userId) {
-    return $http.get('/teams/' + userId).then(function(response) {
+  function getUsersTeams() {
+    userObject.TeamsArray = [];
+    return $http.get('/teams').then(function(response) {
       let allTeams = response.data.rows;
-      return allTeams;
+      if (allTeams.length) {
+        console.log('YAY TEAMS:', allTeams);
+        userObject.teamsArray = allTeams;
+        console.log('userObject.teamsArray', userObject.teamsArray);
+        return true;
+      } else {
+        return false;
+      }
+      // return allTeams;
     });
   }
 
@@ -166,21 +181,22 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     });
   }
 
-  function deleteInvite(teamId, username) {
-    console.log('deleting invite for', username, 'from team', teamId);
-    $http.delete('/invite/' + teamId + '/' + username).then(function() {
-      console.log('invite deleted!');
-    });
-  }
+
   // -------END '/invite' ROUTE------
 
-  // -----other functions/multi-routes-----
+  // -----OTHER FUNCTIONS-----
+
+
+
+  // ----END OTHER FUNCTIONS----
+
+
   function joinTeam(teamId, teamInfoObject, userObject, playerStatusObject) {
     deleteInvite(teamId, userObject.getUsername());
     addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
     console.log('playerStatusObject after factory magic', playerStatusObject);
   }
-  // ---end other functions/multi-routes---
+  // ^^^^^^ WEID FUNCTION - HOPEFULLY REPLACE WITH A PROMISE CHAIN ^^^^^^
 
   // @TODO EDIT A TEAM
   // NOT YET USED?
@@ -205,6 +221,9 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
+    getUsersInvites,
+    getUsersTeams,
+    acceptInvite,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,
@@ -216,10 +235,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     logout,
     addNewTeam,
     addNewGame,
-    getUsersTeams,
     getTeamsGames,
     invitePlayer,
-    getUsersInvites,
     joinTeam
   };
 }]);
