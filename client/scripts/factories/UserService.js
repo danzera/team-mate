@@ -1,147 +1,210 @@
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
-  let userObject = new User(); // instantiate a new userObject on factory load
-  let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
-  let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
+  // let userObject = new User(); // instantiate a new userObject on factory load
+  let userObject = {
+    username: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    invitesArray: [],
+    teamsArray: []
+  };
+  let currentTeamObject = {
+    team_id: '',
+    name: '',
+    manager: false, // set to true in all-teams if player is a manager
+    gamesArray: []
+  };
 
-  // --------AUTHENTICATION--------
-  // login function for the LoginController
+  //--------AUTHENTICATION--------
+  // login an existing user
   function loginUser(tempUser) {
     return $http.post('/', tempUser).then(function(response) {
       if (response.data.username) { // login successful
-        userObject.setId(response.data.id);
-        userObject.setUsername(response.data.username);
-        if (response.data.first_name) { // user has "first_name" stored in database
-          userObject.setFirstName(response.data.first_name);
+        userObject.username = response.data.username;
+        if (response.data.first_name) {
+          userObject.firstName = response.data.first_name;
         }
-        if (response.data.last_name) { // user has "last_name" stored in database
-          userObject.setLastName(response.data.last_name);
+        if (response.data.last_name) {
+          userObject.lastName = response.data.last_name;
         }
-        if (response.data.phone) { // user has "phone" stored in database
-          userObject.setPhone(response.data.phone);
+        if (response.data.phone) {
+          userObject.phone = response.data.phone;
         }
+        return true; // logged in
+      } else { // login NOT successful
+        return false; // failed login
       }
-      return userObject; // username will be '' if login ussuccessful
     });
   } // end login()
 
-  // get user from the database
+  // register a new user
+  function registerUser(tempUser) {
+    return $http.post('/register', tempUser);
+  } // end registerUser()
+
+  // verify user authentication
   function getUser() {
     $http.get('/user').then(function(response) {
-      if (response.data.username) {
-        userObject.setUsername(response.data.username);
-      } else { // user has no session on the server
-        $location.path('/home'); // redirect them to the homepage
+      if (!response.data.username) {
+        redirectToHome();
       }
-    }); // end $http.get()
+    });
   } // end getUser()
 
   // logout the user
   function logout() {
     $http.get('/user/logout').then(function(response) {
-      userObject.clear(); // wipe out the userObject
-      playerStatusObject.clear(); // wipe out the playerStatusObject
-      currentTeamObject.clear(); // wipe out the currentTeamObject
-      $location.path('/home'); // redirect them to the homepage
-    }); // end $http.get()
+      clearCurrentUser(); // clear userObject data
+      clearCurrentTeam(); // clear currentTeamObject data
+      redirectToHome();
+    });
   } // end logout()
-  // --------END AUTHENTICATION--------
+  //--------END AUTHENTICATION--------
 
-  // --------'/teams' ROUTES--------
-  // get users teams from the "teams" table in the database
-  function getUsersTeams(userId) {
-    return $http.get('/teams/' + userId).then(function(response) {
-      let allTeams = response.data.rows;
-      return allTeams;
-    });
-  }
-
-  // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function addNewTeam(teamName) {
-    currentTeamObject.setName(teamName); // set current team's name
-    currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
-    $http.post('/teams', currentTeamObject).then(function(response) {
-      let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
-      currentTeamObject.setId(newTeamId); // set current team's ID
-      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
-      addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
-      $location.path('/all-teams');
-      // WILL NEED TO ADD THE MANAGER TO THE TEAM'S GAMES HERE WHEN STATUS ASSIGNEMENTS ARE INPUT
-    });
-  } // end addNewTeam()
-
-  // add a player to the users_teams table
-  function addPlayerToTeam(teamId, userId, playerStatusObject) {
-    $http.post('/teams/add-player/' + teamId + '/' + userId, playerStatusObject).then(function(response) {
-      console.log('PLAYER ADDED!');
-      //$location.path('/team-schedule'); // redirect user to the newly created team's schedule screen
-    });
-  } // end addPlayerToTeam()
-  // --------END '/teams' ROUTES--------
-
-  // --------'/games' ROUTES--------  
-  // get all of the games for a team by teamId
-  function getTeamsGames(teamId) {
-    return $http.get('/games/' + teamId).then(function(response) {
-      let gamesArray = response.data.rows;
-      return gamesArray;
-    });
-  } // end getUsersTeams()
-
-  // post new game to the "games" table & add the team's players to the "users_games" table
-  function addNewGame(gameObject) {
-    $http.post('/games', gameObject).then(function(response) {
-      $location.path('/team-schedule'); // route the user back to the team schedule view
-      // @TODO add all players on the team to new game in users_games table...may need a .then chain to do this...
-      // addPlayersToGame(____?____); // SIMILAR TO ABOVE...add the team creator as a manager to the users_teams table
-    });
-  } // end addNewTeam()
-  // --------END '/games' ROUTES--------
-
-  // -------'/invite' ROUTE----------
-  //
-  function getUsersInvites(username) {
-     return $http.get('/invite/' + username).then(function(response) {
-      // return $http.get('/invites/' + username).then(function(response) {
-      let allTeamInvites = response.data.rows;
-      if (allTeamInvites.length > 0) {
-        for (i = 0; i < allTeamInvites.length; i++) {
-          let teamId = allTeamInvites[i].team_id;
-          let teamName = allTeamInvites[i].name;
-          let isManager = allTeamInvites[i].manager;
-          playerStatusObject.addTeamStatus(teamId, teamName, false, isManager);
-        }
+  //-------'/invite' ROUTE----------
+  // get user's team invites
+  function getUsersInvites() {
+    userObject.invitesArray = [];
+    return $http.get('/invite').then(function(response) {
+      let allInvites = response.data.rows;
+      if (allInvites.length) { // user has team invitations
+        userObject.invitesArray = allInvites;
         return true;
-      } else {
+      } else { // no team invitations
         return false;
       }
-    }); // end $http callback function
+    });
   } // end getUsersInvites()
+
+  // accept an invitation to join a team (delete from invites table)
+  function acceptInvite(teamId) {
+    return $http.delete('/invite/' + teamId);
+  } // end acceptInvite()
 
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
   function invitePlayer(inviteObject) {
     console.log('invite in the factory', inviteObject);
-    $http.post('/invite', inviteObject).then(function(response) {
-      $location.path('/team-schedule'); // route the user back to the team schedule view
+    return $http.post('/invite', inviteObject).then(function(response) {
+      alert('Success! An e-mail will be sent to ' + inviteObject.email + ' inviting them to join your team.');
     });
-  }
-
-  function deleteInvite(teamId, username) {
-    console.log('deleting invite for', username, 'from team', teamId);
-    $http.delete('/invite/' + teamId + '/' + username).then(function() {
-      console.log('invite deleted!');
-    });
-  }
+  } // end invitePlayer
   // -------END '/invite' ROUTE------
 
-  // -----other functions/multi-routes-----
-  function joinTeam(teamId, teamInfoObject, userObject, playerStatusObject) {
-    playerStatusObject.setHasJoinedStatus(teamId, true); // change user's "hasJoined" status to true for the specified team
-    addPlayerToTeam(teamId, userObject.getId(), playerStatusObject); // add player to the "users_teams" table in the database
-    deleteInvite(teamId, userObject.getUsername());
-    console.log('playerStatusObject after factory magic', playerStatusObject);
+  // --------'/teams' ROUTES--------
+  // get users teams from the "teams" table in the database
+  function getUsersTeams() {
+    userObject.teamsArray = [];
+    return $http.get('/teams').then(function(response) {
+      let allTeams = response.data.rows;
+      if (allTeams.length) { // user has teams
+        userObject.teamsArray = allTeams;
+        return true;
+      } else { // user doesn't have any teams
+        return false;
+      }
+    });
+  } // end getUsersTeams()
+
+  // add a player to the users_teams table
+  function addPlayerToTeam(teamObject) {
+    return $http.post('/teams/add-player', teamObject);
+  } // end addPlayerToTeam()
+
+  // post new team to the "teams" table
+  function addNewTeam() {
+    return $http.post('/teams', currentTeamObject).then(function(response) {
+      let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
+      currentTeamObject.team_id = newTeamId; 
+      alert('New team successfully created! Now add some games and invite some players to join your team');
+      return currentTeamObject;
+    });
+  } // end addNewTeam()
+  // --------END '/teams' ROUTES--------
+
+  // --------'/games' ROUTES--------  
+  // get all of the games for a team by team_id
+  function getCurrentTeamsGames() {
+    currentTeamObject.gamesArray = [];
+    let teamId = currentTeamObject.team_id;
+    return $http.get('/games/' + teamId).then(function(response) {
+      let gamesArray = response.data.rows;
+      if (gamesArray.length) {
+        currentTeamObject.gamesArray = gamesArray;
+        convertGameDatesAndTimes();
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } // end getUsersTeams()
+
+  // post new game to the "games" table & add the team's players to the "users_games" table
+  function addNewGame(gameObject) {
+    console.log('attempting to add new game in UserService.addNewGame:', gameObject)
+    return $http.post('/games', gameObject);
+      // @TODO add all players on the team to new game in users_games table
+      // shoul probably be in the .then chain of the AddGameController
+      // before the .then(redirectToTeamSchedule)
+  } // end addNewGame()
+
+  // --------END '/games' ROUTES--------
+
+  // --------SUPPORT FUNCTIONS----------
+  function convertGameDatesAndTimes() {
+    for (gameObject of currentTeamObject.gamesArray) {
+      gameObject.date = moment(gameObject.date).format('dddd, MMMM Do YYYY');
+      gameObject.time = moment(gameObject.time, 'HH:mm:ss').format('h:mm A');
+    }
   }
-  // ---end other functions/multi-routes---
+
+  function adjustGameDateAndTime(gameObject) {
+    gameObject.date = moment(gameObject.date).format('YYYY-MM-DD');
+    gameObject.time = moment(gameObject.time).format('HH:mm');
+    return gameObject;
+  }
+
+  function clearCurrentUser() {
+    userObject.username = '';
+    userObject.firstName = '';
+    userObject.lastName = '';
+    userObject.phone = '';
+    teamsArray = [];
+  }
+
+  function clearCurrentTeam() {
+    currentTeamObject.team_id = '';
+    currentTeamObject.name = '';
+    currentTeamObject.manager = false;
+    currentTeamObject.gamesArray = [];
+  }
+
+  function setCurrentTeamInfo(teamObject) {
+    console.log('setting team object ===', teamObject);
+    currentTeamObject.team_id = teamObject.team_id;
+    currentTeamObject.name = teamObject.name;
+    currentTeamObject.manager = teamObject.manager;
+    currentTeamObject.gamesArray = [];
+  }
+  //-----END SUPPORT FUNCTIONS--------
+
+  //----------REDIRECTS--------------
+  function redirectToLogin() {
+    $location.path('/login');
+  }
+
+  function redirectToAllTeams() {
+    $location.path('/all-teams');
+  }
+
+  function redirectToTeamSchedule() {
+    $location.path('/team-schedule');
+  }
+
+  function redirectToHome() {
+    $location.path('/home');
+  }
+  //---------END REDIRECTS-----------
 
   // @TODO EDIT A TEAM
   // NOT YET USED?
@@ -166,17 +229,24 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   return {
     userObject,
-    playerStatusObject,
     currentTeamObject,
+    clearCurrentTeam,
+    addNewTeam,
+    getUsersInvites,
+    getUsersTeams,
+    acceptInvite,
+    addPlayerToTeam,
+    getCurrentTeamsGames,
+    setCurrentTeamInfo,
+    adjustGameDateAndTime,
+    addNewGame,
+    invitePlayer,
+    redirectToLogin,
+    redirectToTeamSchedule,
+    redirectToAllTeams,
     loginUser,
+    registerUser,
     getUser,
     logout,
-    addNewTeam,
-    addNewGame,
-    getUsersTeams,
-    getTeamsGames,
-    invitePlayer,
-    getUsersInvites,
-    joinTeam
   };
 }]);

@@ -1,11 +1,11 @@
 class PlayerStatus {
   constructor() {}
 
-  addTeamStatus(teamId, teamName, hasJoined, isManager) {
+  addTeamStatus(teamId, teamName, hasJoined, manager) {
     this[teamId] = {};
     this[teamId].teamName = teamName;
     this[teamId].hasJoined = hasJoined;
-    this[teamId].isManager = isManager;
+    this[teamId].manager = manager;
     this[teamId].gameSatus = {};
   }
 
@@ -19,7 +19,7 @@ class PlayerStatus {
     this[teamId].hasJoined = hasJoined;
   }
 
-  setIsManagerStatus(teamId, isManager) {
-    this[teamId].isManager = isManager;
+  setIsManagerStatus(teamId, manager) {
+    this[teamId].manager = manager;
   }
 }

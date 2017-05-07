@@ -24,7 +24,6 @@ CREATE TABLE "users_teams" (
 "id" SERIAL PRIMARY KEY,
 "user_id" INTEGER NOT NULL REFERENCES "users",
 "team_id" INTEGER NOT NULL REFERENCES "teams",
-"joined" BOOLEAN DEFAULT FALSE,
 "manager" BOOLEAN DEFAULT FALSE
 );
 
@@ -57,11 +56,10 @@ CREATE TABLE "invites" (
 
 
 ---------- '/teams' ROUTE ---------------
--- '/teams/:userId' GET
+-- '/teams' GET
 -- called by getUsersTeams() in UserService
--- receives req.params ^
--- returns all team info for teams a user is associated with in the users_teams table
-SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1; -- [user_id]
+-- returns team info for teams a user is associated with in the users_teams table
+SELECT "team_id", "name", "manager" FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_id" WHERE "users_teams"."user_id" = $1; -- [req.user.id]
 
 -- '/teams' POST --
 -- called by addNewTeam() in UserService
@@ -69,11 +67,11 @@ SELECT * FROM "teams" JOIN "users_teams" ON "teams"."id" = "users_teams"."team_i
 -- returns ID of the newly created team
 INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id"; -- [name, creator_id]
 
--- '/teams/add-player/:teamId/:userId' POST
+-- '/teams/add-player' POST
 -- called by addPlayerToTeam() in UserService
--- receives req.params ^ & playerStatusObject
+-- receives inviteObject
 -- nothing returned
-INSERT INTO "users_teams" ("user_id", "team_id", "joined", "manager") VALUES ($1, $2, $3, $4); -- [user_id, team_id, joined, manager]
+INSERT INTO "users_teams" ("user_id", "team_id", "manager") VALUES ($1, $2, $3); -- [req.user.id, team_id, manager]
 ---------- END '/teams' ROUTE ---------------
 
 
@@ -93,9 +91,19 @@ INSERT INTO "games" ("team_id", "date", "time", "location", "opponent") VALUES (
 
 
 ---------- '/invite' ROUTE ---------------
+-- '/invite' GET
+-- called by getUsersInvites() in UserService
+-- returns all invites from the "invites" table for the current user
+
+SELECT "team_id", "name", "manager" FROM "invites" JOIN "teams" ON "invites"."team_id" = "teams"."id" WHERE "invites"."email" = $1; -- [req.user.username]
 -- '/invite' POST --
 -- called by invitePlayer() in UserService
 -- receives inviteObject
--- nothing returned
 INSERT INTO "invites" ("invite_team_id", "email", "invite_is_manager") VALUES ($1, $2, $3); -- [invite_team_id, email, invite_is_manager]
+
+-- '/invite/:teamId' DELETE --
+-- called by acceptInvite() in UserService
+-- deletes invites corresponding to the current user and the provided teamId
+DELETE FROM "invites" WHERE ("team_id", "email") = ($1, $2); -- [team_id, req.user.username]
+
 ---------- END '/invite' ROUTE ---------------
