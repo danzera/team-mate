@@ -7,7 +7,7 @@ myApp.controller('TeamScheduleController', ['UserService', function(UserService)
 
   // CONTROLLER FUNCTIONS
   function verifyTeamHasGames(hasGames) {
-    if(!hasGames && teamSchedule.currentTeamObject.isManager) {
+    if(!hasGames && teamSchedule.currentTeamObject.manager) {
       teamSchedule.message = 'You\'re team does not currently have any games scheduled. Click "Add a Game!"';
     } else if (!hasGames) {
       teamSchedule.message = 'Your team does not currently have any games scheduled. Talk to your manager about getting some games scheduled, or create a new team of your own!';

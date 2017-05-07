@@ -29,33 +29,36 @@ router.get('/', function(req, res) {
 
 // '/teams' POST - post new team to the database
 router.post('/', function(req, res) {
-  // IF USER IS AUTHENTICATED, USER REQ.USER.ID
-  var name = req.body.name;
-  var creator_id = req.body.creatorId;
-  pool.connect(function(err, database, done) {
-    if (err) { // connection error
-      console.log('error connecting to the database:', err);
-      res.sendStatus(500);
-    } else { // we connected
-      database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id";', [name, creator_id],
-        function(queryErr, result) { // query callback
-          done(); // release connection to the pool
-          if (queryErr) {
-            console.log('error making query', queryErr);
-            res.sendStatus(500);
-          } else {
-            console.log('successful insert into "teams"', result);
-            res.send(result);
-          }
-      }); // end query
-    } // end if-else
-  }); // end pool.connect
+  if (req.isAuthenticated()) { // user is authenticated
+    var name = req.body.name;
+    pool.connect(function(err, database, done) {
+      if (err) { // connection error
+        console.log('error connecting to the database:', err);
+        res.sendStatus(500);
+      } else { // we connected
+        database.query('INSERT INTO "teams" ("name", "creator_id") VALUES ($1, $2) RETURNING "id";', [name, req.user.id],
+          function(queryErr, result) { // query callback
+            done(); // release connection to the pool
+            if (queryErr) {
+              console.log('error making query on /teams POST', queryErr);
+              res.sendStatus(500);
+            } else {
+              console.log('successful insert into "teams"', result);
+              res.send(result);
+            }
+        }); // end query
+      } // end if-else
+    }); // end pool.connect
+  } else {
+    res.sendStatus(401);
+  }
 }); // end '/teams' POST
 
 // '/teams/add-player/:teamId/:userId' POST - add player to the "users_team" in the database
 router.post('/add-player', function(req, res) {
   if (req.isAuthenticated()) { // user is authenticated
     var team_id = req.body.team_id;
+    console.log('REQ.BODY HEEEEEEERRRRREEEE', req.body);
     var manager = req.body.manager;
     // var user_id = req.params.userId;
     // var joined = req.body[team_id].hasJoined;

@@ -9,19 +9,14 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   // DATA-BINDING FUNCTIONS
   allTeams.acceptInvite = function(teamObject) {
     setCurrentTeamInfo(teamObject);
-    console.log('user wants to join team:', allTeams.currentTeamObject);
+    // delete invite from the DB, add user to the team, refresh the DOM
     UserService.acceptInvite(teamObject.team_id)
       .then(addPlayerToTeam(teamObject))
       .then(refreshData);
   };
   
   allTeams.goToTeamSchedule = function(teamObject) {
-    console.log('team object requested to be sent to...', teamObject);
     setCurrentTeamInfo(teamObject);
-    // allTeams.currentTeamObject.id = teamObject.team_id;
-    // allTeams.currentTeamObject.name = teamObject.name;
-    // allTeams.currentTeamObject.isManager = teamObject.manager;
-    console.log('navigating to team-schedule for team:', allTeams.currentTeamObject);
     UserService.redirectToTeamSchedule();
   };
 

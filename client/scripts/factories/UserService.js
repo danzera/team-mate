@@ -9,9 +9,9 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     teamsArray: []
   };
   let currentTeamObject = {
-    id: '',
+    team_id: '',
     name: '',
-    isManager: false, // set to true in all-teams if player is a manager
+    manager: false, // set to true in all-teams if player is a manager
     gamesArray: []
   };
   let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
@@ -107,19 +107,21 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // add a player to the users_teams table
   function addPlayerToTeam(teamObject) {
-    console.log('adding player to team via inviteObject', teamObject);
+    console.log('adding player to team via teamObject', teamObject);
     return $http.post('/teams/add-player', teamObject);
   } // end addPlayerToTeam()
 
     // post new team to the "teams" table & add user as a manager to the "users_teams" table
-  function addNewTeam(teamName) {
-    currentTeamObject.setName(teamName); // set current team's name
-    currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
-    $http.post('/teams', currentTeamObject).then(function(response) {
+  function addNewTeam() {
+    // currentTeamObject.setName(teamName); // set current team's name
+    // currentTeamObject.setCreatorId(userObject.getId()); // set current team creator ID
+    return $http.post('/teams', currentTeamObject).then(function(response) {
       let newTeamId = response.data.rows[0].id; // DB returns the ID of the team that was created
-      currentTeamObject.setId(newTeamId); // set current team's ID
-      playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
-      addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
+      currentTeamObject.team_id = newTeamId; 
+      return currentTeamObject;
+      // set current team's ID
+      //playerStatusObject.addTeamStatus(newTeamId, teamName, true, true);
+      //addPlayerToTeam(newTeamId, userObject.getId(), playerStatusObject); // add the team creator as a manager to the users_teams table
     });
   } // end addNewTeam()
 
@@ -130,7 +132,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // get all of the games for a team by teamId
   function getCurrentTeamsGames() {
     currentTeamObject.gamesArray = [];
-    let teamId = currentTeamObject.id;
+    let teamId = currentTeamObject.team_id;
     return $http.get('/games/' + teamId).then(function(response) {
       let gamesArray = response.data.rows;
       if (gamesArray.length) {
@@ -161,17 +163,17 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   }
 
   function clearCurrentTeam() {
-    currentTeamObject.id = '';
+    currentTeamObject.team_id = '';
     currentTeamObject.name = '';
-    currentTeamObject.isManager = false;
+    currentTeamObject.manager = false;
     currentTeamObject.gamesArray = [];
   }
 
   function setCurrentTeamInfo(teamObject) {
     console.log('setting team object ===', teamObject);
-    currentTeamObject.id = teamObject.team_id;
+    currentTeamObject.team_id = teamObject.team_id;
     currentTeamObject.name = teamObject.name;
-    currentTeamObject.isManager = teamObject.isManager;
+    currentTeamObject.manager = teamObject.manager;
     currentTeamObject.gamesArray = [];
   }
   //-----END SUPPORT FUNCTIONS--------
