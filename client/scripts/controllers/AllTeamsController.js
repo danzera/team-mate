@@ -4,6 +4,7 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   allTeams.message = ''; // used for error handling
   allTeams.userObject = UserService.userObject;
   allTeams.currentTeamObject = UserService.currentTeamObject;
+  console.log('all-teams loaded', allTeams.currentTeamObject);
   
   // DATA-BINDING FUNCTIONS
   allTeams.acceptInvite = function(inviteObject) {
@@ -21,7 +22,8 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
     UserService.redirectToTeamSchedule();
   };
 
-  // CONTROLLER VARIABLES/FUNCTIONS
+  // CONTROLLER FUNCTIONSq
+
   let getUsersInvites = UserService.getUsersInvites;
   let getUsersTeams = UserService.getUsersTeams;
   let addPlayerToTeam = UserService.addPlayerToTeam;
@@ -41,6 +43,7 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   }
 
   // RUN AT CONTROLLER LOAD
+  UserService.clearCurrentTeam();
   refreshData();
 
 }]); // END CONTROLLER

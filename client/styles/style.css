@@ -3,6 +3,11 @@
   font-size: 35px;
 }
 
+.btn-full-width {
+  width: 100%;
+  margin-left: 0px !important;
+}
+
 /*#h2-pending-invitations {
   margin-bottom: 0px;
 }*/

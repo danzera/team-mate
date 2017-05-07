@@ -1,14 +1,30 @@
 <div class="container">
-  <h1 class="lead">Create a New Team</h1>
-  <h2 class="lead alert alert-danger" role="alert" ng-if="createTeam.errorMessage !== ''">{{createTeam.errorMessage}}</h2>
-  <form ng-submit="createTeam.addNewTeam()">
-    <div class="form-group">
-      <label for="in-team-name">Team Name</label>
-      <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 class="lead">Create a New Team</h1>
+      <h2 class="lead alert alert-danger" role="alert" ng-if="createTeam.message !== ''">{{createTeam.message}}</h2>
     </div>
-    <div>
-      <input class="btn btn-success" type="submit" name="submit" value="Create Team" />
-      <a href="#all-teams"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <form ng-submit="createTeam.addNewTeam(createTeam.teamName)">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="in-team-name">Team Name</label>
+              <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <input class="btn btn-success btn-full-width" type="submit" name="submit" value="Create Team" />
+          </div>
+          <div class="col-xs-6">
+            <a href="#all-teams"><button class="btn btn-danger btn-full-width" type="button" name="allTeams">Cancel</button></a>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

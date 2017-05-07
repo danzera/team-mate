@@ -246,6 +246,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   return {
     userObject,
     currentTeamObject,
+    clearCurrentTeam,
     getUsersInvites,
     getUsersTeams,
     acceptInvite,

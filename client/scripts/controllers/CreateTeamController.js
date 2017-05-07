@@ -1,13 +1,24 @@
 myApp.controller('CreateTeamController', ['UserService', function(UserService) {
-  let createTeam = this; // create a reference to the controller
-  createTeam.errorMessage = '';
+  // DATA-BINDING VARIABLES
+  let createTeam = this; // controller reference
+  createTeam.message = ''; 
   createTeam.teamName = '';
-  createTeam.addNewTeam = function() {
-    if (createTeam.teamName === '') { // team name name is blank - alert user
-      createTeam.errorMessage = 'Please enter a name for your team.';
-    } else { // team name not blank - send teamName to factory
+  createTeam.currentTeamObject = UserService.currentTeamObject;
+
+  // DATA-BINDING FUNCTIONS
+  createTeam.addNewTeam = function(teamName) {
+    if (teamName === '') {
+      createTeam.message = 'Please enter a name for your team.';
+    } else {
       createTeam.errorMessage = ''; // set error message back to empty string
-      UserService.addNewTeam(createTeam.teamName); // send team name to the factory
+      createTeam.currentTeamObject.name = teamName;
+      createTeam.currentTeamObject.isManager = true;
+      UserService.addNewTeam()
+        .then(redirectToTeamSchedule); // send team name to the factory
     }
-  }; // end createTeam.addNewTeam
+  };
+
+  // CONTROLLER FUNCTIONS
+  let redirectToTeamSchedule = UserService.redirectToTeamSchedule;
+
 }]);
