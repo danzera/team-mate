@@ -14,8 +14,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     manager: false, // set to true in all-teams if player is a manager
     gamesArray: []
   };
-  let playerStatusObject = new PlayerStatus(); // instantiate a new teamObject on factory load
-  // let currentTeamObject = new Team(); // instantiate a new teamObject on factory load
 
   //--------AUTHENTICATION--------
   // login an existing user
@@ -32,9 +30,8 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
         if (response.data.phone) {
           userObject.phone = response.data.phone;
         }
-        console.log('userObject after login:', userObject);
         return true; // logged in
-      } else {
+      } else { // login NOT successful
         return false; // failed login
       }
     });
@@ -70,13 +67,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     userObject.invitesArray = [];
     return $http.get('/invite').then(function(response) {
       let allInvites = response.data.rows;
-      if (allInvites.length) {
-        console.log('YAY INVITES:', allInvites);
+      if (allInvites.length) { // user has team invitations
         userObject.invitesArray = allInvites;
-        console.log('userObject.invitesArray', userObject.invitesArray);
         return true;
-      } else {
-        console.log('NO INVITES');
+      } else { // no team invitations
         return false;
       }
     });
@@ -84,9 +78,18 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // accept an invitation to join a team (delete from invites table)
   function acceptInvite(teamId) {
-    console.log('deleting invite for', userObject.username, 'from team', teamId);
     return $http.delete('/invite/' + teamId);
   } // end acceptInvite()
+
+  // post a player to the 'invites' table
+  // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
+  function invitePlayer(inviteObject) {
+    console.log('invite in the factory', inviteObject);
+    return $http.post('/invite', inviteObject).then(function(response) {
+      alert('Success! An e-mail will be sent to ' + inviteObject.email + ' inviting them to join your team.');
+    });
+  } // end invitePlayer
+  // -------END '/invite' ROUTE------
 
   // --------'/teams' ROUTES--------
   // get users teams from the "teams" table in the database
@@ -94,12 +97,10 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     userObject.teamsArray = [];
     return $http.get('/teams').then(function(response) {
       let allTeams = response.data.rows;
-      if (allTeams.length) {
-        console.log('YAY TEAMS:', allTeams);
+      if (allTeams.length) { // user has teams
         userObject.teamsArray = allTeams;
-        console.log('userObject.teamsArray', userObject.teamsArray);
         return true;
-      } else {
+      } else { // user doesn't have any teams
         return false;
       }
     });
@@ -107,7 +108,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // add a player to the users_teams table
   function addPlayerToTeam(teamObject) {
-    console.log('adding player to team via teamObject', teamObject);
     return $http.post('/teams/add-player', teamObject);
   } // end addPlayerToTeam()
 
@@ -208,17 +208,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // -------'/invite' ROUTE----------
   
 
-  // post a player to the 'invites' table
-  // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
-  function invitePlayer(inviteObject) {
-    console.log('invite in the factory', inviteObject);
-    $http.post('/invite', inviteObject).then(function(response) {
-      $location.path('/team-schedule'); // route the user back to the team schedule view
-    });
-  }
 
-
-  // -------END '/invite' ROUTE------
 
   // @TODO EDIT A TEAM
   // NOT YET USED?
@@ -245,6 +235,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     userObject,
     currentTeamObject,
     clearCurrentTeam,
+    addNewTeam,
     getUsersInvites,
     getUsersTeams,
     acceptInvite,
@@ -252,16 +243,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getCurrentTeamsGames,
     setCurrentTeamInfo,
     adjustGameDateAndTime,
+    addNewGame,
+    invitePlayer,
     redirectToLogin,
     redirectToTeamSchedule,
     redirectToAllTeams,
-    playerStatusObject,
     loginUser,
     registerUser,
     getUser,
     logout,
-    addNewTeam,
-    addNewGame,
-    invitePlayer
   };
 }]);

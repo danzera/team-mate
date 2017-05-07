@@ -7,12 +7,12 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <form ng-submit="createTeam.addNewTeam(createTeam.teamName)">
+      <form ng-submit="createTeam.addNewTeam()">
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
               <label for="in-team-name">Team Name</label>
-              <input ng-model="createTeam.teamName" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
+              <input ng-model="createTeam.currentTeamObject.name" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
             </div>
           </div>
         </div>

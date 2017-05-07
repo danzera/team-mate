@@ -13,22 +13,29 @@ myApp.controller('AddGameController', ['UserService', function(UserService) {
 
   // DATA-BINDING FUNCTIONS
   addGame.addNewGame = function(gameObject) {
-    if (!addGame.date || !addGame.time || !gameObject.location) {  // game date, time and/or location is blank - alert user (OK for opponent to be blank)
-          addGame.message = 'Date, Time and Location must be complete.';
-        } else { // necessary input fields are complete
-          addGame.message = ''; // reset error message to the empty string
-          gameObject.date = addGame.date;
-          gameObject.time = addGame.time;
-          UserService.adjustGameDateAndTime(gameObject); // convert date/time with moment.js
-          UserService.addNewGame(gameObject)
-            .then(redirectToTeamSchedule); // send new game to the factory
+    if (verifUserInputs()) {
+      gameObject.date = addGame.date;
+      gameObject.time = addGame.time;
+      UserService.adjustGameDateAndTime(gameObject); // convert date/time with moment.js
+      UserService.addNewGame(gameObject)
+        .then(redirectToTeamSchedule); // send new game to the factory
 
-            // @TODO add all players on the team to new game in users_games table
-            // should probably be in the .then chain immediately above
-            // before the .then(redirectToTeamSchedule)
-        }
+        // @TODO add all players on the team to new game in users_games table
+        // should probably be in the .then chain immediately above
+        // before the .then(redirectToTeamSchedule)
+    }
   };
 
+  // CONTROLLER FUNCTIONS
   let redirectToTeamSchedule = UserService.redirectToTeamSchedule;
+  function verifUserInputs() {
+    if (!addGame.date || !addGame.time || !addGame.newGame.location) {
+      addGame.message = 'Date, Time and Location must be complete.';
+      return false;
+    } else {
+      addGame.message = ''; // reset error message to the empty string
+      return true;
+    }
+  }
   
 }]); // END CONTROLLER
