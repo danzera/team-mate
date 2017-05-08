@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row"><!--header row-->
     <div class="col-xs-12">
-      <h1>{{addGame.currentTeamObject.name}}</h1>
-      <p class="lead">Add a New Game</p>
+      <h1 class="h1-team-schedule">{{addGame.currentTeamObject.name}}</h1>
+      <h2 class="sub-heading lead">Add a New Game</h2>
       <h2 class="lead alert alert-danger" role="alert" ng-if="addGame.message !== ''">{{addGame.message}}</h2>
     </div>
   </div>
@@ -42,11 +42,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
-            <div class="form-buttons"><!--SUBMIT GAME-->
-              <input class="btn btn-success" type="submit" name="submit" value="Add Game to Schedule" />
-              <a href="#team-schedule"><button class="btn btn-danger" type="button" name="allTeams">Cancel</button></a>
-            </div>
+          <div class="col-xs-6">
+              <a href="#team-schedule"><button class="btn btn-danger btn-full-width" type="button" name="allTeams">Cancel</button></a>
+          </div>
+          <div class="col-xs-6">
+            <input class="btn btn-success btn-full-width" type="submit" name="submit" value="Add Game" />
           </div>
         </div>
       </form>

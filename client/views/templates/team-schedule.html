@@ -1,20 +1,22 @@
 <div class="container">
   <div class="row"><!--header row-->
     <div class="col-xs-12">
-      <h1>{{teamSchedule.currentTeamObject.name}}</h1>
+      <h1 class="h1-team-schedule">{{teamSchedule.currentTeamObject.name}}</h1>
     </div>
   </div><!--END header row-->
   <div class="row manager-only" ng-if="teamSchedule.currentTeamObject.manager"><!--manager only section-->
     <div class="col-xs-12">
       <div class="row"><!--manager sub-header-->
         <div class="col-xs-12">
-          <p class="lead">Manage Your Team</p>
+          <h2 class="sub-heading lead">Manage Your Team</h2>
         </div>
       </div>
       <div class="row manager-buttons"><!--manager buttons-->
-        <div class="col-xs-12">
-          <a href="#add-game"><input class="btn btn-success" type="button" value="Add a Game" /></a>
-          <a href="#add-player"><input id="btn-add-player" class="btn btn-primary" type="button" value="Add a Player" /></a>
+        <div class="col-xs-6">
+          <a href="#add-game"><input class="btn-manager btn btn-success" type="button" value="Add a Game" /></a>
+        </div>
+        <div class="col-xs-6">
+          <a href="#add-player"><input class="btn-manager btn btn-primary" type="button" value="Add a Player" /></a>
         </div>
       </div>
     </div>
@@ -23,7 +25,7 @@
     <div class="col-xs-12">
       <div class="row schedule-header">
         <div class="col-xs-12">
-          <p class="lead">Upcoming Games</p>
+          <h2 class="sub-heading lead">Upcoming Games</h2>
           <h2 class="lead alert alert-warning" ng-if="teamSchedule.message !== ''" role="alert">{{teamSchedule.message}}</h2>
         </div>
       </div>

@@ -5,6 +5,7 @@ myApp.controller('AllTeamsController', ['UserService', function(UserService) {
   allTeams.userObject = UserService.userObject;
   allTeams.currentTeamObject = UserService.currentTeamObject;
   console.log('all-teams loaded', allTeams.currentTeamObject);
+  console.log('user object', allTeams.userObject);
   
   // DATA-BINDING FUNCTIONS
   allTeams.acceptInvite = function(teamObject) {
