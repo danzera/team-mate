@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pool = require('../modules/database.js');
+var mailer = require('../modules/mail.js');
 
 // '/invite' GET - get any invites from the "invites" table for the current user
 router.get('/', function(req, res) {
@@ -32,6 +33,7 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   if (req.isAuthenticated()) { // user is authenticated
     var team_id = req.body.team_id;
+    var teamName = req.body.teamName;
     var email = req.body.email;
     var manager = req.body.manager;
     pool.connect(function(err, database, done) {
@@ -45,7 +47,9 @@ router.post('/', function(req, res) {
             if (queryErr) {
               console.log('error making query', queryErr);
               res.sendStatus(500);
-            } else {
+            } else { // invite added to the DB
+              // send email invitation
+              mailer.invite(email, teamName);
               console.log('successful insert into "invites"', result);
               res.send(result);
             }

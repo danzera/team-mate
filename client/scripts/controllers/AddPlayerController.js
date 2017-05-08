@@ -5,6 +5,7 @@ myApp.controller('AddPlayerController', ['UserService', function(UserService) {
   addPlayer.currentTeamObject = UserService.currentTeamObject;
   addPlayer.newInvite = {
     team_id: addPlayer.currentTeamObject.team_id,
+    teamName: addPlayer.currentTeamObject.name,
     email: '',
     manager: false // hard coding false for now, would like to add option for adding
   };
