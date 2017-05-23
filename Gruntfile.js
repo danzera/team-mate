@@ -62,7 +62,7 @@ module.exports = function(grunt){
       refresh: {
         files: ['server/public/scripts/*.js', 'server/public/stylesheets/*.css', 'server/public/views/*.html', 'server/public/vendors/*.*'],
         options: {
-          livereload: true
+          livereload: false
         }
       }
     }
