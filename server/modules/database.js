@@ -1,6 +1,7 @@
 var pg = require('pg');
 var pool;
 var config = {
+  host: process.env.DATABASE_HOST || 'localhost',
   user: process.env.DATABASE_USER || 'danzera', // env var: PGUSER
   database: process.env.DATABASE_NAME || 'team-mate', // env var: PGDATABASE
   password: process.env.DATABASE_PW || '', // env var: PGPASSWORD
