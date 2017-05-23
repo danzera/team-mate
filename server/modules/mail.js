@@ -1,19 +1,18 @@
 var nodemailer = require('nodemailer');
-var email = require('../data.js');
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.MAIL_PROVIDER,
   auth: {
-    user: email.address,
-    pass: email.pw
+    user: process.env.EMAIL_ADDRESS,
+    pass: process.env.EMAIL_PW
   }
 });
 
 function invite(toEmail, teamName) {
   var subject = 'Invitation to Join ' + teamName + '!';
-  var emailBody = 'You have been invited to join ' + teamName + ' on TeamMate! Please visit www.teammate.com, create an account, if you haven\'t already, and login to accept your invitation.';
+  var emailBody = 'You have been invited to join ' + teamName + ' on TeamMate! Please visit https://team-mate-app.herokuapp.com/, create an account, if you haven\'t already, and login to accept your invitation.';
   var mailOptions = {
-    from: '"TeamMate" teammatereminder@gmail.com',
+    from: '"TeamMate" ' + process.env.EMAIL_ADDRESS,
     to: toEmail,
     subject: subject,
     text: emailBody,
@@ -28,6 +27,6 @@ function invite(toEmail, teamName) {
   });
 }
 
-module.exports ={
-  invite
+module.exports = {
+  invite: invite
 };
