@@ -47,6 +47,17 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.get('/user').then(function(response) {
       if (!response.data.username) {
         redirectToHome();
+      } else {
+        userObject.username = response.data.username;
+        if (response.data.first_name) {
+          userObject.firstName = response.data.first_name;
+        }
+        if (response.data.last_name) {
+          userObject.lastName = response.data.last_name;
+        }
+        if (response.data.phone) {
+          userObject.phone = response.data.phone;
+        }
       }
     });
   } // end getUser()
