@@ -47,6 +47,17 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     $http.get('/user').then(function(response) {
       if (!response.data.username) {
         redirectToHome();
+      } else {
+        userObject.username = response.data.username;
+        if (response.data.first_name) {
+          userObject.firstName = response.data.first_name;
+        }
+        if (response.data.last_name) {
+          userObject.lastName = response.data.last_name;
+        }
+        if (response.data.phone) {
+          userObject.phone = response.data.phone;
+        }
       }
     });
   } // end getUser()
@@ -84,7 +95,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   // post a player to the 'invites' table
   // @TODO TRIGGER E-MAIL SENT ON THIS ROUTE
   function invitePlayer(inviteObject) {
-    console.log('invite in the factory', inviteObject);
     return $http.post('/invite', inviteObject).then(function(response) {
       alert('Success! An e-mail will be sent to ' + inviteObject.email + ' inviting them to join your team.');
     });
@@ -141,7 +151,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // post new game to the "games" table & add the team's players to the "users_games" table
   function addNewGame(gameObject) {
-    console.log('attempting to add new game in UserService.addNewGame:', gameObject)
     return $http.post('/games', gameObject);
       // @TODO add all players on the team to new game in users_games table
       // shoul probably be in the .then chain of the AddGameController
@@ -152,7 +161,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   // --------SUPPORT FUNCTIONS----------
   function convertGameDatesAndTimes() {
-    for (gameObject of currentTeamObject.gamesArray) {
+    for (let gameObject of currentTeamObject.gamesArray) {
       gameObject.date = moment(gameObject.date).format('dddd, MMMM Do YYYY');
       gameObject.time = moment(gameObject.time, 'HH:mm:ss').format('h:mm A');
     }
@@ -169,7 +178,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     userObject.firstName = '';
     userObject.lastName = '';
     userObject.phone = '';
-    teamsArray = [];
+    userObject.teamsArray = [];
   }
 
   function clearCurrentTeam() {
@@ -180,7 +189,6 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   }
 
   function setCurrentTeamInfo(teamObject) {
-    console.log('setting team object ===', teamObject);
     currentTeamObject.team_id = teamObject.team_id;
     currentTeamObject.name = teamObject.name;
     currentTeamObject.manager = teamObject.manager;

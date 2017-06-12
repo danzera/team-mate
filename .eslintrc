@@ -1,11 +1,15 @@
 {
-  "extends": ["plugin:angular/johnpapa", "eslint:recommended"],
+  "extends": ["eslint:recommended", "plugin:angular/johnpapa"],
   "env": {
     "browser": true,
     "node": true
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "moment": true
+  },
+  "parserOptions": { 
+    "ecmaVersion": 6
   },
   "rules": {
     "no-unused-vars": "warn",
