@@ -25,7 +25,7 @@ myApp.controller('CreateTeamController', ['UserService', function(UserService) {
       return false;
     } else { // team name input complete
       createTeam.message = ''; // reset error message back to empty string
-      return true
+      return true;
     }
   }
 }]);

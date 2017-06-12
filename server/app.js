@@ -4,9 +4,6 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 
-// DATABASE MODULE
-var database = require('./modules/database.js');
-
 // AUTHENTICATION MODULES
 var passport = require('./strategies/user_sql.js');
 var session = require('express-session');
@@ -20,7 +17,7 @@ var games = require('./routes/games.js'); // add new game
 var invite = require('./routes/invite.js'); // invite players to join team
 
 // APP CONFIGURATION
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 6789));
 
 // MIDDLEWARE CONFIGURATION
 app.use(bodyParser.json());
