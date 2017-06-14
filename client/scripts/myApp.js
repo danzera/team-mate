@@ -42,7 +42,7 @@ function config($routeProvider, $locationProvider) {
     .when('/team-schedule', { // displays current team schedule
       templateUrl: '/views/templates/team-schedule.html',
       controller: 'TeamScheduleController',
-      controllerAs: 'teamSchedule',
+      controllerAs: 'vm',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
