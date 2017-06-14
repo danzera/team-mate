@@ -1,6 +1,9 @@
-var myApp = angular.module('myApp', ['ngRoute']);
-// -----ROUTES-----
-myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular
+  .module('myApp', ['ngRoute'])
+  .config(['$routeProvider', '$locationProvider', config]);
+
+// -----ROUTES-----  
+function config($routeProvider, $locationProvider) {
   $locationProvider.hashPrefix('');
   $routeProvider
     .when('/home', {
@@ -79,4 +82,4 @@ myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     .otherwise({
       redirectTo: 'home'
     });
-}]);
+}

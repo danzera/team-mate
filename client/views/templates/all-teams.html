@@ -1,22 +1,22 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <h1 ng-if="allTeams.userObject.firstName" class="welcome-all-teams-top">Welcome,</h1>
-      <h1 ng-if="allTeams.userObject.firstName" class="welcome-all-teams-bottom">{{allTeams.userObject.firstName}}!</h1>
-      <h1 ng-if="!allTeams.userObject.firstName" class="welcome-all-teams-top">Welcome!</h1>
+      <h1 ng-if="vm.userObject.firstName" class="welcome-all-teams-top">Welcome,</h1>
+      <h1 ng-if="vm.userObject.firstName" class="welcome-all-teams-bottom">{{vm.userObject.firstName}}!</h1>
+      <h1 ng-if="!vm.userObject.firstName" class="welcome-all-teams-top">Welcome!</h1>
     </div>
   </div>
-  <div class="row" ng-if="allTeams.userObject.invitesArray.length">
+  <div class="row" ng-if="vm.userObject.invitesArray.length">
     <div class="col-xs-12">
       <div class="row">
         <div class="col-xs-12">
           <h2 class="sub-heading lead">Pending Invitations</h2>
         </div>
       </div>
-      <div ng-repeat="teamObject in allTeams.userObject.invitesArray">
+      <div ng-repeat="teamObject in vm.userObject.invitesArray">
         <div class="row">
           <div class="col-xs-12">
-            <button class="btn-team btn btn-default" ng-click="allTeams.acceptInvite(teamObject)">{{teamObject.name}}</button>
+            <button class="btn-team btn btn-default" ng-click="vm.acceptInvite(teamObject)">{{teamObject.name}}</button>
           </div>
         </div>
       </div>
@@ -25,15 +25,15 @@
   <div class="row">
     <div class="col-xs-12">
       <h2 class="sub-heading lead">Your Teams</h2>
-      <h2 class="lead alert alert-warning" role="alert" ng-if="allTeams.message !== ''">{{allTeams.message}}</h2>
+      <h2 class="lead alert alert-warning" role="alert" ng-if="vm.message !== ''">{{vm.message}}</h2>
     </div>
   </div>
-  <div class="row" ng-if="allTeams.message === ''">
+  <div class="row" ng-if="vm.message === ''">
     <div class="col-xs-12">
-      <div ng-repeat="teamObject in allTeams.userObject.teamsArray">
+      <div ng-repeat="teamObject in vm.userObject.teamsArray">
         <div class="row">
           <div class="col-xs-12">
-            <button class="btn-team btn btn-success" ng-click="allTeams.goToTeamSchedule(teamObject)">{{teamObject.name}}</button>
+            <button class="btn-team btn btn-success" ng-click="vm.goToTeamSchedule(teamObject)">{{teamObject.name}}</button>
           </div>
         </div>
       </div>
