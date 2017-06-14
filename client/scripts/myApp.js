@@ -32,7 +32,7 @@ function config($routeProvider, $locationProvider) {
     .when('/create-team', { // lets a user create a new team
       templateUrl: '/views/templates/create-team.html',
       controller: 'CreateTeamController',
-      controllerAs: 'createTeam',
+      controllerAs: 'vm',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
