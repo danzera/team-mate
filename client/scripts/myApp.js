@@ -19,20 +19,10 @@ function config($routeProvider, $locationProvider) {
       controller: 'RegisterController',
       controllerAs: 'vm'
     })
-    .when('/user', {
-      templateUrl: '/views/templates/user.html',
-      controller: 'UserController',
-      controllerAs: 'user',
-      resolve: { // get user from factory
-        getuser : ['UserService', function(UserService){
-          return UserService.getUser();
-        }]
-      }
-    })
     .when('/all-teams', { // lists all of a user's teams when they are logged in
       templateUrl: '/views/templates/all-teams.html',
       controller: 'AllTeamsController',
-      controllerAs: 'allTeams',
+      controllerAs: 'vm',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
