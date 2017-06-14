@@ -6,7 +6,6 @@ var pool = require('../modules/database.js');
 // '/games/:teamId' GET - get team's games from the "games" table
 router.get('/:teamId', function(req, res) {
 var team_id = req.params.teamId;
-console.log('getting games for team_id', team_id);
 pool.connect(function(err, database, done) {
   if (err) { // connection error
     console.log('error connecting to the database:', err);
@@ -19,7 +18,6 @@ pool.connect(function(err, database, done) {
           console.log('error making query on /teams/:teamId GET', queryErr);
           res.sendStatus(500);
         } else {
-          console.log('successful insert into "teams"', result);
           res.send(result);
         }
       }); // end query callback
@@ -29,7 +27,6 @@ pool.connect(function(err, database, done) {
 
 // '/games' POST - post new game to the database
 router.post('/', function(req, res) {
-  console.log(req.body);
   var team_id = req.body.team_id;
   var date = req.body.date;
   var time = req.body.time;
@@ -47,7 +44,6 @@ router.post('/', function(req, res) {
             console.log('error making query on /teams POST', queryErr);
             res.sendStatus(500);
           } else {
-            console.log('successful insert into "teams"', result);
             res.send(result);
           }
         }); // end query

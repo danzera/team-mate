@@ -1,19 +1,19 @@
 <div class="container">
   <div class="row"><!--header row-->
     <div class="col-xs-12">
-      <h1 class="h1-team-schedule">{{addPlayer.currentTeamObject.name}}</h1>
+      <h1 class="h1-team-schedule">{{vm.currentTeamObject.name}}</h1>
       <h2 class="sub-heading lead">Add a Player to Your Team</h2>
-      <h2 class="lead alert alert-danger" ng-if="addPlayer.message !== ''" role="alert">{{addPlayer.message}}</h2>
+      <h2 class="lead alert alert-danger" ng-if="vm.message !== ''" role="alert">{{vm.message}}</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <form ng-submit="addPlayer.invitePlayer()">
+      <form ng-submit="vm.invitePlayer()">
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
               <label for="in-player-email">E-mail Address</label>
-              <input ng-model="addPlayer.newInvite.email" class="form-control" type="email" name="playerEmail" id="in-player-email" placeholder="What is the player's e-mail address?" />
+              <input ng-model="vm.newInvite.email" class="form-control" type="email" name="playerEmail" id="in-player-email" placeholder="What is the player's e-mail address?" />
             </div>
           </div>
         </div>

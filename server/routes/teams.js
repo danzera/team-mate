@@ -16,7 +16,6 @@ router.get('/', function(req, res) {
               console.log('error making query:', queryErr);
               res.sendStatus(500);
             } else {
-              console.log('got users_teams/teams', result);
               res.send(result);
             }
         }); // end query callback
@@ -43,7 +42,6 @@ router.post('/', function(req, res) {
               console.log('error making query on /teams POST', queryErr);
               res.sendStatus(500);
             } else {
-              console.log('successful insert into "teams"', result);
               res.send(result);
             }
         }); // end query
@@ -58,10 +56,7 @@ router.post('/', function(req, res) {
 router.post('/add-player', function(req, res) {
   if (req.isAuthenticated()) { // user is authenticated
     var team_id = req.body.team_id;
-    console.log('REQ.BODY HEEEEEEERRRRREEEE', req.body);
-    var manager = req.body.manager;
-    // var user_id = req.params.userId;
-    // var joined = req.body[team_id].hasJoined;
+    var manager = req.body.manager; // should probably be based on the req.user info...?
     pool.connect(function(err, database, done) {
       if (err) { // connection error
         console.log('error connecting to the database:', err);
@@ -74,7 +69,6 @@ router.post('/add-player', function(req, res) {
               console.log('error making query', queryErr);
               res.sendStatus(500);
             } else {
-              console.log('successful insert into "users_teams" on the /teams/add-player route');
               res.sendStatus(201);
             }
           }); // end query

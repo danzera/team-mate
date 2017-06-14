@@ -2,17 +2,17 @@
   <div class="row">
     <div class="col-xs-12">
       <h1 class="view-heading lead">Create a New Team</h1>
-      <h2 class="error-message lead alert alert-danger" role="alert" ng-if="createTeam.message !== ''">{{createTeam.message}}</h2>
+      <h2 class="error-message lead alert alert-danger" role="alert" ng-if="vm.message !== ''">{{vm.message}}</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <form ng-submit="createTeam.addNewTeam()">
+      <form ng-submit="vm.addNewTeam()">
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
               <label for="in-team-name">Team Name</label>
-              <input ng-model="createTeam.currentTeamObject.name" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
+              <input ng-model="vm.currentTeamObject.name" class="form-control" type="text" name="teamName" id="in-team-name" placeholder="What is your team's name?" />
             </div>
           </div>
         </div>
