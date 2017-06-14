@@ -18,7 +18,6 @@ router.get('/', function(req, res) {
               console.log('error making query', queryErr);
               res.sendStatus(500);
             } else {
-              console.log('successful got any & all of the users invites', result);
               res.send(result);
             }
         }); // end query callback
@@ -50,7 +49,6 @@ router.post('/', function(req, res) {
             } else { // invite added to the DB
               // send email invitation
               mailer.invite(email, teamName);
-              console.log('successful insert into "invites"', result);
               res.send(result);
             }
           }); // end query
@@ -77,7 +75,6 @@ router.delete('/:teamId', function(req, res) {
               console.log('error making query', queryErr);
               res.sendStatus(500);
             } else {
-              console.log('successful deletion from "invites"', result);
               res.send(result);
             }
           }); // end query
