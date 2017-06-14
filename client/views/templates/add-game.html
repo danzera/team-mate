@@ -1,19 +1,19 @@
 <div class="container">
   <div class="row"><!--header row-->
     <div class="col-xs-12">
-      <h1 class="h1-team-schedule">{{addGame.currentTeamObject.name}}</h1>
+      <h1 class="h1-team-schedule">{{vm.currentTeamObject.name}}</h1>
       <h2 class="sub-heading lead">Add a New Game</h2>
-      <h2 class="lead alert alert-danger" role="alert" ng-if="addGame.message !== ''">{{addGame.message}}</h2>
+      <h2 class="lead alert alert-danger" role="alert" ng-if="vm.message !== ''">{{vm.message}}</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <form ng-submit="addGame.addNewGame(addGame.newGame)">
+      <form ng-submit="vm.addNewGame(vm.newGame)">
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group"><!--GAME DATE-->
               <label for="in-game-date">Date*</label>
-              <input ng-model="addGame.date" class="form-control" type="date" name="gameDate" id="in-game-date" />
+              <input ng-model="vm.date" class="form-control" type="date" name="gameDate" id="in-game-date" />
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
           <div class="col-xs-12">
             <div class="form-group"><!--GAME TIME-->
               <label for="in-game-time">Time*</label>
-              <input ng-model="addGame.time" class="form-control" type="time" name="gameTime" id="in-game-time" />
+              <input ng-model="vm.time" class="form-control" type="time" name="gameTime" id="in-game-time" />
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <div class="col-xs-12">
             <div class="form-group"><!--GAME LOCATION-->
               <label for="in-game-location">Location*</label>
-              <input ng-model="addGame.newGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
+              <input ng-model="vm.newGame.location" class="form-control" type="text" name="gameLocation" id="in-game-location" />
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-xs-12">
             <div class="form-group"><!--GAME OPPONENT-->
               <label for="in-game-opponent">Opponent</label>
-              <input ng-model="addGame.newGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
+              <input ng-model="vm.newGame.opponent" class="form-control" type="text" name="gameLocation" id="in-game-opponent" />
             </div>
           </div>
         </div>

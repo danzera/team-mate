@@ -52,7 +52,7 @@ function config($routeProvider, $locationProvider) {
     .when('/add-game', { // go to add-game view with a form for adding a game
       templateUrl: '/views/templates/add-game.html',
       controller: 'AddGameController',
-      controllerAs: 'addGame',
+      controllerAs: 'vm',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
@@ -62,7 +62,7 @@ function config($routeProvider, $locationProvider) {
     .when('/add-player', { // go to add-player view with a form for adding a player
       templateUrl: '/views/templates/add-player.html',
       controller: 'AddPlayerController',
-      controllerAs: 'addPlayer',
+      controllerAs: 'vm',
       resolve: { // get user from factory
         getuser : ['UserService', function(UserService){
           return UserService.getUser();
