@@ -12,12 +12,12 @@ function config($routeProvider, $locationProvider) {
     .when('/login', {
       templateUrl: '/views/templates/login.html',
       controller: 'LoginController',
-      controllerAs: 'login'
+      controllerAs: 'vm'
     })
     .when('/register', {
       templateUrl: '/views/templates/register.html',
       controller: 'RegisterController',
-      controllerAs: 'register'
+      controllerAs: 'vm'
     })
     .when('/user', {
       templateUrl: '/views/templates/user.html',
