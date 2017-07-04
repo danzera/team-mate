@@ -10,7 +10,7 @@ You will need to have the following software installed.
 
 [Node.js](https://nodejs.org/en/)
 
-[PostgreSql](https://launchschool.com/blog/how-to-install-postgresql-on-a-mac)
+[PostgreSQL](https://launchschool.com/blog/how-to-install-postgresql-on-a-mac)
 
 [Postico](https://eggerapps.at/postico/)
 
