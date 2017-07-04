@@ -8,17 +8,9 @@
 
 You will need to have the following software installed.
 
-```
 [Node.js](https://nodejs.org/en/)
-```
-
-```
 [PostgreSql](https://launchschool.com/blog/how-to-install-postgresql-on-a-mac)
-```
-
-```
 [Postico](https://eggerapps.at/postico/)
-```
 
 ### Installing
 
@@ -27,7 +19,7 @@ Steps to get the development environment running.
 1. Clone the repository to your local machine.
 
 ```
-git clone https://github.com/BridgingMN/bridging-connect.git
+git clone https://github.com/danzera/team-mate.git
 ```
 
 2. Install all dependencies.
