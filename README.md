@@ -50,3 +50,20 @@ npm start
 ```
 localhost:5000
 ```
+
+
+## Built With
+
+* PostgreSql
+* Express.js
+* AngularJS
+* Node.js
+* Grunt
+* HTML5
+* CSS3
+* Bootstrap
+* Heroku
+* Heroku Postgres
+* Passport.js
+* Nodemailer
+* Moment.js
